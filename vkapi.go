@@ -235,6 +235,38 @@ func (vk *Api) Ads_getStatistics(params map[string]string) (ans []AdsGetStatisti
 		return
 	}
 
+	for i, d := range ans {
+		// Создаем массив для норм статы
+		ans[i].Stats = make([]AdsGetStatisticsAnsStats, len(d.StatsBug))
+
+		for k, s := range d.StatsBug {
+			// Пробуем норм разобрать
+			var t AdsGetStatisticsAnsStats
+			err = json.Unmarshal(s, &t)
+			// Если ошибка пробуем разобрать кривой json
+			if err != nil {
+				var t2 AdsGetStatisticsAnsStatsBug
+				err = json.Unmarshal(s, &t2)
+				if err != nil {
+					log.Println("[error]", err, string(r.Response))
+					return
+				}
+
+				impr, _ := strconv.ParseInt(t2.Impressions, 10, 32)
+
+				t = AdsGetStatisticsAnsStats{
+					Day:         t2.Day,
+					Spent:       t2.Spent,
+					Clicks:      t2.Clicks,
+					Reach:       t2.Reach,
+					Impressions: int(impr),
+				}
+			}
+
+			ans[i].Stats[k] = t
+		}
+	}
+
 	return
 }
 

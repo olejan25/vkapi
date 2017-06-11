@@ -116,15 +116,24 @@ type AdsGetAdsLayoutAns struct {
 }
 
 type AdsGetStatisticsAns struct {
-	Id    int                        `json:"id"`
-	Type  string                     `json:"type"`
-	Stats []AdsGetStatisticsAnsStats `json:"stats"`
+	Id       int                        `json:"id"`
+	Type     string                     `json:"type"`
+	StatsBug []json.RawMessage          `json:"stats"`
+	Stats    []AdsGetStatisticsAnsStats `json:"-"`
 }
 
 type AdsGetStatisticsAnsStats struct {
 	Day         string `json:"day"`
 	Spent       string `json:"spent"`
 	Impressions int    `json:"impressions"`
+	Clicks      int    `json:"clicks"`
+	Reach       int    `json:"reach"`
+}
+
+type AdsGetStatisticsAnsStatsBug struct {
+	Day         string `json:"day"`
+	Spent       string `json:"spent"`
+	Impressions string `json:"impressions"`
 	Clicks      int    `json:"clicks"`
 	Reach       int    `json:"reach"`
 }
