@@ -2,6 +2,7 @@ package vkapi
 
 import (
 	"encoding/json"
+	"log"
 	"sync"
 )
 
@@ -95,6 +96,16 @@ type AttachmentsPrettyCardsCards struct {
 	CardId  string `json:"card_id"`
 	LinkUrl string `json:"link_url"`
 	Title   string `json:"title"`
+}
+
+func (a *Attachments) GetPrettyCards() (t AttachmentsPrettyCards) {
+	err := json.Unmarshal(*a.PrettyCards, &t)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
 }
 
 type LikeData struct {
