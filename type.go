@@ -60,15 +60,41 @@ type UsersGetAns struct {
 */
 
 type WallGetByIdAns struct {
-	Id       int      `json:"id"`
-	FromId   int      `json:"from_id"`
-	OwnerId  int      `json:"owner_id"`
-	Date     int      `json:"date"`
-	Text     string   `json:"text"`
-	Comments LikeData `json:"comments"`
-	Likes    LikeData `json:"likes"`
-	Reposts  LikeData `json:"reposts"`
-	Views    LikeData `json:"views"`
+	Id          int           `json:"id"`
+	FromId      int           `json:"from_id"`
+	OwnerId     int           `json:"owner_id"`
+	Date        int           `json:"date"`
+	Text        string        `json:"text"`
+	Attachments []Attachments `json:"attachments"`
+	Comments    LikeData      `json:"comments"`
+	Likes       LikeData      `json:"likes"`
+	Reposts     LikeData      `json:"reposts"`
+	Views       LikeData      `json:"views"`
+}
+
+type Attachments struct {
+	Type        string           `json:"type"`
+	Photo       *json.RawMessage `json:"photo"`
+	Audio       *json.RawMessage `json:"audio"`
+	Video       *json.RawMessage `json:"video"`
+	Poll        *json.RawMessage `json:"poll"`
+	Page        *json.RawMessage `json:"page"`
+	Album       *json.RawMessage `json:"album"`
+	Link        *json.RawMessage `json:"link"`
+	Doc         *json.RawMessage `json:"doc"`
+	Note        *json.RawMessage `json:"note"`
+	Sticker     *json.RawMessage `json:"sticker"`
+	PrettyCards *json.RawMessage `json:"pretty_cards"`
+}
+
+type AttachmentsPrettyCards struct {
+	Cards []AttachmentsPrettyCardsCards `json:"cards"`
+}
+
+type AttachmentsPrettyCardsCards struct {
+	CardId  string `json:"card_id"`
+	LinkUrl string `json:"link_url"`
+	Title   string `json:"title"`
 }
 
 type LikeData struct {
