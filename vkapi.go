@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	API_VERSION    = "5.64"
+	API_VERSION    = "5.68"
 	API_METHOD_URL = "https://api.vk.com/method/"
 	API_TOKEN_URL  = "https://oauth.vk.com/access_token"
 )
