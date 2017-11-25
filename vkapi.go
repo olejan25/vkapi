@@ -108,6 +108,29 @@ func (vk *Api) Users_get(params map[string]string) (ans []UsersGetAns, err error
 }
 
 /*
+	Groups
+*/
+
+// Получаем информацию о пользователях
+func (vk *Api) Groups_getById(params map[string]string) (ans []GroupsGetAns, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("groups.getById", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
+/*
 	Wall
 */
 
