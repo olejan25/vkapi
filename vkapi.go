@@ -356,6 +356,10 @@ func (vk *Api) fullRequest(method string, params map[string]string) (ans Respons
 	if resp != nil {
 		defer resp.Body.Close()
 	}
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
 
 	// Если проблема с ответом
 	if resp.StatusCode != 200 {
