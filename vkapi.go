@@ -135,7 +135,7 @@ func (vk *Api) Groups_getById(params map[string]string) (ans []GroupsGetAns, err
 */
 
 // Возвращает список записей со стен пользователей или сообществ по их идентификаторам.
-func (vk *Api) Wall_get(params map[string]string) (ans []WallGetAns, err error) {
+func (vk *Api) Wall_get(params map[string]string) (ans WallGetAns, err error) {
 
 	// Отправляем запрос
 	r, err := vk.request("wall.get", params)
