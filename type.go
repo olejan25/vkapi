@@ -84,6 +84,11 @@ type GroupsGetAns struct {
 	Wall
 */
 
+type WallGetAns struct {
+	Count int              `json:"count"`
+	Items []WallGetByIdAns `json:"items"`
+}
+
 type WallGetByIdAns struct {
 	Id          int           `json:"id"`
 	FromId      int           `json:"from_id"`

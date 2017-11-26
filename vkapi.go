@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	API_VERSION    = "5.68"
+	API_VERSION    = "5.69"
 	API_METHOD_URL = "https://api.vk.com/method/"
 	API_TOKEN_URL  = "https://oauth.vk.com/access_token"
 )
@@ -133,6 +133,25 @@ func (vk *Api) Groups_getById(params map[string]string) (ans []GroupsGetAns, err
 /*
 	Wall
 */
+
+// Возвращает список записей со стен пользователей или сообществ по их идентификаторам.
+func (vk *Api) Wall_get(params map[string]string) (ans []WallGetAns, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("wall.get", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
 
 // Возвращает список записей со стен пользователей или сообществ по их идентификаторам.
 func (vk *Api) Wall_getById(params map[string]string) (ans []WallGetByIdAns, err error) {
