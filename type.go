@@ -90,16 +90,25 @@ type WallGetAns struct {
 }
 
 type WallGetByIdAns struct {
-	Id          int           `json:"id"`
-	FromId      int           `json:"from_id"`
-	OwnerId     int           `json:"owner_id"`
-	Date        int           `json:"date"`
-	Text        string        `json:"text"`
-	Attachments []Attachments `json:"attachments"`
-	Comments    LikeData      `json:"comments"`
-	Likes       LikeData      `json:"likes"`
-	Reposts     LikeData      `json:"reposts"`
-	Views       LikeData      `json:"views"`
+	Id           int              `json:"id"`
+	OwnerId      int              `json:"owner_id"`
+	FromId       int              `json:"from_id"`
+	CreatedBy    int              `json:"created_by"`
+	Date         int              `json:"date"`
+	Text         string           `json:"text"`
+	ReplyOwnerId int              `json:"reply_owner_id"`
+	ReplyPostId  int              `json:"reply_post_id"`
+	FriendsOnly  int              `json:"friends_only"`
+	Comments     LikeData         `json:"comments"`
+	Likes        LikeData         `json:"likes"`
+	Reposts      LikeData         `json:"reposts"`
+	Views        LikeData         `json:"views"`
+	PostType     string           `json:"post_type"`
+	Attachments  []Attachments    `json:"attachments"`
+	SignerId     int              `json:"signer_id"`
+	CopyHistory  []WallGetByIdAns `json:"copy_history"`
+	IsPinned     int              `json:"is_pinned"`
+	MarkedAsAds  int              `json:"marked_as_ads"`
 }
 
 type Attachments struct {
