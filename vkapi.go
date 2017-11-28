@@ -313,6 +313,34 @@ func (vk *Api) Ads_getStatistics(params map[string]string) (ans []AdsGetStatisti
 }
 
 /*
+	Execute
+*/
+
+// Execute
+func (vk *Api) Execute(code string) (r Response, err error) {
+
+	// Отправляем запрос
+	r, err = vk.request("execute", map[string]string{"code": code})
+	if err != nil {
+		log.Println("[error]", err)
+		log.Println(code)
+		return
+	}
+
+	if len(r.ExecuteErrors) > 0 {
+		log.Println(code)
+		log.Println(r.ExecuteErrors)
+	} else if r.Error.ErrorCode > 0 {
+		log.Println(code)
+		log.Println(r.Error)
+		err = errors.New(r.Error.ErrorMsg)
+		return
+	}
+
+	return
+}
+
+/*
 	Запрос к ВК
 */
 

@@ -20,8 +20,15 @@ type TokenData struct {
 }
 
 type Response struct {
-	Response json.RawMessage `json:"response"`
-	Error    ResponseError   `json:"error"`
+	Response      json.RawMessage `json:"response"`
+	Error         ResponseError   `json:"error"`
+	ExecuteErrors []ExecuteErrors `json:"execute_errors"`
+}
+
+type ExecuteErrors struct {
+	Method     string `json:"method"`
+	Error_code int    `json:"error_code"`
+	Error_msg  string `json:"error_msg"`
 }
 
 type ResponseError struct {
