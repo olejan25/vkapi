@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func (vk *Api) Sctipt_GetById(posts []string) (ans []GroupsGetAns, err error) {
+func (vk *Api) Sctipt_GetById(posts []string) (ans []WallGetByIdAns, err error) {
 	// Разбиваем посты на нужное кол-во
 	arr := chunkSliceString(posts, 100)
 	// Формируем массив для запроса
