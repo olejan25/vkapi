@@ -413,7 +413,9 @@ func (vk *Api) fullRequest(method string, params map[string]string) (ans Respons
 	// Если проблема с ответом
 	if resp.StatusCode != 200 {
 		err = errors.New(resp.Status)
-		log.Println("[error]", resp.Status, resp.StatusCode)
+		if !httpErrorReg.MatchString(err.Error()) {
+			log.Println("[error]", resp.Status, resp.StatusCode)
+		}
 		return
 	}
 
