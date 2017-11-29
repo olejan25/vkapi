@@ -12,7 +12,7 @@ var (
 )
 
 func init() {
-	executeErrorSkipReg = regexp.MustCompile("server sent GOAWAY|User authorization failed|unexpected EOF")
+	executeErrorSkipReg = regexp.MustCompile("server sent GOAWAY|User authorization failed|unexpected EOF|Database problems, try later")
 }
 
 type Api struct {
