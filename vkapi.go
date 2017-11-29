@@ -490,6 +490,7 @@ func (vk *Api) httpErrorWait(method string) (ok bool) {
 		vk.Lock()
 		vk.httpRetryCount = 0
 		vk.Unlock()
+		return
 	}
 
 	vk.Lock()
