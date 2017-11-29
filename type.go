@@ -16,8 +16,9 @@ func init() {
 }
 
 type Api struct {
-	AccessToken string
-	retryCount  int
+	AccessToken    string
+	retryCount     int
+	httpRetryCount int
 	sync.Mutex
 }
 
