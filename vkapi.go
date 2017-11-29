@@ -362,7 +362,7 @@ func (vk *Api) request(method string, params map[string]string) (ans Response, e
 		if ans.Error.ErrorCode != 0 {
 			if ans.Error.ErrorMsg == "Too many requests per second" {
 				// Ждем между запросами
-				if vk.floodWait() {
+				if vk.floodWait(method) {
 					continue
 				}
 			} else if ans.Error.ErrorMsg == "Runtime error occurred during code invocation: Comparing values of different or unsupported types" {
@@ -433,7 +433,17 @@ func (vk *Api) fullRequest(method string, params map[string]string) (ans Respons
 }
 
 // Ждем между запросами если вк ответил что запросы слишком частые
-func (vk *Api) floodWait() (ok bool) {
+func (vk *Api) floodWait(method string) (ok bool) {
+	// Для некоторых методов повторять бессмысленно (https://vk.com/dev/data_limits)
+	if vk.retryCount >= 3 &&
+		(method == "wall.get" || method == "wall.search" || method == "newsfeed.search") {
+		// Сбрасываем счетчик ожидания
+		vk.Lock()
+		vk.retryCount = 0
+		vk.Unlock()
+		return
+	}
+
 	// Определяем сколько времени будет ждать
 	var sleepTime int
 	if vk.retryCount < 5 {
