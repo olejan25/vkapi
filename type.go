@@ -3,8 +3,17 @@ package vkapi
 import (
 	"encoding/json"
 	"log"
+	"regexp"
 	"sync"
 )
+
+var (
+	executeErrorSkipReg *regexp.Regexp
+)
+
+func init() {
+	executeErrorSkipReg = regexp.MustCompile("server sent GOAWAY|User authorization failed|unexpected EOF")
+}
 
 type Api struct {
 	AccessToken string

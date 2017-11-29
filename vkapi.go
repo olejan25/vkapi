@@ -322,7 +322,7 @@ func (vk *Api) Execute(code string) (r Response, err error) {
 	// Отправляем запрос
 	r, err = vk.request("execute", map[string]string{"code": code})
 	if err != nil {
-		if !strings.Contains(err.Error(), "User authorization failed") {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
 			log.Println("[error]", err)
 			log.Println(code)
 		}
