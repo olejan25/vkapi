@@ -50,7 +50,7 @@ func (vk *Api) Script_Wall_GetById(posts []string) (ans []WallGetByIdAns, err er
 
 	err = json.Unmarshal(r.Response, &ans)
 	if err != nil {
-		if !strings.Contains(err.Error(), "User authorization failed") {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
 			log.Println("[error]", err)
 		}
 		return
@@ -97,7 +97,7 @@ func (vk *Api) Script_Groups_GetById(groupIds []string, fields string) (ans []Gr
 
 	r, err := vk.Execute(script)
 	if err != nil {
-		if !strings.Contains(err.Error(), "User authorization failed") {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
 			log.Println("[error]", err)
 		}
 		return
