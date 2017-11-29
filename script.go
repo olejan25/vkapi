@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func (vk *Api) Sctipt_Wall_GetById(posts []string) (ans []WallGetByIdAns, err error) {
+func (vk *Api) Script_Wall_GetById(posts []string) (ans []WallGetByIdAns, err error) {
 	// Разбиваем посты на нужное кол-во
 	arr := chunkSliceString(posts, 100)
 	// Формируем массив для запроса
@@ -57,7 +57,7 @@ func (vk *Api) Sctipt_Wall_GetById(posts []string) (ans []WallGetByIdAns, err er
 	return
 }
 
-func (vk *Api) Sctipt_Groups_GetById(groupIds []string, fields string) (ans []GroupsGetAns, err error) {
+func (vk *Api) Script_Groups_GetById(groupIds []string, fields string) (ans []GroupsGetAns, err error) {
 	// Разбиваем посты на нужное кол-во
 	arr := chunkSliceString(groupIds, 500)
 	// Формируем массив для запроса
