@@ -322,19 +322,16 @@ func (vk *Api) Execute(code string) (r Response, err error) {
 	// Отправляем запрос
 	r, err = vk.request("execute", map[string]string{"code": code})
 	if err != nil {
-		log.Println("[error]", err)
-		log.Println(code)
+		if !strings.Contains(err.Error(), "User authorization failed") {
+			log.Println("[error]", err)
+			log.Println(code)
+		}
 		return
 	}
 
 	if len(r.ExecuteErrors) > 0 {
 		log.Println(code)
 		log.Println(r.ExecuteErrors)
-	} else if r.Error.ErrorCode > 0 {
-		log.Println(code)
-		log.Println(r.Error)
-		err = errors.New(r.Error.ErrorMsg)
-		return
 	}
 
 	return
