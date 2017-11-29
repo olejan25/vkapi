@@ -44,15 +44,15 @@ func (vk *Api) Script_Wall_GetById(posts []string) (ans []WallGetByIdAns, err er
 
 	r, err := vk.Execute(script)
 	if err != nil {
-		log.Println("[error]", err)
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			log.Println("[error]", err)
+		}
 		return
 	}
 
 	err = json.Unmarshal(r.Response, &ans)
 	if err != nil {
-		if !executeErrorSkipReg.MatchString(err.Error()) {
-			log.Println("[error]", err)
-		}
+		log.Println("[error]", err)
 		return
 	}
 
