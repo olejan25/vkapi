@@ -352,8 +352,7 @@ func (vk *Api) request(method string, params map[string]string) (ans Response, e
 	for {
 		ans, err = vk.fullRequest(method, params)
 		if err != nil {
-			if strings.Contains(err.Error(), "server sent GOAWAY") ||
-				strings.Contains(err.Error(), "unexpected EOF") {
+			if httpErrorReg.MatchString(err.Error()) {
 				if vk.httpErrorWait(method) {
 					continue
 				}
@@ -421,8 +420,7 @@ func (vk *Api) fullRequest(method string, params map[string]string) (ans Respons
 	// Читаем ответ
 	content, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		if !strings.Contains(err.Error(), "server sent GOAWAY") &&
-			!strings.Contains(err.Error(), "unexpected EOF") {
+		if !httpErrorReg.MatchString(err.Error()) {
 			log.Println("[error]", err)
 		}
 		return

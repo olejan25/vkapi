@@ -9,10 +9,12 @@ import (
 
 var (
 	executeErrorSkipReg *regexp.Regexp
+	httpErrorReg        *regexp.Regexp
 )
 
 func init() {
-	executeErrorSkipReg = regexp.MustCompile("server sent GOAWAY|User authorization failed|unexpected EOF|Database problems, try later|Internal Server Error")
+	executeErrorSkipReg = regexp.MustCompile("server sent GOAWAY|User authorization failed|unexpected EOF|Database problems, try later|Internal Server Error|Bad Request")
+	httpErrorReg = regexp.MustCompile("unexpected EOF|server sent GOAWAY|Bad Request|Internal Server Error")
 }
 
 type Api struct {
