@@ -415,7 +415,10 @@ func (vk *Api) fullRequest(method string, params map[string]string) (ans Respons
 	// Читаем ответ
 	content, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Println("[error]", err)
+		if !strings.Contains(err.Error(), "server sent GOAWAY") &&
+			!strings.Contains(err.Error(), "unexpected EOF") {
+			log.Println("[error]", err)
+		}
 		return
 	}
 
