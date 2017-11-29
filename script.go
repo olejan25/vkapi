@@ -73,7 +73,7 @@ func (vk *Api) Script_Groups_GetById(groupIds []string, fields string) (ans []Gr
 	}
 
 	script := fmt.Sprintf(`
-		var fields = %s;
+		var fields = "%s";
 		var arr = %s;
 		var ans = [];
 
