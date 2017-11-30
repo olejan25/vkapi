@@ -37,7 +37,7 @@ func chunkSliceString(arr []string, size int) (ans [][]string) {
 // Проверяем надо ли пропустить ошибу
 func (vk *Api) checkErrorSkip(str string) bool {
 	for _, e := range vk.ErrorToSkip {
-		if strings.Contains(e, str) {
+		if strings.Contains(str, e) {
 			return true
 		}
 	}
