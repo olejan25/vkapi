@@ -44,8 +44,10 @@ func (vk *Api) Script_Wall_GetById(posts []string) (ans []WallGetByIdAns, err er
 
 	r, err := vk.Execute(script)
 	if err != nil {
-		if !executeErrorSkipReg.MatchString(err.Error()) || vk.checkErrorSkip(err.Error()) {
-			log.Println("[error]", err)
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
 		}
 		return
 	}
@@ -97,8 +99,10 @@ func (vk *Api) Script_Groups_GetById(groupIds []string, fields string) (ans []Gr
 
 	r, err := vk.Execute(script)
 	if err != nil {
-		if !executeErrorSkipReg.MatchString(err.Error()) || vk.checkErrorSkip(err.Error()) {
-			log.Println("[error]", err)
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
 		}
 		return
 	}
