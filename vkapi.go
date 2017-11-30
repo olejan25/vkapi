@@ -322,7 +322,7 @@ func (vk *Api) Execute(code string) (r Response, err error) {
 	// Отправляем запрос
 	r, err = vk.request("execute", map[string]string{"code": code})
 	if err != nil {
-		if !executeErrorSkipReg.MatchString(err.Error()) {
+		if !executeErrorSkipReg.MatchString(err.Error()) || vk.checkErrorSkip(err.Error()) {
 			log.Println("[error]", err)
 			log.Println(code)
 		}

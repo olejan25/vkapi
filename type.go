@@ -21,6 +21,7 @@ type Api struct {
 	AccessToken    string
 	retryCount     int
 	httpRetryCount int
+	ErrorToSkip    []string
 	sync.Mutex
 }
 
