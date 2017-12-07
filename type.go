@@ -101,6 +101,32 @@ type GroupsGetAns struct {
 }
 
 /*
+	Stats
+*/
+
+type StatsGet struct {
+	GroupId          int             `json:"group_id"`
+	Day              string          `json:"day"`
+	Views            int             `json:"views"`
+	Visitors         int             `json:"visitors"`
+	Reach            int             `json:"reach"`
+	ReachSubscribers int             `json:"reach_subscribers"`
+	Subscribed       int             `json:"subscribed"`
+	Unsubscribed     int             `json:"unsubscribed"`
+	Sex              []StatsGetValue `json:"sex"`
+	Age              []StatsGetValue `json:"age"`
+	SexAge           []StatsGetValue `json:"sex_age"`
+	Cities           []StatsGetValue `json:"cities"`
+	Countries        []StatsGetValue `json:"countries"`
+}
+
+type StatsGetValue struct {
+	Visitors int         `json:"visitors"`
+	Value    interface{} `json:"value"`
+	Name     string      `json:"name"`
+}
+
+/*
 	Wall
 */
 

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"strings"
+	"time"
 )
 
 func (vk *Api) Script_Wall_GetById(posts []string) (ans []WallGetByIdAns, err error) {
@@ -96,6 +97,55 @@ func (vk *Api) Script_Groups_GetById(groupIds []string, fields string) (ans []Gr
 
 		return ans;
 	`, fields, b)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
+func (vk *Api) Script_Stats_get(groupIds []string, dateFrom, dateTo time.Time) (ans []StatsGet, err error) {
+	b, err := json.Marshal(groupIds)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	script := fmt.Sprintf(`
+		var arr = %s;
+		var ans = [];
+
+		while(arr.length > 0) {
+			var grid = arr.shift();
+
+			var stats = API.stats.get({
+				group_id  : grid,
+				date_from : "%s",
+				date_to   : "%s"
+			});
+
+			if(stats) {
+				var st = stats[0];
+				st.group_id = parseInt(grid);
+				ans.push(st);
+			}
+		}
+
+		return ans;
+	`, b, dateFrom.Format("2006-02-01"), dateTo.Format("2006-02-01"))
 
 	r, err := vk.Execute(script)
 	if err != nil {
