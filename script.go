@@ -10,7 +10,7 @@ import (
 
 func (vk *Api) Script_Wall_GetById(posts []string) (ans []WallGetByIdAns, err error) {
 	// Разбиваем посты на нужное кол-во
-	arr := chunkSliceString(posts, 50)
+	arr := chunkSliceString(posts, 100)
 	// Формируем массив для запроса
 	tmpArr := make([]string, len(arr))
 	for i, v := range arr {
