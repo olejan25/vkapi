@@ -13,7 +13,7 @@ var (
 )
 
 func init() {
-	executeErrorSkipReg = regexp.MustCompile("server sent GOAWAY|User authorization failed|unexpected EOF|Database problems, try later|Internal Server Error|Bad Request|Gateway Timeout|could not check access_token now|connection reset by peer")
+	executeErrorSkipReg = regexp.MustCompile("server sent GOAWAY|User authorization failed|unexpected EOF|Database problems, try later|Internal Server Error|Bad Request|Gateway Timeout|Bad Gateway|could not check access_token now|connection reset by peer")
 	httpErrorReg = regexp.MustCompile("unexpected EOF|server sent GOAWAY|Bad Request|Internal Server Error")
 }
 
