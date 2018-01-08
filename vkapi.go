@@ -219,6 +219,25 @@ func (vk *Api) Utils_getLinkStats(params map[string]string) (ans UtilsGetLinkSta
 	return
 }
 
+// Получаем сокращенную ссылку
+func (vk *Api) Utils_resolveScreenName(params map[string]string) (ans UtilsResolveScreenNameAns, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("utils.resolveScreenName", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 /*
 	Ads
 */

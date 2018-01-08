@@ -219,6 +219,11 @@ type UtilsGetLinkStatsStats struct {
 	Cities    []Cities    `json:"cities"`
 }
 
+type UtilsResolveScreenNameAns struct {
+	Type     string `json:"type"`
+	ObjectID int    `json:"object_id"`
+}
+
 /*
 	Ads
 */

@@ -165,3 +165,48 @@ func (vk *Api) Script_Stats_get(groupIds []string, dateFrom, dateTo time.Time) (
 
 	return
 }
+
+func (vk *Api) Script_utils_resolveScreenName(ids []string) (ans []UtilsResolveScreenNameAns, err error) {
+	b, err := json.Marshal(ids)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	script := fmt.Sprintf(`
+		var arr = %s;
+		var ans = [];
+
+		while(arr.length > 0) {
+			var sn = arr.shift();
+
+			var res = API.utils.resolveScreenName({
+				screen_name: sn
+			});
+
+			if(res) {
+				ans.push(res);
+			}
+		}
+
+		return ans;
+	`, b)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
