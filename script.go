@@ -8,7 +8,8 @@ import (
 	"time"
 )
 
-func (vk *Api) Script_Wall_GetById(posts []string) (ans []WallGetByIdAns, err error) {
+//ScriptWallGetByID - Получаем список постов по их ID (execute)
+func (vk *API) ScriptWallGetByID(posts []string) (ans []WallGetByIDAns, err error) {
 	// Разбиваем посты на нужное кол-во
 	arr := chunkSliceString(posts, 100)
 	// Формируем массив для запроса
@@ -62,7 +63,8 @@ func (vk *Api) Script_Wall_GetById(posts []string) (ans []WallGetByIdAns, err er
 	return
 }
 
-func (vk *Api) Script_Groups_GetById(groupIds []string, fields string) (ans []GroupsGetAns, err error) {
+// ScriptGroupsGetByID - Получаем группы по их ID (execute)
+func (vk *API) ScriptGroupsGetByID(groupIds []string, fields string) (ans []GroupsGetAns, err error) {
 	// Разбиваем посты на нужное кол-во
 	arr := chunkSliceString(groupIds, 500)
 	// Формируем массив для запроса
@@ -117,7 +119,8 @@ func (vk *Api) Script_Groups_GetById(groupIds []string, fields string) (ans []Gr
 	return
 }
 
-func (vk *Api) Script_Stats_get(groupIds []string, dateFrom, dateTo time.Time) (ans []StatsGet, err error) {
+// ScriptStatsGet - Получаем статистику групп. Максимум 25. (execute)
+func (vk *API) ScriptStatsGet(groupIds []string, dateFrom, dateTo time.Time) (ans []StatsGetAns, err error) {
 	b, err := json.Marshal(groupIds)
 	if err != nil {
 		log.Println(err)
@@ -166,7 +169,8 @@ func (vk *Api) Script_Stats_get(groupIds []string, dateFrom, dateTo time.Time) (
 	return
 }
 
-func (vk *Api) Script_utils_resolveScreenName(ids []string) (ans []UtilsResolveScreenNameAns, err error) {
+// ScriptUtilsResolveScreenName - Резольвим короткие имена в айдишники. максимум 25. (execute)
+func (vk *API) ScriptUtilsResolveScreenName(ids []string) (ans []UtilsResolveScreenNameAns, err error) {
 	b, err := json.Marshal(ids)
 	if err != nil {
 		log.Println(err)
@@ -191,6 +195,65 @@ func (vk *Api) Script_utils_resolveScreenName(ids []string) (ans []UtilsResolveS
 
 		return ans;
 	`, b)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
+// ScriptGroupsGetMembers - Получаем подписчиков группы. (execute)
+func (vk *API) ScriptGroupsGetMembers(groupID, offset int, s string) (ans ScriptGroupsGetMembersAns, err error) {
+	if s == "" {
+		s = "id_asc"
+	}
+
+	script := fmt.Sprintf(`
+		var group_id = %d;
+		var offset   = %d;
+		var sort     = "%s";
+		var cnt      = 25;
+
+		while(cnt > 0 && offset < count){
+			var res = API.groups.getMembers({ 
+				group_id : group_id, 
+				offset   : offset, 
+				sort     : sort, 
+				count    : 1000
+			}); 
+			cnt = cnt - 1;
+
+			if(res.count) {
+				count  = res.count; 
+				users  = users + res.items;
+				offset = offset + 1000;
+			}
+			else {
+				cnt = 0;
+			}
+		}
+
+		var result = {
+			count	 : count,
+			offset : offset,
+			users	 : users
+		};
+		
+		return result;
+	`, groupID, offset, s)
 
 	r, err := vk.Execute(script)
 	if err != nil {

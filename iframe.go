@@ -16,7 +16,7 @@ func init() {
 	iframeCheckSignReq = regexp.MustCompile("(?:^|&)([a-z0-9_]+)=")
 }
 
-// Проверка подписи ВК
+// IframeCheckSign - Проверка подписи ВК
 func IframeCheckSign(r *http.Request, secret string) (ok bool) {
 	var sign string
 	/*

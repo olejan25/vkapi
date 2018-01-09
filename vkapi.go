@@ -13,9 +13,12 @@ import (
 )
 
 const (
-	API_VERSION    = "5.69"
-	API_METHOD_URL = "https://api.vk.com/method/"
-	API_TOKEN_URL  = "https://oauth.vk.com/access_token"
+	// APIVersion - используемая версия API
+	APIVersion = "5.69"
+	// APIMethodURL - URL запросов к API
+	APIMethodURL = "https://api.vk.com/method/"
+	// APITokenURL - URL oauth авторизации
+	APITokenURL = "https://oauth.vk.com/access_token"
 )
 
 var (
@@ -33,17 +36,17 @@ func init() {
 	Получение токена
 */
 
-// Получение токена
-func (vk *Api) GetToken(d TokenData) (ans GetTokenAns, err error) {
+// GetToken - Получение токена
+func (vk *API) GetToken(d TokenData) (ans GetTokenAns, err error) {
 	q := url.Values{}
 	q.Add("code", d.Code)
-	q.Add("client_id", strconv.Itoa(d.ClientId))
+	q.Add("client_id", strconv.Itoa(d.ClientID))
 	q.Add("client_secret", d.ClientSecret)
-	q.Add("redirect_uri", d.RedirectUri)
-	q.Add("v", API_VERSION)
+	q.Add("redirect_uri", d.RedirectURI)
+	q.Add("v", APIVersion)
 
 	// Формируем запрос
-	req, err := http.NewRequest("POST", API_TOKEN_URL, strings.NewReader(q.Encode()))
+	req, err := http.NewRequest("POST", APITokenURL, strings.NewReader(q.Encode()))
 	if err != nil {
 		log.Println("[error]", err)
 		return
@@ -88,8 +91,8 @@ func (vk *Api) GetToken(d TokenData) (ans GetTokenAns, err error) {
 	Users
 */
 
-// Получаем информацию о пользователях
-func (vk *Api) Users_get(params map[string]string) (ans []UsersGetAns, err error) {
+// UsersGet - Получаем информацию о пользователях
+func (vk *API) UsersGet(params map[string]string) (ans []UsersGetAns, err error) {
 
 	// Отправляем запрос
 	r, err := vk.request("users.get", params)
@@ -111,8 +114,8 @@ func (vk *Api) Users_get(params map[string]string) (ans []UsersGetAns, err error
 	Groups
 */
 
-// Получаем информацию о пользователях
-func (vk *Api) Groups_getById(params map[string]string) (ans []GroupsGetAns, err error) {
+// GroupsGetByID - Получаем информацию о пользователях
+func (vk *API) GroupsGetByID(params map[string]string) (ans []GroupsGetAns, err error) {
 
 	// Отправляем запрос
 	r, err := vk.request("groups.getById", params)
@@ -134,8 +137,8 @@ func (vk *Api) Groups_getById(params map[string]string) (ans []GroupsGetAns, err
 	Wall
 */
 
-// Возвращает список записей со стен пользователей или сообществ по их идентификаторам.
-func (vk *Api) Wall_get(params map[string]string) (ans WallGetAns, err error) {
+// WallGet - Возвращает список записей со стен пользователей или сообществ по их идентификаторам.
+func (vk *API) WallGet(params map[string]string) (ans WallGetAns, err error) {
 
 	// Отправляем запрос
 	r, err := vk.request("wall.get", params)
@@ -153,8 +156,8 @@ func (vk *Api) Wall_get(params map[string]string) (ans WallGetAns, err error) {
 	return
 }
 
-// Возвращает список записей со стен пользователей или сообществ по их идентификаторам.
-func (vk *Api) Wall_getById(params map[string]string) (ans []WallGetByIdAns, err error) {
+// WallGetByID - Возвращает список записей со стен пользователей или сообществ по их идентификаторам.
+func (vk *API) WallGetByID(params map[string]string) (ans []WallGetByIDAns, err error) {
 
 	// Отправляем запрос
 	r, err := vk.request("wall.getById", params)
@@ -176,8 +179,8 @@ func (vk *Api) Wall_getById(params map[string]string) (ans []WallGetByIdAns, err
 	Utils
 */
 
-// Получаем сокращенную ссылку
-func (vk *Api) Utils_getShortLink(params map[string]string) (ans UtilsGetShortLinkAns, err error) {
+// UtilsGetShortLink - Получаем сокращенную ссылку
+func (vk *API) UtilsGetShortLink(params map[string]string) (ans UtilsGetShortLinkAns, err error) {
 
 	// Отправляем запрос
 	r, err := vk.request("utils.getShortLink", params)
@@ -195,8 +198,8 @@ func (vk *Api) Utils_getShortLink(params map[string]string) (ans UtilsGetShortLi
 	return
 }
 
-// Получаем статистику по ссылке
-func (vk *Api) Utils_getLinkStats(params map[string]string) (ans UtilsGetLinkStatsAns, err error) {
+// UtilsGetLinkStats - Получаем статистику по ссылке
+func (vk *API) UtilsGetLinkStats(params map[string]string) (ans UtilsGetLinkStatsAns, err error) {
 
 	// Отправляем запрос
 	r, err := vk.request("utils.getLinkStats", params)
@@ -219,8 +222,8 @@ func (vk *Api) Utils_getLinkStats(params map[string]string) (ans UtilsGetLinkSta
 	return
 }
 
-// Получаем сокращенную ссылку
-func (vk *Api) Utils_resolveScreenName(params map[string]string) (ans UtilsResolveScreenNameAns, err error) {
+// UtilsResolveScreenName - Получаем сокращенную ссылку
+func (vk *API) UtilsResolveScreenName(params map[string]string) (ans UtilsResolveScreenNameAns, err error) {
 
 	// Отправляем запрос
 	r, err := vk.request("utils.resolveScreenName", params)
@@ -242,8 +245,8 @@ func (vk *Api) Utils_resolveScreenName(params map[string]string) (ans UtilsResol
 	Ads
 */
 
-// Получаем список кампаний
-func (vk *Api) Ads_getCampaigns(params map[string]string) (ans []AdsGetCampaignsAns, err error) {
+// AdsGetCampaigns - Получаем список кампаний
+func (vk *API) AdsGetCampaigns(params map[string]string) (ans []AdsGetCampaignsAns, err error) {
 
 	// Отправляем запрос
 	r, err := vk.request("ads.getCampaigns", params)
@@ -261,8 +264,8 @@ func (vk *Api) Ads_getCampaigns(params map[string]string) (ans []AdsGetCampaigns
 	return
 }
 
-// Получаем список список объявлений
-func (vk *Api) Ads_getAdsLayout(params map[string]string) (ans []AdsGetAdsLayoutAns, err error) {
+// AdsGetAdsLayout - Получаем список список объявлений
+func (vk *API) AdsGetAdsLayout(params map[string]string) (ans []AdsGetAdsLayoutAns, err error) {
 
 	// Отправляем запрос
 	r, err := vk.request("ads.getAdsLayout", params)
@@ -280,8 +283,8 @@ func (vk *Api) Ads_getAdsLayout(params map[string]string) (ans []AdsGetAdsLayout
 	return
 }
 
-// Получаем статистику объявлений
-func (vk *Api) Ads_getStatistics(params map[string]string) (ans []AdsGetStatisticsAns, err error) {
+// AdsGetStatistics - Получаем статистику объявлений
+func (vk *API) AdsGetStatistics(params map[string]string) (ans []AdsGetStatisticsAns, err error) {
 
 	// Отправляем запрос
 	r, err := vk.request("ads.getStatistics", params)
@@ -335,8 +338,8 @@ func (vk *Api) Ads_getStatistics(params map[string]string) (ans []AdsGetStatisti
 	Execute
 */
 
-// Execute
-func (vk *Api) Execute(code string) (r Response, err error) {
+// Execute - пакетное выполнение запросов
+func (vk *API) Execute(code string) (r Response, err error) {
 
 	// Отправляем запрос
 	r, err = vk.request("execute", map[string]string{"code": code})
@@ -365,7 +368,7 @@ func (vk *Api) Execute(code string) (r Response, err error) {
 */
 
 // Обертка для запроса к ВК
-func (vk *Api) request(method string, params map[string]string) (ans Response, err error) {
+func (vk *API) request(method string, params map[string]string) (ans Response, err error) {
 	if vk.AccessToken == "" {
 		err = errors.New("no access token")
 		log.Println("[error]", err)
@@ -405,18 +408,18 @@ func (vk *Api) request(method string, params map[string]string) (ans Response, e
 }
 
 // Запрос к ВК
-func (vk *Api) fullRequest(method string, params map[string]string) (ans Response, err error) {
+func (vk *API) fullRequest(method string, params map[string]string) (ans Response, err error) {
 	q := url.Values{}
 	for k, v := range params {
 		q.Add(k, v)
 	}
 	if params["v"] == "" {
-		q.Add("v", API_VERSION)
+		q.Add("v", APIVersion)
 	}
 	q.Add("access_token", vk.AccessToken)
 
 	// Формируем запрос
-	req, err := http.NewRequest("POST", API_METHOD_URL+method, strings.NewReader(q.Encode()))
+	req, err := http.NewRequest("POST", APIMethodURL+method, strings.NewReader(q.Encode()))
 	if err != nil {
 		log.Println("[error]", err)
 		return
@@ -464,7 +467,7 @@ func (vk *Api) fullRequest(method string, params map[string]string) (ans Respons
 }
 
 // Ждем между запросами если вк ответил что запросы слишком частые
-func (vk *Api) floodWait(method string) (ok bool) {
+func (vk *API) floodWait(method string) (ok bool) {
 	// Для некоторых методов повторять бессмысленно (https://vk.com/dev/data_limits)
 	if vk.retryCount >= 3 &&
 		(method == "wall.get" || method == "wall.search" || method == "newsfeed.search") {
@@ -506,7 +509,7 @@ func (vk *Api) floodWait(method string) (ok bool) {
 }
 
 // Попытка повтора запроса при ошибки http
-func (vk *Api) httpErrorWait(method string) (ok bool) {
+func (vk *API) httpErrorWait(method string) (ok bool) {
 	if method == "wall.post" || method == "wall.repost" {
 		return
 	}

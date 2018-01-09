@@ -17,7 +17,8 @@ func init() {
 	httpErrorReg = regexp.MustCompile("unexpected EOF|server sent GOAWAY|Bad Request|Internal Server Error")
 }
 
-type Api struct {
+// API - главный объект
+type API struct {
 	AccessToken    string
 	retryCount     int
 	httpRetryCount int
@@ -25,25 +26,29 @@ type Api struct {
 	sync.Mutex
 }
 
+// TokenData - объект получения токена
 type TokenData struct {
-	ClientId     int
+	ClientID     int
 	ClientSecret string
 	Code         string
-	RedirectUri  string
+	RedirectURI  string
 }
 
+// Response - объект ответа VK
 type Response struct {
 	Response      json.RawMessage `json:"response"`
 	Error         ResponseError   `json:"error"`
 	ExecuteErrors []ExecuteErrors `json:"execute_errors"`
 }
 
+// ExecuteErrors - объект ошибок execute
 type ExecuteErrors struct {
-	Method     string `json:"method"`
-	Error_code int    `json:"error_code"`
-	Error_msg  string `json:"error_msg"`
+	Method    string `json:"method"`
+	ErrorCode int    `json:"error_code"`
+	ErrorMsg  string `json:"error_msg"`
 }
 
+// ResponseError - объект ошибки выболнения запроса
 type ResponseError struct {
 	ErrorCode     int                 `json:"error_code"`
 	ErrorMsg      string              `json:"error_msg"`
@@ -54,10 +59,11 @@ type ResponseError struct {
 	Получение токена
 */
 
+// GetTokenAns - объект ответа при получении покена
 type GetTokenAns struct {
 	AccessToken      string `json:"access_token"`
 	ExpiresIn        int    `json:"expires_in"`
-	UserId           int    `json:"user_id"`
+	UserID           int    `json:"user_id"`
 	Error            string `json:"error"`
 	ErrorDescription string `json:"error_description"`
 }
@@ -66,8 +72,9 @@ type GetTokenAns struct {
 	Users
 */
 
+// UsersGetAns - объект ответа при запросе пользователей
 type UsersGetAns struct {
-	Id        int    `json:"id"`
+	ID        int    `json:"id"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	Photo100  string `json:"photo_100"`
@@ -80,8 +87,9 @@ type UsersGetAns struct {
 	Groups
 */
 
+// GroupsGetAns - объект ответа при запросе групп
 type GroupsGetAns struct {
-	Id           int    `json:"id"`
+	ID           int    `json:"id"`
 	Name         string `json:"name"`
 	ScreenName   string `json:"screen_name"`
 	IsClosed     int    `json:"is_closed"`
@@ -100,12 +108,20 @@ type GroupsGetAns struct {
 	Verified     int    `json:"verified"`
 }
 
+// ScriptGroupsGetMembersAns - объект ответа при подписчиков (execute)
+type ScriptGroupsGetMembersAns struct {
+	Count  int   `json:"count"`
+	Offset int   `json:"offset"`
+	Users  []int `json:"users"`
+}
+
 /*
 	Stats
 */
 
-type StatsGet struct {
-	GroupId          int             `json:"group_id"`
+// StatsGetAns - объект ответа при запросе статистики группы
+type StatsGetAns struct {
+	GroupID          int             `json:"group_id"`
 	Day              string          `json:"day"`
 	Views            int             `json:"views"`
 	Visitors         int             `json:"visitors"`
@@ -120,6 +136,7 @@ type StatsGet struct {
 	Countries        []StatsGetValue `json:"countries"`
 }
 
+// StatsGetValue - объект статистики
 type StatsGetValue struct {
 	Visitors int         `json:"visitors"`
 	Value    interface{} `json:"value"`
@@ -130,20 +147,22 @@ type StatsGetValue struct {
 	Wall
 */
 
+// WallGetAns - объект ответа при запросе постов
 type WallGetAns struct {
 	Count int              `json:"count"`
-	Items []WallGetByIdAns `json:"items"`
+	Items []WallGetByIDAns `json:"items"`
 }
 
-type WallGetByIdAns struct {
-	Id           int              `json:"id"`
-	OwnerId      int              `json:"owner_id"`
-	FromId       int              `json:"from_id"`
+// WallGetByIDAns - обект постов
+type WallGetByIDAns struct {
+	ID           int              `json:"id"`
+	OwnerID      int              `json:"owner_id"`
+	FromID       int              `json:"from_id"`
 	CreatedBy    int              `json:"created_by"`
 	Date         int              `json:"date"`
 	Text         string           `json:"text"`
-	ReplyOwnerId int              `json:"reply_owner_id"`
-	ReplyPostId  int              `json:"reply_post_id"`
+	ReplyOwnerID int              `json:"reply_owner_id"`
+	ReplyPostID  int              `json:"reply_post_id"`
 	FriendsOnly  int              `json:"friends_only"`
 	Comments     LikeData         `json:"comments"`
 	Likes        LikeData         `json:"likes"`
@@ -151,12 +170,13 @@ type WallGetByIdAns struct {
 	Views        LikeData         `json:"views"`
 	PostType     string           `json:"post_type"`
 	Attachments  []Attachments    `json:"attachments"`
-	SignerId     int              `json:"signer_id"`
-	CopyHistory  []WallGetByIdAns `json:"copy_history"`
+	SignerID     int              `json:"signer_id"`
+	CopyHistory  []WallGetByIDAns `json:"copy_history"`
 	IsPinned     int              `json:"is_pinned"`
 	MarkedAsAds  int              `json:"marked_as_ads"`
 }
 
+// Attachments - объект аттача
 type Attachments struct {
 	Type        string           `json:"type"`
 	Photo       *json.RawMessage `json:"photo"`
@@ -172,16 +192,19 @@ type Attachments struct {
 	PrettyCards *json.RawMessage `json:"pretty_cards"`
 }
 
+// AttachmentsPrettyCards - объект карточек аттача
 type AttachmentsPrettyCards struct {
 	Cards []AttachmentsPrettyCardsCards `json:"cards"`
 }
 
+// AttachmentsPrettyCardsCards - объект карточек аттача
 type AttachmentsPrettyCardsCards struct {
-	CardId  string `json:"card_id"`
-	LinkUrl string `json:"link_url"`
+	CardID  string `json:"card_id"`
+	LinkURL string `json:"link_url"`
 	Title   string `json:"title"`
 }
 
+// GetPrettyCards - Преобрахуем данные карточек в объекты
 func (a *Attachments) GetPrettyCards() (t AttachmentsPrettyCards) {
 	err := json.Unmarshal(*a.PrettyCards, &t)
 	if err != nil {
@@ -192,6 +215,7 @@ func (a *Attachments) GetPrettyCards() (t AttachmentsPrettyCards) {
 	return
 }
 
+// LikeData - объект лайков
 type LikeData struct {
 	Count int `json:"count"`
 }
@@ -199,18 +223,22 @@ type LikeData struct {
 /*
 	Utils
 */
+
+// UtilsGetShortLinkAns - объект ответа при запросе короткой ссылки
 type UtilsGetShortLinkAns struct {
-	ShortUrl  string `json:"short_url"`
-	Url       string `json:"url"`
+	ShortURL  string `json:"short_url"`
+	URL       string `json:"url"`
 	Key       string `json:"key"`
 	AccessKey string `json:"access_key"`
 }
 
+// UtilsGetLinkStatsAns - объект ответа при запросе статистики короткой ссылки
 type UtilsGetLinkStatsAns struct {
 	Key   string                   `json:"key"`
 	Stats []UtilsGetLinkStatsStats `json:"stats"`
 }
 
+// UtilsGetLinkStatsStats - объект статистики короткой ссылки
 type UtilsGetLinkStatsStats struct {
 	Timestamp int         `json:"timestamp"`
 	Views     int         `json:"views"`
@@ -219,6 +247,7 @@ type UtilsGetLinkStatsStats struct {
 	Cities    []Cities    `json:"cities"`
 }
 
+// UtilsResolveScreenNameAns - объект ответа при запросе резольвинка короткого имени
 type UtilsResolveScreenNameAns struct {
 	Type     string `json:"type"`
 	ObjectID int    `json:"object_id"`
@@ -228,26 +257,30 @@ type UtilsResolveScreenNameAns struct {
 	Ads
 */
 
+// AdsGetCampaignsAns - объект ответа при запросе кампаний
 type AdsGetCampaignsAns struct {
-	Id   int    `json:"id"`
+	ID   int    `json:"id"`
 	Type string `json:"type"`
 	Name string `json:"name"`
 }
 
+// AdsGetAdsLayoutAns - объект ответа при запросе вида объявления
 type AdsGetAdsLayoutAns struct {
-	Id         string `json:"id"`
-	CampaignId int    `json:"campaign_id"`
+	ID         string `json:"id"`
+	CampaignID int    `json:"campaign_id"`
 	Title      string `json:"title"`
-	LinkUrl    string `json:"link_url"`
+	LinkURL    string `json:"link_url"`
 }
 
+// AdsGetStatisticsAns - объект ответа при запросе статистики
 type AdsGetStatisticsAns struct {
-	Id       int                        `json:"id"`
+	ID       int                        `json:"id"`
 	Type     string                     `json:"type"`
 	StatsBug []json.RawMessage          `json:"stats"`
 	Stats    []AdsGetStatisticsAnsStats `json:"-"`
 }
 
+// AdsGetStatisticsAnsStats - объект статистики
 type AdsGetStatisticsAnsStats struct {
 	Day         string `json:"day"`
 	Spent       string `json:"spent"`
@@ -256,6 +289,7 @@ type AdsGetStatisticsAnsStats struct {
 	Reach       int    `json:"reach"`
 }
 
+// AdsGetStatisticsAnsStatsBug - объект ответа при запросе статистики (если VK криво типы переменных сформировал)
 type AdsGetStatisticsAnsStatsBug struct {
 	Day         string `json:"day"`
 	Spent       string `json:"spent"`
@@ -268,18 +302,21 @@ type AdsGetStatisticsAnsStatsBug struct {
 	Other
 */
 
+// SexAge - объект пола/возраста
 type SexAge struct {
 	AgeRange string `json:"age_range"`
 	Female   int    `json:"female"`
 	Male     int    `json:"male"`
 }
 
+// Countries - объект статистики по странам
 type Countries struct {
-	CountryId int `json:"country_id"`
+	CountryID int `json:"country_id"`
 	Views     int `json:"views"`
 }
 
+// Cities - объект статистики по городам
 type Cities struct {
-	CityId int `json:"city_id"`
+	CityID int `json:"city_id"`
 	Views  int `json:"views"`
 }
