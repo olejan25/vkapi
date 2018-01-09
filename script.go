@@ -273,3 +273,111 @@ func (vk *API) ScriptGroupsGetMembers(groupID, offset int, s string) (ans Script
 
 	return
 }
+
+// ScriptUsersGetFollowers - Получаем подписчиков человека. (execute)
+func (vk *API) ScriptUsersGetFollowers(userID, offset int) (ans ScriptGroupsGetMembersAns, err error) {
+
+	script := fmt.Sprintf(`
+		var user_id = %d;
+		var offset  = %d;
+		var cnt     = 25;
+
+		while(cnt > 0 && offset < count){
+			var res = API.users.getFollowers({ 
+				user_id : user_id, 
+				offset  : offset, 
+				count   : 1000
+			}); 
+			cnt = cnt - 1;
+
+			if(res.count) {
+				count  = res.count; 
+				users  = users + res.items;
+				offset = offset + 1000;
+			}
+			else {
+				cnt = 0;
+			}
+		}
+
+		var result = {
+			count	 : count,
+			offset : offset,
+			users	 : users
+		};
+		
+		return result;
+	`, userID, offset)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
+// ScriptFriendsGet - Получаем друзей человека. (execute)
+func (vk *API) ScriptFriendsGet(userID, offset int) (ans ScriptGroupsGetMembersAns, err error) {
+
+	script := fmt.Sprintf(`
+		var user_id = %d;
+		var offset  = %d;
+		var cnt     = 25;
+
+		while(cnt > 0 && offset < count){
+			var res = API.friends.get({ 
+				user_id : user_id, 
+				offset  : offset, 
+				count   : 5000
+			}); 
+			cnt = cnt - 1;
+
+			if(res.count) {
+				count  = res.count; 
+				users  = users + res.items;
+				offset = offset + 5000;
+			}
+			else {
+				cnt = 0;
+			}
+		}
+
+		var result = {
+			count	 : count,
+			offset : offset,
+			users	 : users
+		};
+		
+		return result;
+	`, userID, offset)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
