@@ -81,6 +81,7 @@ type UsersGetAns struct {
 	Site      string `json:"site"`
 	Sex       int    `json:"sex"`
 	Status    string `json:"status"`
+	Role      string `json:"role"`
 }
 
 /*
@@ -110,8 +111,8 @@ type GroupsGetAns struct {
 
 // GroupsGetMembersAns - объект ответа при запросе подписчиков групп
 type GroupsGetMembersAns struct {
-	Count int   `json:"count"`
-	Items []int `json:"items"`
+	Count int             `json:"count"`
+	Items json.RawMessage `json:"items"`
 }
 
 // ScriptGroupsGetMembersAns - объект ответа при подписчиков (execute)
