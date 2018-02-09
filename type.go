@@ -108,6 +108,12 @@ type GroupsGetAns struct {
 	Verified     int    `json:"verified"`
 }
 
+// GroupsGetMembersAns - объект ответа при запросе подписчиков групп
+type GroupsGetMembersAns struct {
+	Count int   `json:"count"`
+	Items []int `json:"items"`
+}
+
 // ScriptGroupsGetMembersAns - объект ответа при подписчиков (execute)
 type ScriptGroupsGetMembersAns struct {
 	Count  int   `json:"count"`
