@@ -171,7 +171,7 @@ type WallGetByIDAns struct {
 	ReplyOwnerID int              `json:"reply_owner_id"`
 	ReplyPostID  int              `json:"reply_post_id"`
 	FriendsOnly  int              `json:"friends_only"`
-	Comments     LikeData         `json:"comments"`
+	Comments     CommentData      `json:"comments"`
 	Likes        LikeData         `json:"likes"`
 	Reposts      LikeData         `json:"reposts"`
 	Views        LikeData         `json:"views"`
@@ -220,6 +220,12 @@ func (a *Attachments) GetPrettyCards() (t AttachmentsPrettyCards) {
 	}
 
 	return
+}
+
+type CommentData struct {
+	Count         int `json:"count"`
+	CanPost       int `json:"can_post"`
+	GroupsCanPost int `json:"groups_can_post"`
 }
 
 // LikeData - объект лайков
