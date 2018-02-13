@@ -223,9 +223,9 @@ func (a *Attachments) GetPrettyCards() (t AttachmentsPrettyCards) {
 }
 
 type CommentData struct {
-	Count         int `json:"count"`
-	CanPost       int `json:"can_post"`
-	GroupsCanPost int `json:"groups_can_post"`
+	Count         int  `json:"count"`
+	CanPost       int  `json:"can_post"`
+	GroupsCanPost bool `json:"groups_can_post"`
 }
 
 // LikeData - объект лайков
