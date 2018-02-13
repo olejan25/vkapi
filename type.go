@@ -222,6 +222,7 @@ func (a *Attachments) GetPrettyCards() (t AttachmentsPrettyCards) {
 	return
 }
 
+// CommentData - объект комментариев
 type CommentData struct {
 	Count         int  `json:"count"`
 	CanPost       int  `json:"can_post"`
