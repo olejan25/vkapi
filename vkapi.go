@@ -194,6 +194,48 @@ func (vk *API) WallGetByID(params map[string]string) (ans []WallGetByIDAns, err 
 	return
 }
 
+// WallGetComments - Возвращает список комментариев к посту.
+func (vk *API) WallGetComments(params map[string]string) (ans WallGetCommentsAns, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("wall.getComments", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
+/*
+	Likes
+*/
+
+// LikesGetList - Возвращает список лайков.
+func (vk *API) LikesGetList(params map[string]string) (ans LikesGetListAns, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("likes.getList", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 /*
 	Utils
 */

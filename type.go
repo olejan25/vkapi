@@ -234,6 +234,35 @@ type LikeData struct {
 	Count int `json:"count"`
 }
 
+// WallGetCommentsAns - объект комментариев
+type WallGetCommentsAns struct {
+	Count  int                   `json:"count"`
+	Offset int                   `json:"offset"`
+	Items  []WallGetCommentsItem `json:"items"`
+}
+
+// WallGetCommentsItem - объект комментария
+type WallGetCommentsItem struct {
+	ID             int           `json:"id"`
+	FromID         int           `json:"from_id"`
+	Date           int           `json:"date"`
+	Text           string        `json:"text"`
+	ReplyToUser    int           `json:"reply_to_user"`
+	ReplyToComment int           `json:"reply_to_comment"`
+	Attachments    []Attachments `json:"attachments"`
+}
+
+/*
+	Likes
+*/
+
+// LikesGetListAns - объект лайков
+type LikesGetListAns struct {
+	Count  int   `json:"count"`
+	Offset int   `json:"offset"`
+	Items  []int `json:"items"`
+}
+
 /*
 	Utils
 */

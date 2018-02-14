@@ -381,3 +381,129 @@ func (vk *API) ScriptFriendsGet(userID, offset int) (ans ScriptGroupsGetMembersA
 
 	return
 }
+
+// ScriptWallGetComments - Получаем комментарии поста. (execute)
+func (vk *API) ScriptWallGetComments(ownerID, postID, offset int, srt string) (ans WallGetCommentsAns, err error) {
+
+	script := fmt.Sprintf(`
+		var owner_id = %d;
+		var post_id  = %d;
+		var offset   = %d;
+		var sort     = "%s";
+		var cnt      = 25;
+		var count    = offset + 1;
+		var comments = [];
+
+		while(cnt > 0 && offset < count){
+			var res = API.wall.getComments({ 
+				owner_id   : owner_id, 
+				post_id    : post_id,
+				offset     : offset,
+				sort       : sort,
+				need_likes : 1,
+				count      : 100
+			}); 
+			cnt = cnt - 1;
+
+			if(res.count) {
+				count    = res.count; 
+				comments = comments + res.items;
+				offset   = offset + 100;
+			}
+			else {
+				cnt = 0;
+			}
+		}
+
+		var result = {
+			count	 : count,
+			offset : offset,
+			items  : comments
+		};
+		
+		return result;
+	`, ownerID, postID, offset, srt)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
+// ScriptLikesGetList - Получаем лайки. (execute)
+func (vk *API) ScriptLikesGetList(ownerID, itemID int, t, filter, pageURL string, offset int) (ans LikesGetListAns, err error) {
+
+	script := fmt.Sprintf(`
+		var owner_id = %d;
+		var item_id  = %d;
+		var type     = "%s";
+		var filter   = "%s";
+		var page_url = "%s";
+		var offset   = %d;
+	
+		var cnt   = 25;
+		var count = offset + 1;
+		var users = [];
+
+		while(cnt > 0 && offset < count){
+			var res = API.likes.getList({ 
+				owner_id : owner_id, 
+				post_id  : post_id,
+				type     : type,
+				filter   : filter,
+				page_url : page_url,
+				offset   : offset,
+				count    : 1000
+			}); 
+			cnt = cnt - 1;
+
+			if(res.count) {
+				count  = res.count; 
+				users  = users + res.items;
+				offset = offset + 1000;
+			}
+			else {
+				cnt = 0;
+			}
+		}
+
+		var result = {
+			count	 : count,
+			offset : offset,
+			items  : users
+		};
+		
+		return users;
+	`, ownerID, itemID, t, filter, pageURL, offset)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
