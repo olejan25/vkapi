@@ -250,6 +250,7 @@ type WallGetCommentsItem struct {
 	ReplyToUser    int           `json:"reply_to_user"`
 	ReplyToComment int           `json:"reply_to_comment"`
 	Attachments    []Attachments `json:"attachments"`
+	Likes          LikeData      `json:"likes"`
 }
 
 /*
