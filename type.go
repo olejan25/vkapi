@@ -323,6 +323,22 @@ type BoardGetTopicsItem struct {
 	LastComment  int    `json:"last_comment"`
 }
 
+// BoardGetCommentsAns - объект списка комментариев обсуждения
+type BoardGetCommentsAns struct {
+	Count  int                    `json:"count"`
+	Offset int                    `json:"offset"`
+	Items  []BoardGetCommentsItem `json:"items"`
+}
+
+// BoardGetCommentsItem - объект комментария обсуждения
+type BoardGetCommentsItem struct {
+	ID     int      `json:"id"`
+	FromID int      `json:"from_id"`
+	Date   int      `json:"date"`
+	Text   string   `json:"text"`
+	Likes  LikeData `json:"likes"`
+}
+
 /*
 	Ads
 */

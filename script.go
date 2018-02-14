@@ -565,3 +565,64 @@ func (vk *API) ScriptBoardGetTopics(groupID, offset int) (ans BoardGetTopicsAns,
 
 	return
 }
+
+// ScriptBoardGetComments - Получаем комментарии обсуждений. (execute)
+func (vk *API) ScriptBoardGetComments(groupID, topicID, offset int) (ans BoardGetCommentsAns, err error) {
+
+	script := fmt.Sprintf(`
+		var group_id = %d;
+		var topic_id = %d;
+		var offset   = %d;
+	
+		var cnt      = 25;
+		var count    = offset + 1;
+		var comments = [];
+
+		while(cnt > 0 && offset < count){
+			var res = API.board.getComments({ 
+				group_id   : group_id, 
+				topic_id   : topic_id,
+				need_likes : 1,
+				offset     : offset,
+				sort       : "asc",
+				count      : 100
+			}); 
+			cnt = cnt - 1;
+
+			if(res.count) {
+				count    = res.count; 
+				comments = comments + res.items;
+				offset   = offset + 100;
+			}
+			else {
+				cnt = 0;
+			}
+		}
+
+		var result = {
+			count	 : count,
+			offset : offset,
+			items  : comments
+		};
+		
+		return topics;
+	`, groupID, topicID, offset)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}

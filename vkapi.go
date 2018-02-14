@@ -259,6 +259,25 @@ func (vk *API) BoardGetTopics(params map[string]string) (ans BoardGetTopicsAns, 
 	return
 }
 
+// BoardGetComments - Возвращает список комментариев обсуждения.
+func (vk *API) BoardGetComments(params map[string]string) (ans BoardGetCommentsAns, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("board.getComments", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 /*
 	Utils
 */
