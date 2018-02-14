@@ -237,6 +237,29 @@ func (vk *API) LikesGetList(params map[string]string) (ans LikesGetListAns, err 
 }
 
 /*
+	Board
+*/
+
+// BoardGetTopics - Возвращает список обсуждений.
+func (vk *API) BoardGetTopics(params map[string]string) (ans BoardGetTopicsAns, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("board.getTopics", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
+/*
 	Utils
 */
 

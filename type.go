@@ -298,6 +298,32 @@ type UtilsResolveScreenNameAns struct {
 }
 
 /*
+	Board
+*/
+
+// BoardGetTopicsAns - объект списка обсуждений
+type BoardGetTopicsAns struct {
+	Count  int                  `json:"count"`
+	Offset int                  `json:"offset"`
+	Items  []BoardGetTopicsItem `json:"items"`
+}
+
+// BoardGetTopicsItem - объект обсуждения
+type BoardGetTopicsItem struct {
+	ID           int    `json:"id"`
+	Title        string `json:"title"`
+	Created      int    `json:"created"`
+	CreatedBy    int    `json:"created_by"`
+	Updated      int    `json:"updated"`
+	UpdatedBy    int    `json:"updated_by"`
+	IsClosed     int    `json:"is_closed"`
+	IsFixed      int    `json:"is_fixed"`
+	Comments     int    `json:"comments"`
+	FirstComment int    `json:"first_comment"`
+	LastComment  int    `json:"last_comment"`
+}
+
+/*
 	Ads
 */
 

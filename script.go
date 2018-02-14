@@ -507,3 +507,61 @@ func (vk *API) ScriptLikesGetList(ownerID, itemID int, t, filter, pageURL string
 
 	return
 }
+
+// ScriptBoardGetTopics - Получаем обсуждения. (execute)
+func (vk *API) ScriptBoardGetTopics(groupID, offset int) (ans BoardGetTopicsAns, err error) {
+
+	script := fmt.Sprintf(`
+		var group_id = %d;
+		var offset   = %d;
+	
+		var cnt   = 25;
+		var count = offset + 1;
+		var topics = [];
+
+		while(cnt > 0 && offset < count){
+			var res = API.board.getTopics({ 
+				group_id : group_id, 
+				order    : -2,
+				offset   : offset,
+				count    : 100
+			}); 
+			cnt = cnt - 1;
+
+			if(res.count) {
+				count  = res.count; 
+				topics = topics + res.items;
+				offset = offset + 100;
+			}
+			else {
+				cnt = 0;
+			}
+		}
+
+		var result = {
+			count	 : count,
+			offset : offset,
+			items  : topics
+		};
+		
+		return topics;
+	`, groupID, offset)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
