@@ -345,9 +345,9 @@ type BoardGetCommentsItem struct {
 
 // VideoGetAns - объект списка видео
 type VideoGetAns struct {
-	Count  int           `json:"count"`
-	Offset int           `json:"offset"`
-	Items  []VideoGetAns `json:"items"`
+	Count  int            `json:"count"`
+	Offset int            `json:"offset"`
+	Items  []VideoGetItem `json:"items"`
 }
 
 // VideoGetItem - объект видео
