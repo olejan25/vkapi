@@ -686,7 +686,7 @@ func (vk *API) ScriptVideoGet(ownerID, offset int) (ans VideoGetAns, err error) 
 }
 
 // ScriptVideoGetComments - Получаем комментарии к видео. (execute)
-func (vk *API) ScriptVideoGetComments(ownerID, videoID, StartCommentID int) (ans VideoGetCommentsAns, err error) {
+func (vk *API) ScriptVideoGetComments(ownerID, videoID, startCommentID int) (ans VideoGetCommentsAns, err error) {
 
 	script := fmt.Sprintf(`
 		var owner_id         = %d;
@@ -730,7 +730,7 @@ func (vk *API) ScriptVideoGetComments(ownerID, videoID, StartCommentID int) (ans
 		};
 		
 		return result;
-	`, ownerID, videoID, StartCommentID)
+	`, ownerID, videoID, startCommentID)
 
 	r, err := vk.Execute(script)
 	if err != nil {
