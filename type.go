@@ -325,18 +325,9 @@ type BoardGetTopicsItem struct {
 
 // BoardGetCommentsAns - объект списка комментариев обсуждения
 type BoardGetCommentsAns struct {
-	Count  int                    `json:"count"`
-	Offset int                    `json:"offset"`
-	Items  []BoardGetCommentsItem `json:"items"`
-}
-
-// BoardGetCommentsItem - объект комментария обсуждения
-type BoardGetCommentsItem struct {
-	ID     int      `json:"id"`
-	FromID int      `json:"from_id"`
-	Date   int      `json:"date"`
-	Text   string   `json:"text"`
-	Likes  LikeData `json:"likes"`
+	Count  int                   `json:"count"`
+	Offset int                   `json:"offset"`
+	Items  []WallGetCommentsItem `json:"items"`
 }
 
 /*
@@ -364,6 +355,13 @@ type VideoGetItem struct {
 	Platform   string   `json:"platform"`
 	Player     string   `json:"player"`
 	AddingDate int      `json:"adding_date"`
+}
+
+// VideoGetCommentsAns - объект списка комментариев
+type VideoGetCommentsAns struct {
+	Count  int                   `json:"count"`
+	Offset int                   `json:"offset"`
+	Items  []WallGetCommentsItem `json:"items"`
 }
 
 /*

@@ -684,3 +684,65 @@ func (vk *API) ScriptVideoGet(ownerID, offset int) (ans VideoGetAns, err error) 
 
 	return
 }
+
+// ScriptVideoGetComments - Получаем комментарии к видео. (execute)
+func (vk *API) ScriptVideoGetComments(ownerID, videoID, offset int) (ans VideoGetCommentsAns, err error) {
+
+	script := fmt.Sprintf(`
+		var owner_id = %d;
+		var video_id = %d;
+		var offset   = %d;
+	
+		var cnt      = 25;
+		var count    = offset + 1;
+		var comments = [];
+		var limit    = 100;
+
+		while(cnt > 0 && offset < count){
+			var res = API.video.getComments({ 
+				owner_id   : owner_id,
+				video_id   : video_id,
+				need_likes : 1,
+				sort       : "asc",
+				offset     : offset,
+				count      : limit
+			}); 
+			cnt = cnt - 1;
+
+			if(res.count) {
+				count    = res.count; 
+				comments = comments + res.items;
+				offset   = offset + limit;
+			}
+			else {
+				cnt = 0;
+			}
+		}
+
+		var result = {
+			count	 : count,
+			offset : offset,
+			items  : comments
+		};
+		
+		return topics;
+	`, ownerID, videoID, offset)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}

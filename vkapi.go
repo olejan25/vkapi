@@ -301,6 +301,25 @@ func (vk *API) VideoGet(params map[string]string) (ans VideoGetAns, err error) {
 	return
 }
 
+// VideoGetComments - Возвращает список комментариев видео.
+func (vk *API) VideoGetComments(params map[string]string) (ans VideoGetCommentsAns, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("video.getComments", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 /*
 	Utils
 */
