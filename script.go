@@ -626,3 +626,61 @@ func (vk *API) ScriptBoardGetComments(groupID, topicID, offset, cnt int) (ans Bo
 
 	return
 }
+
+// ScriptVideoGet - Получаем видео сообщества или пользователя. (execute)
+func (vk *API) ScriptVideoGet(ownerID, offset int) (ans VideoGetAns, err error) {
+
+	script := fmt.Sprintf(`
+		var owner_id = %d;
+		var offset   = %d;
+	
+		var cnt    = 25;
+		var count  = offset + 1;
+		var videos = [];
+		var limit  = 200;
+
+		while(cnt > 0 && offset < count){
+			var res = API.video.get({ 
+				owner_id   : owner_id,
+				offset     : offset,
+				count      : limit
+			}); 
+			cnt = cnt - 1;
+
+			if(res.count) {
+				count  = res.count; 
+				videos = videos + res.items;
+				offset = offset + limit;
+			}
+			else {
+				cnt = 0;
+			}
+		}
+
+		var result = {
+			count	 : count,
+			offset : offset,
+			items  : videos
+		};
+		
+		return topics;
+	`, ownerID, offset)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}

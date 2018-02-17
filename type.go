@@ -340,6 +340,33 @@ type BoardGetCommentsItem struct {
 }
 
 /*
+	Video
+*/
+
+// VideoGetAns - объект списка видео
+type VideoGetAns struct {
+	Count  int           `json:"count"`
+	Offset int           `json:"offset"`
+	Items  []VideoGetAns `json:"items"`
+}
+
+// VideoGetItem - объект видео
+type VideoGetItem struct {
+	ID         int      `json:"id"`
+	OwnerID    int      `json:"owner_id"`
+	Title      string   `json:"title"`
+	Duration   int      `json:"duration"`
+	Date       int      `json:"date"`
+	Comments   int      `json:"comments"`
+	Views      int      `json:"views"`
+	Likes      LikeData `json:"likes"`
+	Reposts    LikeData `json:"reposts"`
+	Platform   string   `json:"platform"`
+	Player     string   `json:"player"`
+	AddingDate int      `json:"adding_date"`
+}
+
+/*
 	Ads
 */
 

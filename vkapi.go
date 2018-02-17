@@ -279,6 +279,29 @@ func (vk *API) BoardGetComments(params map[string]string) (ans BoardGetCommentsA
 }
 
 /*
+	Video
+*/
+
+// VideoGet - Возвращает список видео.
+func (vk *API) VideoGet(params map[string]string) (ans VideoGetAns, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("video.get", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
+/*
 	Utils
 */
 
