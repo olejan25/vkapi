@@ -355,6 +355,35 @@ type PhotosGetAlbumsItem struct {
 	CommentsDisabled   int    `json:"comments_disabled"`
 }
 
+// PhotosGetAns - объект списка фотографий
+type PhotosGetAns struct {
+	Count  int             `json:"count"`
+	Offset int             `json:"offset"`
+	Items  []PhotosGetItem `json:"items"`
+}
+
+// PhotosGetItem - объект фотографии
+type PhotosGetItem struct {
+	ID        int         `json:"id"`
+	AlbumID   int         `json:"album_id"`
+	OwnerID   int         `json:"owner_id"`
+	UserID    int         `json:"user_id"`
+	Photo75   string      `json:"photo_75"`
+	Photo130  string      `json:"photo_130"`
+	Photo604  string      `json:"photo_604"`
+	Photo807  string      `json:"photo_807"`
+	Photo1280 string      `json:"photo_1280"`
+	Photo2560 string      `json:"photo_2560"`
+	Text      string      `json:"text"`
+	Date      int         `json:"date"`
+	Width     int         `json:"width"`
+	Height    int         `json:"height"`
+	PostID    int         `json:"post_id"`
+	Likes     LikeData    `json:"likes"`
+	Reposts   LikeData    `json:"reposts"`
+	Comments  CommentData `json:"comments"`
+}
+
 /*
 	Video
 */

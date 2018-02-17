@@ -301,6 +301,25 @@ func (vk *API) PhotosGetAlbums(params map[string]string) (ans PhotosGetAlbumsAns
 	return
 }
 
+// PhotosGet - Возвращает список фотографий.
+func (vk *API) PhotosGet(params map[string]string) (ans PhotosGetAns, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("photos.get", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 /*
 	Video
 */

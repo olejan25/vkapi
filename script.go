@@ -746,3 +746,65 @@ func (vk *API) ScriptVideoGetComments(ownerID, videoID, offset int) (ans VideoGe
 
 	return
 }
+
+// ScriptPhotosGet - Получаем фото из альбома. (execute)
+func (vk *API) ScriptPhotosGet(ownerID, albumID, offset int) (ans PhotosGetAns, err error) {
+
+	script := fmt.Sprintf(`
+		var owner_id = %d;
+		var album_id = %d;
+		var offset   = %d;
+	
+		var cnt    = 25;
+		var count  = offset + 1;
+		var photos = [];
+		var limit  = 1000;
+
+		while(cnt > 0 && offset < count){
+			var res = API.photos.get({ 
+				owner_id   : owner_id,
+				album_id   : album_id,
+				rev        : 1,
+				extended   : 1,
+				offset     : offset,
+				count      : limit
+			}); 
+			cnt = cnt - 1;
+
+			if(res.count) {
+				count  = res.count; 
+				photos = photos + res.items;
+				offset = offset + limit;
+			}
+			else {
+				cnt = 0;
+			}
+		}
+
+		var result = {
+			count	 : count,
+			offset : offset,
+			items  : photos
+		};
+		
+		return topics;
+	`, ownerID, albumID, offset)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
