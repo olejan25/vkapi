@@ -686,33 +686,37 @@ func (vk *API) ScriptVideoGet(ownerID, offset int) (ans VideoGetAns, err error) 
 }
 
 // ScriptVideoGetComments - Получаем комментарии к видео. (execute)
-func (vk *API) ScriptVideoGetComments(ownerID, videoID, offset int) (ans VideoGetCommentsAns, err error) {
+func (vk *API) ScriptVideoGetComments(ownerID, videoID, StartCommentID int) (ans VideoGetCommentsAns, err error) {
 
 	script := fmt.Sprintf(`
-		var owner_id = %d;
-		var video_id = %d;
-		var offset   = %d;
+		var owner_id         = %d;
+		var video_id         = %d;
+		var start_comment_id = %d;
 	
-		var cnt      = 25;
-		var count    = offset + 1;
-		var comments = [];
-		var limit    = 100;
+		var cnt         = 25;
+		var offset      = 0;
+		var real_offset = 0;
+		var count       = offset + 1;
+		var comments    = [];
+		var limit       = 100;
 
-		while(cnt > 0 && offset < count){
+		while(cnt > 0 && real_offset < count){
 			var res = API.video.getComments({ 
-				owner_id   : owner_id,
-				video_id   : video_id,
-				need_likes : 1,
-				sort       : "asc",
-				offset     : offset,
-				count      : limit
+				owner_id         : owner_id,
+				video_id         : video_id,
+				need_likes       : 1,
+				start_comment_id : start_comment_id,
+				sort             : "desc",
+				offset           : offset,
+				count            : limit
 			}); 
 			cnt = cnt - 1;
 
 			if(res.count) {
-				count    = res.count; 
-				comments = comments + res.items;
-				offset   = offset + limit;
+				count       = res.count; 
+				comments    = comments + res.items;
+				offset      = offset + limit;
+		 		real_offset = res.real_offset + limit;
 			}
 			else {
 				cnt = 0;
@@ -726,7 +730,7 @@ func (vk *API) ScriptVideoGetComments(ownerID, videoID, offset int) (ans VideoGe
 		};
 		
 		return result;
-	`, ownerID, videoID, offset)
+	`, ownerID, videoID, StartCommentID)
 
 	r, err := vk.Execute(script)
 	if err != nil {
