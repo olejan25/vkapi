@@ -279,6 +279,29 @@ func (vk *API) BoardGetComments(params map[string]string) (ans BoardGetCommentsA
 }
 
 /*
+	Photos
+*/
+
+// PhotosGetAlbums - Возвращает список видео.
+func (vk *API) PhotosGetAlbums(params map[string]string) (ans PhotosGetAlbumsAns, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("photos.getAlbums", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
+/*
 	Video
 */
 

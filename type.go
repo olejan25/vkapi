@@ -331,6 +331,31 @@ type BoardGetCommentsAns struct {
 }
 
 /*
+	Photos
+*/
+
+// PhotosGetAlbumsAns - объект списка альбомов
+type PhotosGetAlbumsAns struct {
+	Count int                   `json:"count"`
+	Items []PhotosGetAlbumsItem `json:"items"`
+}
+
+// PhotosGetAlbumsItem - объект альбома
+type PhotosGetAlbumsItem struct {
+	ID                 int    `json:"id"`
+	ThumbID            int    `json:"thumb_id"`
+	OwnerID            int    `json:"owner_id"`
+	Title              string `json:"title"`
+	Description        string `json:"description"`
+	Created            int    `json:"created"`
+	Updated            int    `json:"updated"`
+	Size               int    `json:"size"`
+	CanUpload          int    `json:"can_upload"`
+	UploadByAdminsOnly int    `json:"UploadByAdminsOnly"`
+	CommentsDisabled   int    `json:"comments_disabled"`
+}
+
+/*
 	Video
 */
 
