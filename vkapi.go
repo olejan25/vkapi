@@ -320,6 +320,25 @@ func (vk *API) PhotosGet(params map[string]string) (ans PhotosGetAns, err error)
 	return
 }
 
+// PhotosGetComments - Возвращает список комментариев фотографии.
+func (vk *API) PhotosGetComments(params map[string]string) (ans PhotosGetCommentsAns, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("photos.getComments", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 /*
 	Video
 */

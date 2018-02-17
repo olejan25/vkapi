@@ -384,6 +384,13 @@ type PhotosGetItem struct {
 	Comments  CommentData `json:"comments"`
 }
 
+// PhotosGetCommentsAns - объект списка комментариев фото
+type PhotosGetCommentsAns struct {
+	Count  int                   `json:"count"`
+	Offset int                   `json:"offset"`
+	Items  []WallGetCommentsItem `json:"items"`
+}
+
 /*
 	Video
 */

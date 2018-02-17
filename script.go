@@ -486,7 +486,7 @@ func (vk *API) ScriptLikesGetList(ownerID, itemID int, t, filter, pageURL string
 			items  : users
 		};
 		
-		return users;
+		return result;
 	`, ownerID, itemID, t, filter, pageURL, offset)
 
 	r, err := vk.Execute(script)
@@ -544,7 +544,7 @@ func (vk *API) ScriptBoardGetTopics(groupID, offset int) (ans BoardGetTopicsAns,
 			items  : topics
 		};
 		
-		return topics;
+		return result;
 	`, groupID, offset)
 
 	r, err := vk.Execute(script)
@@ -605,7 +605,7 @@ func (vk *API) ScriptBoardGetComments(groupID, topicID, offset, cnt int) (ans Bo
 			items  : comments
 		};
 		
-		return topics;
+		return result;
 	`, groupID, topicID, offset, cnt)
 
 	r, err := vk.Execute(script)
@@ -663,7 +663,7 @@ func (vk *API) ScriptVideoGet(ownerID, offset int) (ans VideoGetAns, err error) 
 			items  : videos
 		};
 		
-		return topics;
+		return result;
 	`, ownerID, offset)
 
 	r, err := vk.Execute(script)
@@ -725,7 +725,7 @@ func (vk *API) ScriptVideoGetComments(ownerID, videoID, offset int) (ans VideoGe
 			items  : comments
 		};
 		
-		return topics;
+		return result;
 	`, ownerID, videoID, offset)
 
 	r, err := vk.Execute(script)
@@ -787,8 +787,74 @@ func (vk *API) ScriptPhotosGet(ownerID, albumID, offset int) (ans PhotosGetAns, 
 			items  : photos
 		};
 		
-		return topics;
+		return result;
 	`, ownerID, albumID, offset)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
+// ScriptPhotosGetComments - Получаем комментарии фото. (execute)
+func (vk *API) ScriptPhotosGetComments(ownerID, photoID, StartCommentID int) (ans PhotosGetCommentsAns, err error) {
+
+	script := fmt.Sprintf(`
+		var owner_id         = %d;
+		var photo_id         = %d;
+		var start_comment_id = %d;
+	
+		var cnt         = 25;
+		var offset      = 0;
+		var real_offset = 0;
+		var count       = offset + 1;
+		var comments    = [];
+		var limit       = 100;
+
+		while(cnt > 0 && real_offset < count){
+			var res = API.photos.get({ 
+				owner_id         : owner_id,
+				photo_id         : photo_id,
+				start_comment_id : start_comment_id,
+				sort             : "desc",
+				need_likes       : 1,
+				offset           : offset,
+				count            : limit
+			}); 
+			cnt = cnt - 1;
+
+			if(res.count) {
+				count       = res.count; 
+				comments    = comments + res.items;
+				offset      = offset + limit;
+				real_offset = res.real_offset + limit;
+			}
+			else {
+				cnt = 0;
+			}
+		}
+
+		var result = {
+			count	 : count,
+			offset : real_offset,
+			items  : comments
+		};
+		
+		return result;
+	`, ownerID, photoID, StartCommentID)
 
 	r, err := vk.Execute(script)
 	if err != nil {
