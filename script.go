@@ -584,8 +584,9 @@ func (vk *API) ScriptBoardGetComments(groupID, topicID, startCommentID, cnt int)
 		var start_comment_id = %d;
 	
 		var cnt         = %d;
-		var count       = offset + 1;
 		var real_offset = 0;
+		var offset      = 0;
+		var count       = offset + 1;
 		var comments    = [];
 		var limit       = 100;
 
