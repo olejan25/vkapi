@@ -657,7 +657,8 @@ func (vk *API) ScriptVideoGet(ownerID, offset int) (ans VideoGetAns, err error) 
 			var res = API.video.get({ 
 				owner_id   : owner_id,
 				offset     : offset,
-				count      : limit
+				count      : limit,
+				extended   : 1,
 			}); 
 			cnt = cnt - 1;
 
