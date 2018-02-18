@@ -868,7 +868,7 @@ func (vk *API) ScriptPhotosGetComments(ownerID, photoID, StartCommentID int) (an
 
 		var result = {
 			count	 : count,
-			offset : real_offset,
+			offset : offset,
 			items  : comments
 		};
 		
