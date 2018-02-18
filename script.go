@@ -470,7 +470,7 @@ func (vk *API) ScriptLikesGetList(ownerID, itemID int, t, filter, pageURL string
 		while(cnt > 0 && offset < count){
 			var res = API.likes.getList({ 
 				owner_id : owner_id, 
-				post_id  : post_id,
+				item_id  : item_id,
 				type     : type,
 				filter   : filter,
 				page_url : page_url,
