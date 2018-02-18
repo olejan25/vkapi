@@ -576,32 +576,36 @@ func (vk *API) ScriptBoardGetTopics(groupID, offset int) (ans BoardGetTopicsAns,
 }
 
 // ScriptBoardGetComments - Получаем комментарии обсуждений. (execute)
-func (vk *API) ScriptBoardGetComments(groupID, topicID, offset, cnt int) (ans BoardGetCommentsAns, err error) {
+func (vk *API) ScriptBoardGetComments(groupID, topicID, startCommentID, cnt int) (ans BoardGetCommentsAns, err error) {
 
 	script := fmt.Sprintf(`
-		var group_id = %d;
-		var topic_id = %d;
-		var offset   = %d;
+		var group_id         = %d;
+		var topic_id         = %d;
+		var start_comment_id = %d;
 	
-		var cnt      = %d;
-		var count    = offset + 1;
-		var comments = [];
+		var cnt         = %d;
+		var count       = offset + 1;
+		var real_offset = 0;
+		var comments    = [];
+		var limit       = 100;
 
-		while(cnt > 0 && offset < count){
+		while(cnt > 0 && real_offset < count){
 			var res = API.board.getComments({ 
-				group_id   : group_id, 
-				topic_id   : topic_id,
-				need_likes : 1,
-				offset     : offset,
-				sort       : "asc",
-				count      : 100
+				group_id         : group_id, 
+				topic_id         : topic_id,
+				need_likes       : 1,
+				start_comment_id : start_comment_id,
+				offset           : offset,
+				sort             : "desc",
+				count            : limit
 			}); 
 			cnt = cnt - 1;
 
 			if(res.count) {
-				count    = res.count; 
-				comments = comments + res.items;
-				offset   = offset + 100;
+				count       = res.count; 
+				comments    = comments + res.items;
+				offset      = offset + limit;
+				real_offset = res.real_offset + limit;
 			}
 			else {
 				cnt = 0;
@@ -615,7 +619,7 @@ func (vk *API) ScriptBoardGetComments(groupID, topicID, offset, cnt int) (ans Bo
 		};
 		
 		return result;
-	`, groupID, topicID, offset, cnt)
+	`, groupID, topicID, startCommentID, cnt)
 
 	r, err := vk.Execute(script)
 	if err != nil {
