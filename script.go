@@ -844,7 +844,7 @@ func (vk *API) ScriptPhotosGetComments(ownerID, photoID, StartCommentID int) (an
 		var limit       = 100;
 
 		while(cnt > 0 && real_offset < count){
-			var res = API.photos.get({ 
+			var res = API.photos.getComments({ 
 				owner_id         : owner_id,
 				photo_id         : photo_id,
 				start_comment_id : start_comment_id,
