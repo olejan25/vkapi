@@ -128,7 +128,7 @@ type GroupsGetMembersAns struct {
 type ScriptGroupsGetMembersAns struct {
 	Count  int   `json:"count"`
 	Offset int   `json:"offset"`
-	Users  []int `json:"users"`
+	Items  []int `json:"items"`
 }
 
 /*

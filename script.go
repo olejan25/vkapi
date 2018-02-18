@@ -225,9 +225,10 @@ func (vk *API) ScriptGroupsGetMembers(groupID, offset int, s string) (ans Script
 		var group_id = %d;
 		var offset   = %d;
 		var sort     = "%s";
-		
-		var cnt      = 25;
-		var count    = offset + 1;
+
+		var cnt   = 25;
+		var count = offset + 1;
+		var users = [];
 
 		while(cnt > 0 && offset < count){
 			var res = API.groups.getMembers({ 
@@ -251,7 +252,7 @@ func (vk *API) ScriptGroupsGetMembers(groupID, offset int, s string) (ans Script
 		var result = {
 			count	 : count,
 			offset : offset,
-			users	 : users
+			items	 : users
 		};
 		
 		return result;
@@ -282,7 +283,10 @@ func (vk *API) ScriptUsersGetFollowers(userID, offset int) (ans ScriptGroupsGetM
 	script := fmt.Sprintf(`
 		var user_id = %d;
 		var offset  = %d;
-		var cnt     = 25;
+
+		var cnt   = 25;
+		var count = offset + 1;
+		var users = [];
 
 		while(cnt > 0 && offset < count){
 			var res = API.users.getFollowers({ 
@@ -305,7 +309,7 @@ func (vk *API) ScriptUsersGetFollowers(userID, offset int) (ans ScriptGroupsGetM
 		var result = {
 			count	 : count,
 			offset : offset,
-			users	 : users
+			items	 : users
 		};
 		
 		return result;
@@ -336,7 +340,10 @@ func (vk *API) ScriptFriendsGet(userID, offset int) (ans ScriptGroupsGetMembersA
 	script := fmt.Sprintf(`
 		var user_id = %d;
 		var offset  = %d;
-		var cnt     = 25;
+
+		var cnt   = 25;
+		var count = offset + 1;
+		var users = [];
 
 		while(cnt > 0 && offset < count){
 			var res = API.friends.get({ 
@@ -359,7 +366,7 @@ func (vk *API) ScriptFriendsGet(userID, offset int) (ans ScriptGroupsGetMembersA
 		var result = {
 			count	 : count,
 			offset : offset,
-			users	 : users
+			items	 : users
 		};
 		
 		return result;
