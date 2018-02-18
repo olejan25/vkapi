@@ -225,7 +225,9 @@ func (vk *API) ScriptGroupsGetMembers(groupID, offset int, s string) (ans Script
 		var group_id = %d;
 		var offset   = %d;
 		var sort     = "%s";
+		
 		var cnt      = 25;
+		var count    = offset + 1;
 
 		while(cnt > 0 && offset < count){
 			var res = API.groups.getMembers({ 
