@@ -392,32 +392,37 @@ func (vk *API) ScriptFriendsGet(userID, offset int) (ans ScriptGroupsGetMembersA
 }
 
 // ScriptWallGetComments - Получаем комментарии поста. (execute)
-func (vk *API) ScriptWallGetComments(ownerID, postID, offset int, srt string) (ans WallGetCommentsAns, err error) {
+func (vk *API) ScriptWallGetComments(ownerID, postID, startCommentID int) (ans WallGetCommentsAns, err error) {
 
 	script := fmt.Sprintf(`
-		var owner_id = %d;
-		var post_id  = %d;
-		var offset   = %d;
-		var sort     = "%s";
-		var cnt      = 25;
-		var count    = offset + 1;
-		var comments = [];
+		var owner_id         = %d;
+		var post_id          = %d;
+		var start_comment_id = %d;
+
+		var cnt         = 25;
+		var real_offset = 0;
+		var offset      = 0;
+		var count       = offset + 1;
+		var comments    = [];
+		var limit       = 100;
 
 		while(cnt > 0 && offset < count){
 			var res = API.wall.getComments({ 
-				owner_id   : owner_id, 
-				post_id    : post_id,
-				offset     : offset,
-				sort       : sort,
-				need_likes : 1,
-				count      : 100
+				owner_id         : owner_id, 
+				post_id          : post_id,
+				start_comment_id : start_comment_id,
+				offset           : offset,
+				sort             : "desc",
+				need_likes       : 1,
+				count            : limit
 			}); 
 			cnt = cnt - 1;
 
 			if(res.count) {
-				count    = res.count; 
-				comments = comments + res.items;
-				offset   = offset + 100;
+				count       = res.count; 
+				comments    = comments + res.items;
+				offset      = offset + limit;
+				real_offset = res.real_offset + limit;
 			}
 			else {
 				cnt = 0;
@@ -431,7 +436,7 @@ func (vk *API) ScriptWallGetComments(ownerID, postID, offset int, srt string) (a
 		};
 		
 		return result;
-	`, ownerID, postID, offset, srt)
+	`, ownerID, postID, startCommentID)
 
 	r, err := vk.Execute(script)
 	if err != nil {
