@@ -674,6 +674,9 @@ func (vk *API) ScriptVideoGet(ownerID, offset int) (ans VideoGetAns, err error) 
 			}
 			else {
 				cnt = 0;
+				if count == 1 {
+					offset = count;
+				}
 			}
 		}
 
