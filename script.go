@@ -762,6 +762,63 @@ func (vk *API) ScriptBoardGetComments(groupID, topicID, startCommentID, cnt int)
 	return
 }
 
+// ScriptMultiBoardGetComments - Получаем комментарии нескольких обсуждений. (execute)
+func (vk *API) ScriptMultiBoardGetComments(arr []map[string]interface{}) (ans BoardGetCommentsAns, err error) {
+	b, err := json.Marshal(arr)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	script := fmt.Sprintf(`
+		var arr      = %s;
+		var comments = [];
+		var limit    = 100;
+		var rq_data  = [];
+
+		while(arr.length > 0) {
+			var h   = arr.shift();
+			var res = API.board.getComments({ 
+				group_id         : h.group_id, 
+				topic_id         : h.topic_id,
+				need_likes       : 1,
+				sort             : "desc",
+				count            : limit
+			}); 
+
+			if(res.count) {
+				comments = comments + res.items;
+				rq_data.push(h);
+			}
+		}
+
+		var result = {
+			items   : comments,
+			rq_data : rq_data,
+		};
+		
+		return result;
+	`, b)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
 // ScriptVideoGet - Получаем видео сообщества или пользователя. (execute)
 func (vk *API) ScriptVideoGet(ownerID, offset int) (ans VideoGetAns, err error) {
 

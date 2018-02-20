@@ -336,9 +336,10 @@ type BoardGetTopicsItem struct {
 
 // BoardGetCommentsAns - объект списка комментариев обсуждения
 type BoardGetCommentsAns struct {
-	Count  int                   `json:"count"`
-	Offset int                   `json:"offset"`
-	Items  []WallGetCommentsItem `json:"items"`
+	Count  int                      `json:"count"`
+	Offset int                      `json:"offset"`
+	RqData []map[string]interface{} `json:"rq_data"`
+	Items  []WallGetCommentsItem    `json:"items"`
 }
 
 /*
