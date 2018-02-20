@@ -329,6 +329,12 @@ type BoardGetTopicsAns struct {
 	Items  []BoardGetTopicsItem `json:"items"`
 }
 
+// MultiBoardGetTopicsAns - объект списка обсуждений для нескольких групп
+type MultiBoardGetTopicsAns struct {
+	Items  []BoardGetTopicsAns      `json:"items"`
+	RqData []map[string]interface{} `json:"rq_data"`
+}
+
 // BoardGetTopicsItem - объект обсуждения
 type BoardGetTopicsItem struct {
 	ID           int    `json:"id"`

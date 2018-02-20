@@ -696,6 +696,60 @@ func (vk *API) ScriptBoardGetTopics(groupID, offset int) (ans BoardGetTopicsAns,
 	return
 }
 
+// ScriptMultiBoardGetTopics - Получаем обсуждения. (execute)
+func (vk *API) ScriptMultiBoardGetTopics(arr []map[string]interface{}) (ans MultiBoardGetTopicsAns, err error) {
+	b, err := json.Marshal(arr)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	script := fmt.Sprintf(`
+		var arr     = %s;
+		var topics  = [];
+		var rq_data = [];
+
+		while(arr.length > 0) {
+			var h   = arr.shift();
+			var res = API.board.getTopics({ 
+				group_id : h.group_id, 
+				order    : -2,
+				count    : 100
+			}); 
+
+			if(res.count) {
+				topics.push(res);
+				rq_data.push(h);
+			}
+		}
+
+		var result = {
+			items   : topics,
+			rq_data : rq_data,
+		};
+		
+		return result;
+	`, b)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
 // ScriptBoardGetComments - Получаем комментарии обсуждений. (execute)
 func (vk *API) ScriptBoardGetComments(groupID, topicID, startCommentID, cnt int) (ans BoardGetCommentsAns, err error) {
 
