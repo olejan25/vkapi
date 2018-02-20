@@ -708,16 +708,18 @@ func (vk *API) ScriptMultiBoardGetTopics(arr []map[string]interface{}) (ans Mult
 		var arr     = %s;
 		var topics  = [];
 		var rq_data = [];
+		var limit   = 100;
 
 		while(arr.length > 0) {
 			var h   = arr.shift();
 			var res = API.board.getTopics({ 
 				group_id : h.group_id, 
 				order    : -2,
-				count    : 100
+				count    : limit
 			}); 
 
 			if(res.count) {
+				res.offset = limit;
 				topics.push(res);
 				rq_data.push(h);
 			}
