@@ -245,10 +245,15 @@ type LikeData struct {
 
 // WallGetCommentsAns - объект комментариев
 type WallGetCommentsAns struct {
-	Count  int                      `json:"count"`
-	Offset int                      `json:"offset"`
+	Count  int                   `json:"count"`
+	Offset int                   `json:"offset"`
+	Items  []WallGetCommentsItem `json:"items"`
+}
+
+// WallMultiGetCommentsAns - объект комментариев для выборки из нескольких сообществ
+type WallMultiGetCommentsAns struct {
 	RqData []map[string]interface{} `json:"rq_data"`
-	Items  []WallGetCommentsItem    `json:"items"`
+	Items  [][]WallGetCommentsItem  `json:"items"`
 }
 
 // WallGetCommentsItem - объект комментария

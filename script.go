@@ -458,7 +458,7 @@ func (vk *API) ScriptWallGetComments(ownerID, postID, startCommentID int) (ans W
 }
 
 // ScriptMultiWallGetComments - Получаем комментарии нескольких постов. (execute)
-func (vk *API) ScriptMultiWallGetComments(arr []map[string]interface{}) (ans WallGetCommentsAns, err error) {
+func (vk *API) ScriptMultiWallGetComments(arr []map[string]interface{}) (ans WallMultiGetCommentsAns, err error) {
 	b, err := json.Marshal(arr)
 	if err != nil {
 		log.Println("[error]", err)
@@ -482,7 +482,7 @@ func (vk *API) ScriptMultiWallGetComments(arr []map[string]interface{}) (ans Wal
 			}); 
 
 			if(res.count) {
-				comments = comments + res.items;
+				comments.push(res.items);
 				rq_data.push(h);
 			}
 		}
