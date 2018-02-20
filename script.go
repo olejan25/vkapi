@@ -581,7 +581,7 @@ func (vk *API) ScriptLikesGetList(ownerID, itemID int, t, filter, pageURL string
 }
 
 // ScriptMultiLikesGetList - Получаем лайки у нескольких объектов. (execute)
-func (vk *API) ScriptMultiLikesGetList(arr []map[string]interface{}) (ans LikesGetListAns, err error) {
+func (vk *API) ScriptMultiLikesGetList(arr []map[string]interface{}) (ans MultiLikesGetListAns, err error) {
 	b, err := json.Marshal(arr)
 	if err != nil {
 		log.Println("[error]", err)
@@ -606,7 +606,7 @@ func (vk *API) ScriptMultiLikesGetList(arr []map[string]interface{}) (ans LikesG
 			}); 
 
 			if(res.count) {
-				users = users + res.items;
+				users.push(res.items);
 				rq_data.push(h);
 			}
 		}
@@ -763,7 +763,7 @@ func (vk *API) ScriptBoardGetComments(groupID, topicID, startCommentID, cnt int)
 }
 
 // ScriptMultiBoardGetComments - Получаем комментарии нескольких обсуждений. (execute)
-func (vk *API) ScriptMultiBoardGetComments(arr []map[string]interface{}) (ans BoardGetCommentsAns, err error) {
+func (vk *API) ScriptMultiBoardGetComments(arr []map[string]interface{}) (ans MultiBoardGetCommentsAns, err error) {
 	b, err := json.Marshal(arr)
 	if err != nil {
 		log.Println("[error]", err)
@@ -779,15 +779,15 @@ func (vk *API) ScriptMultiBoardGetComments(arr []map[string]interface{}) (ans Bo
 		while(arr.length > 0) {
 			var h   = arr.shift();
 			var res = API.board.getComments({ 
-				group_id         : h.group_id, 
-				topic_id         : h.topic_id,
-				need_likes       : 1,
-				sort             : "desc",
-				count            : limit
+				group_id   : h.group_id, 
+				topic_id   : h.topic_id,
+				need_likes : 1,
+				sort       : "desc",
+				count      : limit
 			}); 
 
 			if(res.count) {
-				comments = comments + res.items;
+				comments.push(res.items);
 				rq_data.push(h);
 			}
 		}

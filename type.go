@@ -274,10 +274,15 @@ type WallGetCommentsItem struct {
 
 // LikesGetListAns - объект лайков
 type LikesGetListAns struct {
-	Count  int                      `json:"count"`
-	Offset int                      `json:"offset"`
+	Count  int   `json:"count"`
+	Offset int   `json:"offset"`
+	Items  []int `json:"items"`
+}
+
+// MultiLikesGetListAns - объект лайков для нескольких объектов
+type MultiLikesGetListAns struct {
 	RqData []map[string]interface{} `json:"rq_data"`
-	Items  []int                    `json:"items"`
+	Items  [][]int                  `json:"items"`
 }
 
 /*
@@ -341,8 +346,13 @@ type BoardGetTopicsItem struct {
 
 // BoardGetCommentsAns - объект списка комментариев обсуждения
 type BoardGetCommentsAns struct {
-	Count  int                      `json:"count"`
-	Offset int                      `json:"offset"`
+	Count  int                   `json:"count"`
+	Offset int                   `json:"offset"`
+	Items  []WallGetCommentsItem `json:"items"`
+}
+
+// MultiBoardGetCommentsAns - объект списка комментариев нескольких обсуждения
+type MultiBoardGetCommentsAns struct {
 	RqData []map[string]interface{} `json:"rq_data"`
 	Items  []WallGetCommentsItem    `json:"items"`
 }
