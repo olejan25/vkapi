@@ -408,7 +408,7 @@ func (vk *API) ScriptMultiWallGet(arr []map[string]interface{}) (ans MultiWallGe
 		while(arr.length > 0) {
 			var h   = arr.shift();
 			var res = API.wall.get({ 
-				owner_id : owner_id,
+				owner_id : h.owner_id,
 				sort     : "desc",
 				count    : limit
 			}); 
