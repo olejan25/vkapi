@@ -482,7 +482,8 @@ func (vk *API) ScriptMultiWallGetComments(arr []map[string]interface{}) (ans Mul
 			}); 
 
 			if(res.count) {
-				comments.push(res.items);
+				res.offset = limit;
+				comments.push(res);
 				rq_data.push(h);
 			}
 		}
@@ -606,7 +607,8 @@ func (vk *API) ScriptMultiLikesGetList(arr []map[string]interface{}) (ans MultiL
 			}); 
 
 			if(res.count) {
-				users.push(res.items);
+				res.offset = limit;
+				users.push(res);
 				rq_data.push(h);
 			}
 		}
@@ -843,7 +845,8 @@ func (vk *API) ScriptMultiBoardGetComments(arr []map[string]interface{}) (ans Mu
 			}); 
 
 			if(res.count) {
-				comments.push(res.items);
+				res.offset = limit;
+				comments.push(res);
 				rq_data.push(h);
 			}
 		}

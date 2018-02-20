@@ -253,7 +253,7 @@ type WallGetCommentsAns struct {
 // MultiWallGetCommentsAns - объект комментариев для выборки из нескольких сообществ
 type MultiWallGetCommentsAns struct {
 	RqData []map[string]interface{} `json:"rq_data"`
-	Items  [][]WallGetCommentsItem  `json:"items"`
+	Items  []WallGetCommentsAns     `json:"items"`
 }
 
 // WallGetCommentsItem - объект комментария
@@ -282,7 +282,7 @@ type LikesGetListAns struct {
 // MultiLikesGetListAns - объект лайков для нескольких объектов
 type MultiLikesGetListAns struct {
 	RqData []map[string]interface{} `json:"rq_data"`
-	Items  [][]int                  `json:"items"`
+	Items  []LikesGetListAns        `json:"items"`
 }
 
 /*
@@ -360,7 +360,7 @@ type BoardGetCommentsAns struct {
 // MultiBoardGetCommentsAns - объект списка комментариев нескольких обсуждения
 type MultiBoardGetCommentsAns struct {
 	RqData []map[string]interface{} `json:"rq_data"`
-	Items  [][]WallGetCommentsItem  `json:"items"`
+	Items  []BoardGetCommentsAns    `json:"items"`
 }
 
 /*
