@@ -483,7 +483,7 @@ func (vk *API) ScriptMultiWallGetComments(h []map[string]int) (ans WallGetCommen
 
 			if(res.count) {
 				comments = comments + res.items;
-				rq_data  = rq_data + h;
+				rq_data.push(h);
 			}
 		}
 
