@@ -1358,3 +1358,61 @@ func (vk *API) ScriptPhotosGetComments(ownerID, photoID, StartCommentID int) (an
 
 	return
 }
+
+// ScriptMultiPhotosGetComments - Получаем комментарии нескольких фото. (execute)
+func (vk *API) ScriptMultiPhotosGetComments(arr []map[string]interface{}) (ans MultiPhotosGetCommentsAns, err error) {
+	b, err := json.Marshal(arr)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	script := fmt.Sprintf(`
+		var arr      = %s;
+		var rq_data  = [];
+		var comments = [];
+		var limit    = 100;
+		
+		while(arr.length > 0) {
+			var h   = arr.shift();
+			var res = API.photos.getComments({ 
+				owner_id         : h.owner_id,
+				photo_id         : h.photo_id,
+				sort             : "desc",
+				need_likes       : 1,
+				count            : limit
+			});
+
+			if(res.count) {
+				res.offset = limit;
+				comments.push(res);
+		 		rq_data.push(h);
+			}
+		}
+
+		var result = {
+			items   : comments,
+			rq_data : rq_data,
+		};
+		
+		return result;
+	`, b)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}

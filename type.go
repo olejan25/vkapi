@@ -436,6 +436,12 @@ type PhotosGetCommentsAns struct {
 	Items  []WallGetCommentsItem `json:"items"`
 }
 
+// MultiPhotosGetCommentsAns - объект списка комментариев разных фото
+type MultiPhotosGetCommentsAns struct {
+	RqData []map[string]interface{} `json:"rq_data"`
+	Items  []PhotosGetCommentsAns   `json:"items"`
+}
+
 /*
 	Video
 */
