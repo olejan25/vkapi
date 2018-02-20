@@ -468,6 +468,7 @@ func (vk *API) ScriptMultiWallGetComments(h []map[string]int) (ans WallGetCommen
 	script := fmt.Sprintf(`
 		var arr      = %s;
 		var comments = [];
+		var rq_data  = [];
 		var limit    = 100;
 
 		while(arr.length > 0) {
@@ -482,11 +483,13 @@ func (vk *API) ScriptMultiWallGetComments(h []map[string]int) (ans WallGetCommen
 
 			if(res.count) {
 				comments = comments + res.items;
+				rq_data  = rq_data + h;
 			}
 		}
 
 		var result = {
-			items : comments
+			items   : comments,
+			rq_data : rq_data,
 		};
 		
 		return result;

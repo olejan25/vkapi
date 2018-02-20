@@ -247,6 +247,7 @@ type LikeData struct {
 type WallGetCommentsAns struct {
 	Count  int                   `json:"count"`
 	Offset int                   `json:"offset"`
+	RqData []map[string]int      `json:"rq_data"`
 	Items  []WallGetCommentsItem `json:"items"`
 }
 
