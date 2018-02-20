@@ -435,6 +435,12 @@ type VideoGetAns struct {
 	Items  []VideoGetItem `json:"items"`
 }
 
+// MultiVideoGetAns - объект списка видео нескольких сообществ
+type MultiVideoGetAns struct {
+	Items  []VideoGetAns            `json:"items"`
+	RqData []map[string]interface{} `json:"rq_data"`
+}
+
 // VideoGetItem - объект видео
 type VideoGetItem struct {
 	ID         int      `json:"id"`
@@ -456,6 +462,12 @@ type VideoGetCommentsAns struct {
 	Count  int                   `json:"count"`
 	Offset int                   `json:"offset"`
 	Items  []WallGetCommentsItem `json:"items"`
+}
+
+// MultiVideoGetCommentsAns - объект списка комментариев нескольких видео
+type MultiVideoGetCommentsAns struct {
+	Items  []VideoGetCommentsAns    `json:"items"`
+	RqData []map[string]interface{} `json:"rq_data"`
 }
 
 /*

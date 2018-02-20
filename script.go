@@ -940,6 +940,62 @@ func (vk *API) ScriptVideoGet(ownerID, offset int) (ans VideoGetAns, err error) 
 	return
 }
 
+// ScriptMultiVideoGet - Получаем видео сообщества или пользователя. (execute)
+func (vk *API) ScriptMultiVideoGet(arr []map[string]interface{}) (ans MultiVideoGetAns, err error) {
+	b, err := json.Marshal(arr)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	script := fmt.Sprintf(`
+		var arr     = %s;
+		var rq_data = [];
+		var videos  = [];
+		var limit   = 200;
+	
+		while(arr.length > 0) {
+			var h   = arr.shift();
+			var res = API.video.get({ 
+				owner_id   : h.owner_id,
+				count      : limit,
+				extended   : 1,
+			}); 
+
+			if(res.count) {
+				res.offset = limit;
+				videos.push(res);
+		 		rq_data.push(h);
+			}
+		}
+
+		var result = {
+			items   : videos,
+			rq_data : rq_data,
+		};
+		
+		return result;
+	`, b)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
 // ScriptVideoGetComments - Получаем комментарии к видео. (execute)
 func (vk *API) ScriptVideoGetComments(ownerID, videoID, startCommentID int) (ans VideoGetCommentsAns, err error) {
 
@@ -986,6 +1042,64 @@ func (vk *API) ScriptVideoGetComments(ownerID, videoID, startCommentID int) (ans
 		
 		return result;
 	`, ownerID, videoID, startCommentID)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
+// ScriptMultiVideoGetComments - Получаем комментарии к нескольким видео. (execute)
+func (vk *API) ScriptMultiVideoGetComments(arr []map[string]interface{}) (ans MultiVideoGetCommentsAns, err error) {
+	b, err := json.Marshal(arr)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	script := fmt.Sprintf(`
+		var arr      = %s;
+		var rq_data  = [];
+		var comments = [];
+		var limit    = 100;
+
+		while(arr.length > 0) {
+			var h   = arr.shift();
+			var res = API.video.getComments({ 
+				owner_id   : h.owner_id,
+				video_id   : h.video_id,
+				need_likes : 1,
+				sort       : "desc",
+				count      : limit
+			});
+
+			if(res.count) {
+				res.offset = limit;
+				comments.push(res);
+		 		rq_data.push(h);
+			}
+		}
+
+		var result = {
+			items   : comments,
+			rq_data : rq_data,
+		};
+		
+		return result;
+	`, b)
 
 	r, err := vk.Execute(script)
 	if err != nil {
