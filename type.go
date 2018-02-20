@@ -169,6 +169,12 @@ type WallGetAns struct {
 	Items []WallGetByIDAns `json:"items"`
 }
 
+// MultiWallGetAns - объект списка постов нескольких сообществ или людей
+type MultiWallGetAns struct {
+	RqData []map[string]interface{} `json:"rq_data"`
+	Items  []WallGetAns             `json:"items"`
+}
+
 // WallGetByIDAns - обект постов
 type WallGetByIDAns struct {
 	ID           int              `json:"id"`
