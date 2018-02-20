@@ -1234,6 +1234,65 @@ func (vk *API) ScriptPhotosGet(ownerID, albumID, offset int) (ans PhotosGetAns, 
 	return
 }
 
+// ScriptMultiPhotosGet - Получаем фото из альбома. (execute)
+func (vk *API) ScriptMultiPhotosGet(arr []map[string]interface{}) (ans MultiPhotosGetAns, err error) {
+	b, err := json.Marshal(arr)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	script := fmt.Sprintf(`
+		var arr     = %s;
+		var rq_data = [];
+		var photos  = [];
+		var limit   = 1000;
+
+
+		while(arr.length > 0) {
+			var h   = arr.shift();
+			var res = API.photos.get({ 
+				owner_id : h.owner_id,
+				album_id : h.album_id,
+				rev      : 1,
+				extended : 1,
+				count    : limit,
+			});
+
+			if(res.count) {
+				res.offset = limit;
+				photos.push(res);
+		 		rq_data.push(h);
+			}
+		}
+
+		var result = {
+			items   : photos,
+			rq_data : rq_data,
+		};
+		
+		return result;
+	`, b)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
 // ScriptPhotosGetComments - Получаем комментарии фото. (execute)
 func (vk *API) ScriptPhotosGetComments(ownerID, photoID, StartCommentID int) (ans PhotosGetCommentsAns, err error) {
 

@@ -401,6 +401,12 @@ type PhotosGetAns struct {
 	Items  []PhotosGetItem `json:"items"`
 }
 
+// MultiPhotosGetAns - объект списка фотографий из разных альбомов
+type MultiPhotosGetAns struct {
+	RqData []map[string]interface{} `json:"rq_data"`
+	Items  []PhotosGetAns           `json:"items"`
+}
+
 // PhotosGetItem - объект фотографии
 type PhotosGetItem struct {
 	ID        int         `json:"id"`
