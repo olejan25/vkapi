@@ -458,8 +458,8 @@ func (vk *API) ScriptWallGetComments(ownerID, postID, startCommentID int) (ans W
 }
 
 // ScriptMultiWallGetComments - Получаем комментарии нескольких постов. (execute)
-func (vk *API) ScriptMultiWallGetComments(h []map[string]int) (ans WallGetCommentsAns, err error) {
-	b, err := json.Marshal(h)
+func (vk *API) ScriptMultiWallGetComments(arr []map[string]interface{}) (ans WallGetCommentsAns, err error) {
+	b, err := json.Marshal(arr)
 	if err != nil {
 		log.Println("[error]", err)
 		return
@@ -493,7 +493,7 @@ func (vk *API) ScriptMultiWallGetComments(h []map[string]int) (ans WallGetCommen
 		};
 		
 		return result;
-	`, string(b))
+	`, b)
 
 	r, err := vk.Execute(script)
 	if err != nil {
@@ -528,6 +528,7 @@ func (vk *API) ScriptLikesGetList(ownerID, itemID int, t, filter, pageURL string
 		var cnt   = 25;
 		var count = offset + 1;
 		var users = [];
+		var limit = 1000;
 
 		while(cnt > 0 && offset < count){
 			var res = API.likes.getList({ 
@@ -537,14 +538,14 @@ func (vk *API) ScriptLikesGetList(ownerID, itemID int, t, filter, pageURL string
 				filter   : filter,
 				page_url : page_url,
 				offset   : offset,
-				count    : 1000
+				count    : limit
 			}); 
 			cnt = cnt - 1;
 
 			if(res.count) {
 				count  = res.count; 
 				users  = users + res.items;
-				offset = offset + 1000;
+				offset = offset + limit;
 			}
 			else {
 				cnt = 0;
@@ -559,6 +560,64 @@ func (vk *API) ScriptLikesGetList(ownerID, itemID int, t, filter, pageURL string
 		
 		return result;
 	`, ownerID, itemID, t, filter, pageURL, offset)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
+// ScriptMultiLikesGetList - Получаем лайки у нескольких объектов. (execute)
+func (vk *API) ScriptMultiLikesGetList(arr []map[string]interface{}) (ans LikesGetListAns, err error) {
+	b, err := json.Marshal(arr)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	script := fmt.Sprintf(`
+		var arr     = %s;
+		var users   = [];
+		var rq_data = [];
+		var limit   = 1000;
+
+		while(arr.length > 0) {
+			var h   = arr.shift();
+			var res = API.likes.getList({ 
+				owner_id : h.owner_id, 
+				item_id  : h.item_id,
+				type     : h.type,
+				filter   : h.filter,
+				page_url : h.page_url,
+				count    : limit
+			}); 
+
+			if(res.count) {
+				users = users + res.items;
+				rq_data.push(h);
+			}
+		}
+
+		var result = {
+			items   : users,
+			rq_data : rq_data,
+		};
+		
+		return result;
+	`, b)
 
 	r, err := vk.Execute(script)
 	if err != nil {

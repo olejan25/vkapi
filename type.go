@@ -245,10 +245,10 @@ type LikeData struct {
 
 // WallGetCommentsAns - объект комментариев
 type WallGetCommentsAns struct {
-	Count  int                   `json:"count"`
-	Offset int                   `json:"offset"`
-	RqData []map[string]int      `json:"rq_data"`
-	Items  []WallGetCommentsItem `json:"items"`
+	Count  int                      `json:"count"`
+	Offset int                      `json:"offset"`
+	RqData []map[string]interface{} `json:"rq_data"`
+	Items  []WallGetCommentsItem    `json:"items"`
 }
 
 // WallGetCommentsItem - объект комментария
@@ -269,9 +269,10 @@ type WallGetCommentsItem struct {
 
 // LikesGetListAns - объект лайков
 type LikesGetListAns struct {
-	Count  int   `json:"count"`
-	Offset int   `json:"offset"`
-	Items  []int `json:"items"`
+	Count  int                      `json:"count"`
+	Offset int                      `json:"offset"`
+	RqData []map[string]interface{} `json:"rq_data"`
+	Items  []int                    `json:"items"`
 }
 
 /*
