@@ -373,6 +373,12 @@ type PhotosGetAlbumsAns struct {
 	Items []PhotosGetAlbumsItem `json:"items"`
 }
 
+// MultiPhotosGetAlbumsAns - объект списка альбомов
+type MultiPhotosGetAlbumsAns struct {
+	RqData []map[string]interface{} `json:"rq_data"`
+	Items  []PhotosGetAlbumsAns     `json:"items"`
+}
+
 // PhotosGetAlbumsItem - объект альбома
 type PhotosGetAlbumsItem struct {
 	ID                 int    `json:"id"`

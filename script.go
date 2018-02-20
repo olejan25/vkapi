@@ -1120,6 +1120,58 @@ func (vk *API) ScriptMultiVideoGetComments(arr []map[string]interface{}) (ans Mu
 	return
 }
 
+// ScriptMultiPhotosGetAlbums - Получаем фото альбомы. (execute)
+func (vk *API) ScriptMultiPhotosGetAlbums(arr []map[string]interface{}) (ans MultiPhotosGetAlbumsAns, err error) {
+	b, err := json.Marshal(arr)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	script := fmt.Sprintf(`
+		var arr     = %s;
+		var rq_data = [];
+		var albums  = [];
+	
+		while(arr.length > 0) {
+			var h   = arr.shift();
+			var res = API.photos.getAlbums({ 
+				owner_id : h.owner_id,
+			}); 
+
+			if(res.count) {
+				albums.push(res);
+		 		rq_data.push(h);
+			}
+		}
+
+		var result = {
+			items   : albums,
+			rq_data : rq_data,
+		};
+		
+		return result;
+	`, b)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
 // ScriptPhotosGet - Получаем фото из альбома. (execute)
 func (vk *API) ScriptPhotosGet(ownerID, albumID, offset int) (ans PhotosGetAns, err error) {
 
