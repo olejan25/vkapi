@@ -354,7 +354,7 @@ type BoardGetCommentsAns struct {
 // MultiBoardGetCommentsAns - объект списка комментариев нескольких обсуждения
 type MultiBoardGetCommentsAns struct {
 	RqData []map[string]interface{} `json:"rq_data"`
-	Items  []WallGetCommentsItem    `json:"items"`
+	Items  [][]WallGetCommentsItem  `json:"items"`
 }
 
 /*
