@@ -457,6 +457,60 @@ func (vk *API) ScriptWallGetComments(ownerID, postID, startCommentID int) (ans W
 	return
 }
 
+// ScriptMultiWallGetComments - Получаем комментарии нескольких постов. (execute)
+func (vk *API) ScriptMultiWallGetComments(h []map[string]int) (ans WallGetCommentsAns, err error) {
+	b, err := json.Marshal(h)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	script := fmt.Sprintf(`
+		var arr      = %s;
+		var comments = [];
+		var limit    = 100;
+
+		while(arr.length > 0) {
+			var h   = arr.shift();
+			var res = API.wall.getComments({ 
+				owner_id   : h.owner_id, 
+				post_id    : h.post_id,
+				sort       : "desc",
+				need_likes : 1,
+				count      : limit
+			}); 
+
+			if(res.count) {
+				comments = comments + res.items;
+			}
+		}
+
+		var result = {
+			items : comments
+		};
+		
+		return result;
+	`, string(b))
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
 // ScriptLikesGetList - Получаем лайки. (execute)
 func (vk *API) ScriptLikesGetList(ownerID, itemID int, t, filter, pageURL string, offset int) (ans LikesGetListAns, err error) {
 
