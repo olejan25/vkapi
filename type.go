@@ -250,8 +250,8 @@ type WallGetCommentsAns struct {
 	Items  []WallGetCommentsItem `json:"items"`
 }
 
-// WallMultiGetCommentsAns - объект комментариев для выборки из нескольких сообществ
-type WallMultiGetCommentsAns struct {
+// MultiWallGetCommentsAns - объект комментариев для выборки из нескольких сообществ
+type MultiWallGetCommentsAns struct {
 	RqData []map[string]interface{} `json:"rq_data"`
 	Items  [][]WallGetCommentsItem  `json:"items"`
 }
