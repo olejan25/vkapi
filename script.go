@@ -1472,3 +1472,55 @@ func (vk *API) ScriptMultiPhotosGetComments(arr []map[string]interface{}) (ans M
 
 	return
 }
+
+// ScriptMultiUsersGetSubscriptions - Получаем подписки нескольких людей. (execute)
+func (vk *API) ScriptMultiUsersGetSubscriptions(arr []map[string]interface{}) (ans MultiUsersGetSubscriptionsAns, err error) {
+	b, err := json.Marshal(arr)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	script := fmt.Sprintf(`
+		var arr           = %s;
+		var rq_data       = [];
+		var subscriptions = [];
+
+		while(arr.length > 0) {
+			var h   = arr.shift();
+			var res = API.users.getSubscriptions({ 
+				user_id : h.user_id,
+			});
+
+			if(res.users.count || res.groups.count) {
+				subscriptions.push(res);
+		 		rq_data.push(h);
+			}
+		}
+
+		var result = {
+			items   : subscriptions,
+			rq_data : rq_data,
+		};
+		
+		return result;
+	`, b)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}

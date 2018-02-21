@@ -84,6 +84,26 @@ type UsersGetAns struct {
 	Role      string `json:"role"`
 }
 
+// UsersGetSubscriptionsAns - объект списка подписок человека
+type UsersGetSubscriptionsAns struct {
+	Count  int            `json:"count"`
+	Items  []GroupsGetAns `json:"items"`
+	Users  CountInt       `json:"users"`
+	Groups CountInt       `json:"groups"`
+}
+
+// CountInt - объект из списка идентификаторов и их кол-ва
+type CountInt struct {
+	Count int   `json:"count"`
+	Items []int `json:"items"`
+}
+
+// MultiUsersGetSubscriptionsAns - объект списка подписок человеков
+type MultiUsersGetSubscriptionsAns struct {
+	RqData []map[string]interface{}   `json:"rq_data"`
+	Items  []UsersGetSubscriptionsAns `json:"items"`
+}
+
 /*
 	Groups
 */
