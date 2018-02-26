@@ -64,9 +64,9 @@ func (vk *API) ScriptWallGetByID(posts []string) (ans []WallGetByIDAns, err erro
 }
 
 // ScriptGroupsGetByID - Получаем группы по их ID (execute)
-func (vk *API) ScriptGroupsGetByID(groupsID []string, fields string) (ans []GroupsGetAns, err error) {
+func (vk *API) ScriptGroupsGetByID(groupIDs []string, fields string) (ans []GroupsGetAns, err error) {
 	// Разбиваем посты на нужное кол-во
-	arr := chunkSliceString(groupsID, 500)
+	arr := chunkSliceString(groupIDs, 500)
 	// Формируем массив для запроса
 	tmpArr := make([]string, len(arr))
 	for i, v := range arr {
@@ -1526,9 +1526,9 @@ func (vk *API) ScriptMultiUsersGetSubscriptions(arr []map[string]interface{}) (a
 }
 
 // ScriptUsersGet - Получаем пользователей по ID (execute)
-func (vk *API) ScriptUsersGet(usersID []string, fields string) (ans []UsersGetAns, err error) {
+func (vk *API) ScriptUsersGet(userIDs []string, fields string) (ans []UsersGetAns, err error) {
 	// Разбиваем посты на нужное кол-во
-	arr := chunkSliceString(usersID, 1000)
+	arr := chunkSliceString(userIDs, 1000)
 	// Формируем массив для запроса
 	tmpArr := make([]string, len(arr))
 	for i, v := range arr {
