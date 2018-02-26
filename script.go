@@ -64,9 +64,9 @@ func (vk *API) ScriptWallGetByID(posts []string) (ans []WallGetByIDAns, err erro
 }
 
 // ScriptGroupsGetByID - Получаем группы по их ID (execute)
-func (vk *API) ScriptGroupsGetByID(groupIds []string, fields string) (ans []GroupsGetAns, err error) {
+func (vk *API) ScriptGroupsGetByID(groupsID []string, fields string) (ans []GroupsGetAns, err error) {
 	// Разбиваем посты на нужное кол-во
-	arr := chunkSliceString(groupIds, 500)
+	arr := chunkSliceString(groupsID, 500)
 	// Формируем массив для запроса
 	tmpArr := make([]string, len(arr))
 	for i, v := range arr {
@@ -1505,6 +1505,61 @@ func (vk *API) ScriptMultiUsersGetSubscriptions(arr []map[string]interface{}) (a
 		
 		return result;
 	`, b)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
+// ScriptUsersGet - Получаем пользователей по ID (execute)
+func (vk *API) ScriptUsersGet(usersID []string, fields string) (ans []UsersGetAns, err error) {
+	// Разбиваем посты на нужное кол-во
+	arr := chunkSliceString(usersID, 1000)
+	// Формируем массив для запроса
+	tmpArr := make([]string, len(arr))
+	for i, v := range arr {
+		tmpArr[i] = strings.Join(v, ",")
+	}
+
+	b, err := json.Marshal(tmpArr)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	script := fmt.Sprintf(`
+		var fields = "%s";
+		var arr    = %s;
+		var ans    = [];
+
+		while(arr.length > 0) {
+			var str = arr.shift();
+			var res = API.users.get({
+				user_ids: str,
+				fields: fields,
+			});
+
+			if(res) {
+				ans = ans + res;
+			}
+		}
+
+		return ans;
+	`, fields, b)
 
 	r, err := vk.Execute(script)
 	if err != nil {

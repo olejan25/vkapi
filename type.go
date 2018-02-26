@@ -74,14 +74,15 @@ type GetTokenAns struct {
 
 // UsersGetAns - объект ответа при запросе пользователей
 type UsersGetAns struct {
-	ID        int    `json:"id"`
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
-	Photo100  string `json:"photo_100"`
-	Site      string `json:"site"`
-	Sex       int    `json:"sex"`
-	Status    string `json:"status"`
-	Role      string `json:"role"`
+	ID             int    `json:"id"`
+	FirstName      string `json:"first_name"`
+	LastName       string `json:"last_name"`
+	Photo100       string `json:"photo_100"`
+	Site           string `json:"site"`
+	Sex            int    `json:"sex"`
+	Status         string `json:"status"`
+	Role           string `json:"role"`
+	FollowersCount int    `json:"followers_count"`
 }
 
 // UsersGetSubscriptionsAns - объект списка подписок человека
