@@ -1492,7 +1492,7 @@ func (vk *API) ScriptMultiUsersGetSubscriptions(arr []map[string]interface{}) (a
 				user_id : h.user_id,
 			});
 
-			if(res.users.count || res.groups.count) {
+			if(res) {
 				subscriptions.push(res);
 		 		rq_data.push(h);
 			}
