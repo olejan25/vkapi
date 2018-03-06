@@ -1434,7 +1434,7 @@ func (vk *API) ScriptPhotosGetByID(photos []string) (ans PhotosGetAns, err error
 		while(arr.length > 0) {
 			var str = arr.shift();
 
-			var res = API.photos.get({
+			var res = API.photos.getById({
 				photos:   str,
 				extended: 1,
 			});
