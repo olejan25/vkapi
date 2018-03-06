@@ -1053,7 +1053,7 @@ func (vk *API) ScriptMultiVideoGet(arr []map[string]interface{}) (ans MultiVideo
 }
 
 //ScriptVideoGetByID - Получаем список видео по их ID (execute)
-func (vk *API) ScriptVideoGetByID(videos []string) (ans []VideoGetAns, err error) {
+func (vk *API) ScriptVideoGetByID(videos []string) (ans VideoGetAns, err error) {
 	// Разбиваем посты на нужное кол-во
 	arr := chunkSliceString(videos, 100)
 	// Формируем массив для запроса
