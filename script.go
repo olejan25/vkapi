@@ -1052,6 +1052,68 @@ func (vk *API) ScriptMultiVideoGet(arr []map[string]interface{}) (ans MultiVideo
 	return
 }
 
+//ScriptVideoGetByID - Получаем список видео по их ID (execute)
+func (vk *API) ScriptVideoGetByID(videos []string) (ans []VideoGetAns, err error) {
+	// Разбиваем посты на нужное кол-во
+	arr := chunkSliceString(videos, 100)
+	// Формируем массив для запроса
+	tmpArr := make([]string, len(arr))
+	for i, v := range arr {
+		tmpArr[i] = strings.Join(v, ",")
+	}
+
+	b, err := json.Marshal(tmpArr)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	script := fmt.Sprintf(`
+		var arr    = %s;
+		var videos = [];
+		var count  = 0;
+
+		while(arr.length > 0) {
+			var str = arr.shift();
+
+			var res = API.video.get({
+				videos:   str,
+				extended: 1,
+			});
+
+			if(res.count) {
+				count = res.count;
+				videos = videos + res.items;
+			}
+		}
+
+		var ans = {
+			count: count,
+			items: videos,
+		};
+
+		return ans;
+	`, b)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
 // ScriptVideoGetComments - Получаем комментарии к видео. (execute)
 func (vk *API) ScriptVideoGetComments(ownerID, videoID, startCommentID int) (ans VideoGetCommentsAns, err error) {
 
