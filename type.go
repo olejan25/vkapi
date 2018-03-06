@@ -106,6 +106,15 @@ type MultiUsersGetSubscriptionsAns struct {
 }
 
 /*
+	Friends
+*/
+
+type ScriptMultiFriendsGetAns struct {
+	RqData []map[string]interface{}    `json:"rq_data"`
+	Items  []ScriptGroupsGetMembersAns `json:"items"`
+}
+
+/*
 	Groups
 */
 

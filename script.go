@@ -391,6 +391,60 @@ func (vk *API) ScriptFriendsGet(userID, offset int) (ans ScriptGroupsGetMembersA
 	return
 }
 
+// ScriptMultiFriendsGet - Получаем друзей человеков. (execute)
+func (vk *API) ScriptMultiFriendsGet(arr []map[string]interface{}) (ans ScriptMultiFriendsGetAns, err error) {
+	b, err := json.Marshal(arr)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	script := fmt.Sprintf(`
+		var arr     = %s;
+		var users   = [];
+		var rq_data = [];
+		var limit   = 100;
+
+		while(arr.length > 0) {
+			var h   = arr.shift();
+			var res = API.friends.get({
+				user_id : h.user_id,
+				count   : 5000
+			}); 
+
+			if(res.count) {
+				users = users + res.items;
+				rq_data.push(h);
+			}
+		}
+
+		var result = {
+			items   : users,
+			rq_data : rq_data,
+		};
+		
+		return result;
+	`, b)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
 // ScriptMultiWallGet - Получаем посты разных сообществ и людей. (execute)
 func (vk *API) ScriptMultiWallGet(arr []map[string]interface{}) (ans MultiWallGetAns, err error) {
 	b, err := json.Marshal(arr)
