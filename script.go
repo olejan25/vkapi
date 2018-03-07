@@ -413,7 +413,7 @@ func (vk *API) ScriptMultiFriendsGet(arr []map[string]interface{}) (ans ScriptMu
 			}); 
 
 			if(res.count) {
-				users = users + res.items;
+				users.push(res);
 				rq_data.push(h);
 			}
 		}
