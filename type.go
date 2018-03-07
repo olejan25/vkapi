@@ -74,15 +74,201 @@ type GetTokenAns struct {
 
 // UsersGetAns - объект ответа при запросе пользователей
 type UsersGetAns struct {
-	ID             int    `json:"id"`
-	FirstName      string `json:"first_name"`
-	LastName       string `json:"last_name"`
-	Photo100       string `json:"photo_100"`
-	Site           string `json:"site"`
-	Sex            int    `json:"sex"`
-	Status         string `json:"status"`
-	Role           string `json:"role"`
-	FollowersCount int    `json:"followers_count"`
+	ID                     int                `json:"id"`
+	FirstName              string             `json:"first_name"`
+	LastName               string             `json:"last_name"`
+	About                  string             `json:"about"`
+	Activities             string             `json:"activities"`
+	Bdate                  string             `json:"bdate"`
+	Blacklisted            int                `json:"blacklisted"`
+	BlacklistedByMe        int                `json:"blacklisted_by_me"`
+	Books                  string             `json:"books"`
+	CanPost                int                `json:"can_post"`
+	CanSeeAllPosts         int                `json:"can_see_all_posts"`
+	CanSeeAudio            int                `json:"can_see_audio"`
+	CanSendFriendRequest   int                `json:"can_send_friend_request"`
+	CanWritePrivateMessage int                `json:"can_write_private_message"`
+	Career                 UserCareer         `json:"career"`
+	City                   City               `json:"city"`
+	CommonCount            int                `json:"common_count"`
+	Skype                  string             `json:"skype"`
+	Facebook               string             `json:"facebook"`
+	Twitter                string             `json:"twitter"`
+	Livejournal            string             `json:"livejournal"`
+	Instagram              string             `json:"instagram"`
+	Contacts               UserContacts       `json:"contacts"`
+	Counters               UserCounters       `json:"counters"`
+	Country                City               `json:"country"`
+	Domain                 string             `json:"domain"`
+	Education              UserEducation      `json:"education"`
+	FollowersCount         int                `json:"followers_count"`
+	FriendStatus           int                `json:"friend_status"`
+	Games                  string             `json:"games"`
+	HasMobile              int                `json:"has_mobile"`
+	HasPhoto               int                `json:"has_photo"`
+	HomeTown               string             `json:"home_town"`
+	Interests              string             `json:"interests"`
+	IsFavorite             int                `json:"is_favorite"`
+	IsFriend               int                `json:"is_friend"`
+	IsHiddenFromFeed       int                `json:"is_hidden_from_feed"`
+	LastSeen               UserLastSeen       `json:"last_seen"`
+	Lists                  string             `json:"lists"`
+	MaidenName             string             `json:"maiden_name"`
+	Military               UserMilitary       `json:"military"`
+	Movies                 string             `json:"movies"`
+	Music                  string             `json:"music"`
+	Nickname               string             `json:"nickname"`
+	Occupation             UserOccupation     `json:"occupation"`
+	Online                 int                `json:"online"`
+	Personal               UserPersonal       `json:"personal"`
+	Photo50                string             `json:"photo_50"`
+	Photo100               string             `json:"photo_100"`
+	Photo200Orig           string             `json:"photo_200_orig"`
+	Photo200               string             `json:"photo_200"`
+	Photo400Orig           string             `json:"photo_400_orig"`
+	PhotoID                string             `json:"photo_id"`
+	PhotoMax               string             `json:"photo_max"`
+	PhotoMaxOrig           string             `json:"photo_max_orig"`
+	Quotes                 string             `json:"quotes"`
+	Relatives              []UserRelatives    `json:"relatives"`
+	Relation               int                `json:"relation"`
+	Schools                []UserSchools      `json:"schools"`
+	ScreenName             string             `json:"screen_name"`
+	Sex                    int                `json:"sex"`
+	Site                   string             `json:"site"`
+	Status                 string             `json:"status"`
+	Timezone               int                `json:"timezone"`
+	Trending               int                `json:"trending"`
+	Tv                     string             `json:"tv"`
+	Universities           []UserUniversities `json:"universities"`
+	Verified               int                `json:"verified"`
+	Role                   string             `json:"role"`
+}
+
+// UserCareer - Объект информации о карьере человека
+type UserCareer struct {
+	GroupID   int    `json:"group_id"`
+	Company   string `json:"company"`
+	CountryID int    `json:"country_id"`
+	CityID    int    `json:"city_id"`
+	CityName  string `json:"city_name"`
+	From      int    `json:"from"`
+	Until     int    `json:"until"`
+	Position  string `json:"position"`
+}
+
+// UserUniversities - информация о университете
+type UserUniversities struct {
+	ID              int    `json:"id"`
+	Country         int    `json:"country"`
+	City            int    `json:"city"`
+	Name            string `json:"name"`
+	Faculty         int    `json:"faculty"`
+	FacultyName     string `json:"faculty_name"`
+	Chair           int    `json:"chair"`
+	ChairName       string `json:"chair_name"`
+	Graduation      int    `json:"graduation"`
+	EducationForm   string `json:"education_form"`
+	EducationStatus string `json:"education_status"`
+}
+
+// UserSchools - информация о школе веловека
+type UserSchools struct {
+	ID            int    `json:"id"`
+	Country       int    `json:"country"`
+	City          int    `json:"city"`
+	Name          string `json:"name"`
+	YearFrom      int    `json:"year_from"`
+	YearTo        int    `json:"year_to"`
+	YearGraduated int    `json:"year_graduated"`
+	Class         string `json:"class"`
+	Speciality    string `json:"speciality"`
+	Type          int    `json:"type"`
+	TypeStr       string `json:"type_str"`
+}
+
+// UserRelatives - объект с информацией о родвственнике человека
+type UserRelatives struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+	Type string `json:"type"`
+}
+
+// UserPersonal - Объект информации о жизненной позиции человека
+type UserPersonal struct {
+	Political  int      `json:"political"`
+	Langs      []string `json:"langs"`
+	Religion   string   `json:"religion"`
+	InspiredBy string   `json:"inspired_by"`
+	PeopleMain int      `json:"people_main"`
+	LifeMain   int      `json:"life_main"`
+	Smoking    int      `json:"smoking"`
+	Alcohol    int      `json:"alcohol"`
+}
+
+// UserOccupation - Объект информации о текущем занятии человека
+type UserOccupation struct {
+	Type string `json:"type"`
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+}
+
+// UserMilitary - информация о военной службе
+type UserMilitary struct {
+	Unit      string `json:"unit"`
+	UnitID    int    `json:"unit_id"`
+	CountryID int    `json:"country_id"`
+	From      int    `json:"from"`
+	Until     int    `json:"until"`
+}
+
+// UserLastSeen - Информация о последнем посещении
+type UserLastSeen struct {
+	Time     int `json:"time"`
+	Platform int `json:"platform"`
+}
+
+// UserEducation - объект информации об университете человека
+type UserEducation struct {
+	University     int    `json:"university"`
+	UniversityName string `json:"university_name"`
+	Faculty        int    `json:"faculty"`
+	FacultyName    string `json:"faculty_name"`
+	Graduation     int    `json:"graduation"`
+}
+
+// UserContacts - Объект контактов человека
+type UserContacts struct {
+	MobilePhone string `json:"mobile_phone"`
+	HomePhone   string `json:"home_phone"`
+}
+
+// UserCounters - объект счетчиков человека
+type UserCounters struct {
+	Albums        int `json:"albums"`
+	Videos        int `json:"videos"`
+	Audios        int `json:"audios"`
+	Photos        int `json:"photos"`
+	Notes         int `json:"notes"`
+	Friends       int `json:"friends"`
+	Groups        int `json:"groups"`
+	OnlineFriends int `json:"online_friends"`
+	MutualFriends int `json:"mutual_friends"`
+	UserVideos    int `json:"user_videos"`
+	Followers     int `json:"followers"`
+	Pages         int `json:"pages"`
+}
+
+// City - Объект с информацией о городе
+type City struct {
+	ID    int    `json:"id"`
+	Title string `json:"title"`
+}
+
+// UsersMultiGetAns - объект списка информации о пользователях
+type UsersMultiGetAns struct {
+	RqData []map[string]interface{} `json:"rq_data"`
+	Items  []UsersGetAns            `json:"items"`
 }
 
 // UsersGetSubscriptionsAns - объект списка подписок человека
@@ -109,6 +295,7 @@ type MultiUsersGetSubscriptionsAns struct {
 	Friends
 */
 
+// ScriptMultiFriendsGetAns - Объект списка друзей для нескольких человек
 type ScriptMultiFriendsGetAns struct {
 	RqData []map[string]interface{}    `json:"rq_data"`
 	Items  []ScriptGroupsGetMembersAns `json:"items"`

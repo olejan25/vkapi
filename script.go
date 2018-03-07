@@ -1755,3 +1755,56 @@ func (vk *API) ScriptUsersGet(userIDs []string, fields string) (ans []UsersGetAn
 
 	return
 }
+
+// ScriptMultiUsersGet - Получаем пользователей по ID (execute)
+func (vk *API) ScriptMultiUsersGet(arr []map[string]interface{}) (ans []UsersMultiGetAns, err error) {
+	b, err := json.Marshal(arr)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	script := fmt.Sprintf(`
+		var arr     = %s;
+		var rq_data = [];
+		var users   = [];
+
+		while(arr.length > 0) {
+			var h   = arr.shift();
+			var res = API.users.get({
+				user_ids : h.user_ids,
+				fields   : h.fields,
+			});
+
+			if(res) {
+				users.push(res);
+				rq_data.push(h);
+			}
+		}
+
+		var result = {
+			items   : users,
+			rq_data : rq_data,
+		};
+		
+		return result;
+	`, b)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
