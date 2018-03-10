@@ -1757,7 +1757,7 @@ func (vk *API) ScriptUsersGet(userIDs []string, fields string) (ans []UsersGetAn
 }
 
 // ScriptMultiUsersGet - Получаем пользователей по ID (execute)
-func (vk *API) ScriptMultiUsersGet(arr []map[string]interface{}) (ans []ScriptUsersMultiGetAns, err error) {
+func (vk *API) ScriptMultiUsersGet(arr []map[string]interface{}) (ans ScriptUsersMultiGetAns, err error) {
 	b, err := json.Marshal(arr)
 	if err != nil {
 		log.Println("[error]", err)
