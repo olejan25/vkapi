@@ -1777,7 +1777,7 @@ func (vk *API) ScriptMultiUsersGet(arr []map[string]interface{}) (ans []ScriptUs
 			});
 
 			if(res) {
-				users.push(res);
+				users = users + res;
 				rq_data.push(h);
 			}
 		}
