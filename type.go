@@ -265,8 +265,8 @@ type City struct {
 	Title string `json:"title"`
 }
 
-// UsersMultiGetAns - объект списка информации о пользователях
-type UsersMultiGetAns struct {
+// ScriptUsersMultiGetAns - объект списка информации о пользователях
+type ScriptUsersMultiGetAns struct {
 	RqData []map[string]interface{} `json:"rq_data"`
 	Items  []UsersGetAns            `json:"items"`
 }
