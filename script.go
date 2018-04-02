@@ -287,19 +287,20 @@ func (vk *API) ScriptUsersGetFollowers(userID, offset int) (ans ScriptGroupsGetM
 		var cnt   = 25;
 		var count = offset + 1;
 		var users = [];
+		var limit = 1000;
 
 		while(cnt > 0 && offset < count){
 			var res = API.users.getFollowers({ 
 				user_id : user_id, 
 				offset  : offset, 
-				count   : 1000
+				count   : limit
 			}); 
 			cnt = cnt - 1;
 
 			if(res.count) {
 				count  = res.count; 
 				users  = users + res.items;
-				offset = offset + 1000;
+				offset = offset + limit;
 			}
 			else {
 				cnt = 0;
@@ -314,6 +315,61 @@ func (vk *API) ScriptUsersGetFollowers(userID, offset int) (ans ScriptGroupsGetM
 		
 		return result;
 	`, userID, offset)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
+// ScriptMultiUsersGetFollowers - Получаем подписчиков человека. (execute)
+func (vk *API) ScriptMultiUsersGetFollowers(arr []map[string]interface{}) (ans ScriptMultiFriendsGetAns, err error) {
+	b, err := json.Marshal(arr)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	script := fmt.Sprintf(`
+		var arr     = %s;
+		var users   = [];
+		var rq_data = [];
+		var limit   = 1000;
+
+		while(arr.length > 0) {
+			var h   = arr.shift();
+			var res = API.users.getFollowers({ 
+				user_id : h.user_id, 
+				count   : limit
+			}); 
+
+			if(res.count) {
+				res.offset = limit;
+				users.push(res);
+				rq_data.push(h);
+			}
+		}
+
+		var result = {
+			items   : users,
+			rq_data : rq_data,
+		};
+		
+		return result;
+	`, b)
 
 	r, err := vk.Execute(script)
 	if err != nil {
@@ -403,17 +459,17 @@ func (vk *API) ScriptMultiFriendsGet(arr []map[string]interface{}) (ans ScriptMu
 		var arr     = %s;
 		var users   = [];
 		var rq_data = [];
-		var limit   = 100;
+		var limit   = 5000;
 
 		while(arr.length > 0) {
 			var h   = arr.shift();
 			var res = API.friends.get({
 				user_id : h.user_id,
-				count   : 5000
+				count   : limit
 			}); 
 
 			if(res.count) {
-				res.offset = 5000;
+				res.offset = limit;
 				users.push(res);
 				rq_data.push(h);
 			}
