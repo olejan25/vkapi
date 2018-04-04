@@ -153,10 +153,10 @@ func (vk *API) GroupsGetMembers(params map[string]string) (ans GroupsGetMembersA
 }
 
 // GroupsGetTokenPermissions - Получаем информацию о правах токена
-func (vk *API) GroupsGetTokenPermissions(params map[string]string) (ans GroupsGetTokenPermissionsAns, err error) {
+func (vk *API) GroupsGetTokenPermissions() (ans GroupsGetTokenPermissionsAns, err error) {
 
 	// Отправляем запрос
-	r, err := vk.request("groups.getTokenPermissions", params)
+	r, err := vk.request("groups.getTokenPermissions", map[string]string{})
 	if err != nil {
 		return
 	}
