@@ -356,6 +356,18 @@ type ScriptGroupsGetMembersAns struct {
 	Items  []int `json:"items"`
 }
 
+// GroupsGetTokenPermissionsAns - объект прав доступа сообщества
+type GroupsGetTokenPermissionsAns struct {
+	Mask     int                                    `json:"mask"`
+	Settings []GroupsGetTokenPermissionsAnsSettings `json:"settings"`
+}
+
+// GroupsGetTokenPermissionsAnsSettings - подробные права сообщества
+type GroupsGetTokenPermissionsAnsSettings struct {
+	Setting int    `json:"setting"`
+	Name    string `json:"name"`
+}
+
 /*
 	Stats
 */
