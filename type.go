@@ -421,6 +421,7 @@ type WallGetByIDAns struct {
 	CopyHistory  []WallGetByIDAns `json:"copy_history"`
 	IsPinned     int              `json:"is_pinned"`
 	MarkedAsAds  int              `json:"marked_as_ads"`
+	PostponedID  int              `json:"postponed_id"`
 }
 
 // Attachments - объект аттача
@@ -497,6 +498,14 @@ type WallGetCommentsItem struct {
 	ReplyToComment int           `json:"reply_to_comment"`
 	Attachments    []Attachments `json:"attachments"`
 	Likes          LikeData      `json:"likes"`
+	PhotoID        int           `json:"photo_id"`
+	PhotoOwnerID   int           `json:"photo_owner_id"`
+	VideoID        int           `json:"video_id"`
+	VideoOwnerID   int           `json:"video_owner_id"`
+	PostID         int           `json:"post_id"`
+	PostOwnerID    int           `json:"post_owner_id"`
+	MarketOwnerID  int           `json:"market_owner_id"`
+	ItemID         int           `json:"item_id"`
 }
 
 /*
@@ -579,6 +588,8 @@ type BoardGetTopicsItem struct {
 	Comments     int    `json:"comments"`
 	FirstComment int    `json:"first_comment"`
 	LastComment  int    `json:"last_comment"`
+	TopicID      int    `json:"topic_id"`
+	TopicOwnerID int    `json:"topic_owner_id"`
 }
 
 // BoardGetCommentsAns - объект списка комментариев обсуждения
@@ -717,6 +728,47 @@ type VideoGetCommentsAns struct {
 type MultiVideoGetCommentsAns struct {
 	Items  []VideoGetCommentsAns    `json:"items"`
 	RqData []map[string]interface{} `json:"rq_data"`
+}
+
+/*
+	Message
+*/
+
+// MessagesGetAns - объект сообщений
+type MessagesGetAns struct {
+	ID          int               `json:"id"`
+	UserID      int               `json:"user_id"`
+	FromID      int               `json:"from_id"`
+	Date        int               `json:"date"`
+	ReadState   int               `json:"read_state"`
+	Out         int               `json:"out"`
+	Title       string            `json:"title"`
+	Body        string            `json:"body"`
+	Geo         MessagesGetAnsGeo `json:"geo"`
+	Attachments []Attachments     `json:"attachments"`
+	Emoji       int               `json:"emoji"`
+	Important   int               `json:"important"`
+	Deleted     int               `json:"deleted"`
+	RandomID    int               `json:"random_id"`
+}
+
+// MessagesGetAnsGeo - объект места в сообщении
+type MessagesGetAnsGeo struct {
+	Type        string                 `json:"type"`
+	Coordinates string                 `json:"coordinates"`
+	Place       MessagesGetAnsGeoPlace `json:"place"`
+}
+
+// MessagesGetAnsGeoPlace - объект описание места
+type MessagesGetAnsGeoPlace struct {
+	ID        int     `json:"id"`
+	Title     string  `json:"title"`
+	Latitude  float64 `json:"latitude"`
+	Longitude float64 `json:"longitude"`
+	Created   int     `json:"created"`
+	Icon      string  `json:"icon"`
+	Country   string  `json:"country"`
+	City      string  `json:"city"`
 }
 
 /*
