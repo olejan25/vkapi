@@ -423,6 +423,25 @@ func (vk *API) MessagesSend(params map[string]string) (ans int, err error) {
 	return
 }
 
+// MessagesIsMessagesFromGroupAllowed - проверяем разрешена ли отправка сообщений от имени сообщества
+func (vk *API) MessagesIsMessagesFromGroupAllowed(params map[string]string) (ans MessagesIsMessagesFromGroupAllowedAns, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("messages.isMessagesFromGroupAllowed", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 /*
 	Utils
 */

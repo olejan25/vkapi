@@ -783,6 +783,11 @@ type MessagesGetAnsGeoPlace struct {
 	City      string  `json:"city"`
 }
 
+// MessagesIsMessagesFromGroupAllowedAns - объект проверки разрешена ли отправка сообщений
+type MessagesIsMessagesFromGroupAllowedAns struct {
+	IsAllowed int `json:"is_allowed"`
+}
+
 /*
 	Ads
 */
