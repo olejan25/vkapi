@@ -14,7 +14,7 @@ import (
 
 const (
 	// APIVersion - используемая версия API
-	APIVersion = "5.73"
+	APIVersion = "5.74"
 	// APIMethodURL - URL запросов к API
 	APIMethodURL = "https://api.vk.com/method/"
 	// APITokenURL - URL oauth авторизации
@@ -735,15 +735,6 @@ func (vk *API) fullRequest(method string, params map[string]string) (ans Respons
 
 // Ждем между запросами если вк ответил что запросы слишком частые
 func (vk *API) floodWait(method string) (ok bool) {
-	// Для некоторых методов повторять бессмысленно (https://vk.com/dev/data_limits)
-	if vk.retryCount >= 3 &&
-		(method == "wall.get" || method == "wall.search" || method == "newsfeed.search") {
-		// Сбрасываем счетчик ожидания
-		vk.Lock()
-		vk.retryCount = 0
-		vk.Unlock()
-		return
-	}
 
 	// Определяем сколько времени будет ждать
 	var sleepTime int
