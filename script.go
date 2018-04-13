@@ -1987,6 +1987,59 @@ func (vk *API) ScriptMarketGet(ownerID, albumID, offset int) (ans MarketGetAns, 
 	return
 }
 
+// ScriptMultiMarketGetByID - Получаем товары по ID (execute)
+func (vk *API) ScriptMultiMarketGetByID(arr []map[string]interface{}) (ans ScriptMultiMarketGetAns, err error) {
+	b, err := json.Marshal(arr)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	script := fmt.Sprintf(`
+		var arr     = %s;
+		var rq_data = [];
+		var goods   = [];
+
+		while(arr.length > 0) {
+			var h   = arr.shift();
+			var res = API.market.getById({
+				item_ids : h.item_ids,
+				extended : 1,
+			});
+
+			if(res) {
+				goods.push(res);
+				rq_data.push(h);
+			}
+		}
+
+		var result = {
+			items   : goods,
+			rq_data : rq_data,
+		};
+		
+		return result;
+	`, b)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 // ScriptMultiMarketGetComments - Получаем комментарии нескольких фото. (execute)
 func (vk *API) ScriptMultiMarketGetComments(arr []map[string]interface{}) (ans MultiMarketGetCommentsAns, err error) {
 	b, err := json.Marshal(arr)
