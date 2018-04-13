@@ -837,9 +837,9 @@ type MarketCategorySection struct {
 	Name string `json:"name"`
 }
 
-// MarketPrice - объект цены товара
+// MarketPrice - объект цены товара (BUG цена может быть строкой)
 type MarketPrice struct {
-	Amount   int                 `json:"amount"`
+	Amount   interface{}         `json:"amount"`
 	Currency MarketPriceCurrency `json:"currency"`
 	Text     string              `json:"text"`
 }
