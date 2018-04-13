@@ -643,12 +643,10 @@ func (vk *API) Execute(code string) (r Response, err error) {
 		return
 	}
 
-	/*
-		if len(r.ExecuteErrors) > 0 {
-			log.Println(code)
-			log.Println(r.ExecuteErrors)
-		}
-	*/
+	if len(r.ExecuteErrors) > 0 {
+		log.Println(code)
+		log.Println(r.ExecuteErrors)
+	}
 
 	return
 }
