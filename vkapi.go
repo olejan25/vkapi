@@ -644,8 +644,8 @@ func (vk *API) Execute(code string) (r Response, err error) {
 	}
 
 	if len(r.ExecuteErrors) > 0 {
-		log.Println(code)
-		log.Println(r.ExecuteErrors)
+		vk.ExecuteErrors = r.ExecuteErrors
+		vk.ExecuteCode = code
 	}
 
 	return

@@ -24,6 +24,8 @@ type API struct {
 	httpRetryCount int
 	ErrorToSkip    []string
 	sync.Mutex
+	ExecuteErrors []ExecuteErrors
+	ExecuteCode   string
 }
 
 // TokenData - объект получения токена
