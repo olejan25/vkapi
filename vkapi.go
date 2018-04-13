@@ -509,6 +509,29 @@ func (vk *API) UtilsResolveScreenName(params map[string]string) (ans UtilsResolv
 }
 
 /*
+	Market
+*/
+
+// MarketGet - получаем список товаров
+func (vk *API) MarketGet(params map[string]string) (ans MarketGetAns, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("market.get", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
+/*
 	Ads
 */
 

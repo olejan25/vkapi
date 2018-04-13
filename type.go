@@ -789,6 +789,74 @@ type MessagesIsMessagesFromGroupAllowedAns struct {
 }
 
 /*
+	Market
+*/
+
+// ScriptMultiMarketGetAns - Список объектов товаров
+type ScriptMultiMarketGetAns struct {
+	Items  []MarketGetAns           `json:"items"`
+	RqData []map[string]interface{} `json:"rq_data"`
+}
+
+// MarketGetAns - объетк списка товаров
+type MarketGetAns struct {
+	Count  int                `json:"count"`
+	Offset int                `json:"offset"`
+	Items  []MarketGetByIDAns `json:"items"`
+}
+
+// MarketGetByIDAns - объект товара
+type MarketGetByIDAns struct {
+	ID           int             `json:"id"`
+	OwnerID      int             `json:"owner_id"`
+	Title        string          `json:"title"`
+	Description  string          `json:"description"`
+	Price        MarketPrice     `json:"price"`
+	Category     MarketCategory  `json:"category"`
+	Date         int             `json:"date"`
+	ThumbPhoto   string          `json:"thumb_photo"`
+	Availability int             `json:"availability"`
+	AlbumsIDs    []int           `json:"albums_ids"`
+	Photos       []PhotosGetItem `json:"photos"`
+	CanComment   int             `json:"can_comment"`
+	CanRepost    int             `json:"can_repost"`
+	Likes        LikeData        `json:"likes"`
+	ViewsCount   int             `json:"views_count"`
+}
+
+// MarketCategory - объект категории
+type MarketCategory struct {
+	ID      int                   `json:"id"`
+	Name    string                `json:"name"`
+	Section MarketCategorySection `json:"section"`
+}
+
+// MarketCategorySection - объект секции категории товара
+type MarketCategorySection struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+}
+
+// MarketPrice - объект цены товара
+type MarketPrice struct {
+	Amount   int                 `json:"amount"`
+	Currency MarketPriceCurrency `json:"currency"`
+	Text     string              `json:"text"`
+}
+
+// MarketPriceCurrency - объект валюты товара
+type MarketPriceCurrency struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+}
+
+// MultiMarketGetCommentsAns - объект списка коментов товара
+type MultiMarketGetCommentsAns struct {
+	Items  []WallGetCommentsItem    `json:"items"`
+	RqData []map[string]interface{} `json:"rq_data"`
+}
+
+/*
 	Ads
 */
 

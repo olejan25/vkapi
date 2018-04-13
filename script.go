@@ -573,7 +573,7 @@ func (vk *API) ScriptWallGetComments(ownerID, postID, startCommentID int) (ans W
 		var comments    = [];
 		var limit       = 100;
 
-		while(cnt > 0 && offset < count){
+		while(cnt > 0 && real_offset < count){
 			var res = API.wall.getComments({ 
 				owner_id         : owner_id, 
 				post_id          : post_id,
@@ -1845,6 +1845,248 @@ func (vk *API) ScriptMultiUsersGet(arr []map[string]interface{}) (ans ScriptUser
 		
 		return result;
 	`, b)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
+// ScriptMultiMarketGet - Получаем товары (execute)
+func (vk *API) ScriptMultiMarketGet(arr []map[string]interface{}) (ans ScriptMultiMarketGetAns, err error) {
+	b, err := json.Marshal(arr)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	script := fmt.Sprintf(`
+		var arr     = %s;
+		var rq_data = [];
+		var goods   = [];
+		var limit   = 200;
+
+		while(arr.length > 0) {
+			var h   = arr.shift();
+			var res = API.market.get({
+				owner_id : h.owner_id,
+				extended : 1,
+				count    : limit,
+			});
+
+			if(res) {
+				res.offset = limit;
+				goods.push(res);
+				rq_data.push(h);
+			}
+		}
+
+		var result = {
+			items   : goods,
+			rq_data : rq_data,
+		};
+		
+		return result;
+	`, b)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
+// ScriptMarketGet - Получаем товары сообщества или пользователя. (execute)
+func (vk *API) ScriptMarketGet(ownerID, offset int) (ans MarketGetAns, err error) {
+
+	script := fmt.Sprintf(`
+		var owner_id = %d;
+		var offset   = %d;
+	
+		var cnt   = 25;
+		var count = offset + 1;
+		var goods = [];
+		var limit = 200;
+
+		while(cnt > 0 && offset < count){
+			var res = API.market.get({ 
+				owner_id   : owner_id,
+				offset     : offset,
+				count      : limit,
+				extended   : 1,
+			}); 
+			cnt = cnt - 1;
+
+			if(res.count) {
+				count  = res.count; 
+				goods = goods + res.items;
+				offset = offset + limit;
+			}
+			else {
+				cnt = 0;
+				if(count == offset + 1) {
+					count = offset;
+				}
+			}
+		}
+
+		var result = {
+			count	 : count,
+			offset : offset,
+			items  : goods
+		};
+		
+		return result;
+	`, ownerID, offset)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
+// ScriptMultiMarketGetComments - Получаем комментарии нескольких фото. (execute)
+func (vk *API) ScriptMultiMarketGetComments(arr []map[string]interface{}) (ans MultiMarketGetCommentsAns, err error) {
+	b, err := json.Marshal(arr)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	script := fmt.Sprintf(`
+		var arr      = %s;
+		var rq_data  = [];
+		var comments = [];
+		var limit    = 100;
+
+		while(arr.length > 0) {
+			var h   = arr.shift();
+			var res = API.market.getComments({ 
+				owner_id         : h.owner_id,
+				item_id          : h.item_id,
+				sort             : "desc",
+				need_likes       : 1,
+				count            : limit
+			});
+
+			if(res.count) {
+				res.offset = limit;
+				comments.push(res);
+		 		rq_data.push(h);
+			}
+		}
+
+		var result = {
+			items   : comments,
+			rq_data : rq_data,
+		};
+		
+		return result;
+	`, b)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
+// ScriptMarketGetComments - Получаем комментарии товара. (execute)
+func (vk *API) ScriptMarketGetComments(ownerID, itemID, startCommentID int) (ans WallGetCommentsAns, err error) {
+
+	script := fmt.Sprintf(`
+		var owner_id         = %d;
+		var item_id          = %d;
+		var start_comment_id = %d;
+
+		var cnt         = 25;
+		var real_offset = 0;
+		var offset      = 0;
+		var count       = offset + 1;
+		var comments    = [];
+		var limit       = 100;
+
+		while(cnt > 0 && real_offset < count){
+			var res = API.wall.getComments({ 
+				owner_id         : owner_id, 
+				item_id          : item_id,
+				start_comment_id : start_comment_id,
+				offset           : offset,
+				sort             : "desc",
+				need_likes       : 1,
+				count            : limit
+			}); 
+			cnt = cnt - 1;
+
+			if(res.count) {
+				count       = res.count; 
+				comments    = comments + res.items;
+				offset      = offset + limit;
+				real_offset = res.real_offset + limit;
+			}
+			else {
+				cnt = 0;
+			}
+		}
+
+		var result = {
+			count	 : count,
+			offset : offset,
+			items  : comments
+		};
+		
+		return result;
+	`, ownerID, itemID, startCommentID)
 
 	r, err := vk.Execute(script)
 	if err != nil {
