@@ -852,7 +852,7 @@ type MarketPriceCurrency struct {
 
 // MultiMarketGetCommentsAns - объект списка коментов товара
 type MultiMarketGetCommentsAns struct {
-	Items  []WallGetCommentsItem    `json:"items"`
+	Items  []WallGetCommentsAns     `json:"items"`
 	RqData []map[string]interface{} `json:"rq_data"`
 }
 
