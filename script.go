@@ -1914,7 +1914,7 @@ func (vk *API) ScriptMultiMarketGet(arr []map[string]interface{}) (ans ScriptMul
 
 	err = json.Unmarshal(r.Response, &ans)
 	if err != nil {
-		log.Println("[error]", err)
+		log.Println("[error]", err, string(r.Response))
 		return
 	}
 
