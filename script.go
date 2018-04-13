@@ -1881,8 +1881,10 @@ func (vk *API) ScriptMultiMarketGet(arr []map[string]interface{}) (ans ScriptMul
 
 		while(arr.length > 0) {
 			var h   = arr.shift();
+			if(!h.album_id) { h.album_id = 0; }
 			var res = API.market.get({
 				owner_id : h.owner_id,
+				album_id : h.album_id,
 				extended : 1,
 				count    : limit,
 			});
@@ -1922,10 +1924,11 @@ func (vk *API) ScriptMultiMarketGet(arr []map[string]interface{}) (ans ScriptMul
 }
 
 // ScriptMarketGet - Получаем товары сообщества или пользователя. (execute)
-func (vk *API) ScriptMarketGet(ownerID, offset int) (ans MarketGetAns, err error) {
+func (vk *API) ScriptMarketGet(ownerID, albumID, offset int) (ans MarketGetAns, err error) {
 
 	script := fmt.Sprintf(`
 		var owner_id = %d;
+		var album_id = %d;
 		var offset   = %d;
 	
 		var cnt   = 25;
@@ -1936,6 +1939,7 @@ func (vk *API) ScriptMarketGet(ownerID, offset int) (ans MarketGetAns, err error
 		while(cnt > 0 && offset < count){
 			var res = API.market.get({ 
 				owner_id   : owner_id,
+				album_id   : album_id,
 				offset     : offset,
 				count      : limit,
 				extended   : 1,
@@ -1962,7 +1966,7 @@ func (vk *API) ScriptMarketGet(ownerID, offset int) (ans MarketGetAns, err error
 		};
 		
 		return result;
-	`, ownerID, offset)
+	`, ownerID, albumID, offset)
 
 	r, err := vk.Execute(script)
 	if err != nil {
