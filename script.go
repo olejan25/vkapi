@@ -1976,7 +1976,7 @@ func (vk *API) ScriptMarketGet(ownerID, offset int) (ans MarketGetAns, err error
 
 	err = json.Unmarshal(r.Response, &ans)
 	if err != nil {
-		log.Println("[error]", err)
+		log.Println("[error]", err, string(r.Response))
 		return
 	}
 
