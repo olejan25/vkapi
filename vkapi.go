@@ -719,17 +719,16 @@ func (vk *API) fullRequest(method string, params map[string]string) (ans Respons
 	key := vk.AccessToken + "_" + strconv.FormatInt(time.Now().UnixNano(), 32)
 	contMap.Lock()
 	contMap.h[key] = cancel
-
-	if contMap.exited {
-		contMap.Unlock()
-		return
-	}
 	contMap.Unlock()
 	defer func() {
 		contMap.Lock()
 		delete(contMap.h, key)
 		contMap.Unlock()
 	}()
+
+	if exited {
+		return
+	}
 
 	// Отправляем запрос
 	client := &http.Client{Transport: httpTr}

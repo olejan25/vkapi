@@ -11,6 +11,7 @@ var (
 	executeErrorSkipReg *regexp.Regexp
 	httpErrorReg        *regexp.Regexp
 	contMap             contextMap
+	exited              bool
 )
 
 func init() {
@@ -21,8 +22,7 @@ func init() {
 }
 
 type contextMap struct {
-	exited bool
-	h      map[string]func()
+	h map[string]func()
 	sync.Mutex
 }
 
