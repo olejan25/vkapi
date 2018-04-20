@@ -47,5 +47,9 @@ func (vk *API) checkErrorSkip(str string) bool {
 
 // StopAllQuery - Останавливаем все запросы
 func StopAllQuery() {
-	rqCancelFunc()
+	contMap.Lock()
+	for _, f := range contMap.h {
+		f()
+	}
+	contMap.Unlock()
 }

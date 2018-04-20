@@ -1,7 +1,6 @@
 package vkapi
 
 import (
-	"context"
 	"encoding/json"
 	"log"
 	"regexp"
@@ -11,15 +10,19 @@ import (
 var (
 	executeErrorSkipReg *regexp.Regexp
 	httpErrorReg        *regexp.Regexp
-	rqContext           context.Context
-	rqCancelFunc        func()
+	contMap             contextMap
 )
 
 func init() {
 	executeErrorSkipReg = regexp.MustCompile("server sent GOAWAY|User authorization failed|unexpected EOF|Database problems, try later|Internal Server Error|Bad Request|Gateway Timeout|Bad Gateway|could not check access_token now|connection reset by peer|Request Entity Too Large|response size is too big|context canceled")
 	httpErrorReg = regexp.MustCompile("unexpected EOF|server sent GOAWAY|Bad Request|Internal Server Error|Request Entity Too Large|context canceled")
 
-	rqContext, rqCancelFunc = context.WithCancel(context.Background())
+	contMap = contextMap{h: make(map[string]func())}
+}
+
+type contextMap struct {
+	h map[string]func()
+	sync.Mutex
 }
 
 // API - главный объект
