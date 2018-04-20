@@ -21,7 +21,8 @@ func init() {
 }
 
 type contextMap struct {
-	h map[string]func()
+	exited bool
+	h      map[string]func()
 	sync.Mutex
 }
 

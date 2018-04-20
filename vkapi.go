@@ -719,6 +719,11 @@ func (vk *API) fullRequest(method string, params map[string]string) (ans Respons
 	key := vk.AccessToken + "_" + strconv.FormatInt(time.Now().UnixNano(), 32)
 	contMap.Lock()
 	contMap.h[key] = cancel
+
+	if contMap.exited {
+		contMap.Unlock()
+		return
+	}
 	contMap.Unlock()
 	defer func() {
 		contMap.Lock()

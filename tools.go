@@ -51,5 +51,7 @@ func StopAllQuery() {
 	for _, f := range contMap.h {
 		f()
 	}
+
+	contMap.exited = true
 	contMap.Unlock()
 }
