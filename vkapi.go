@@ -733,7 +733,7 @@ func (vk *API) fullRequest(method string, params map[string]string) (ans Respons
 		defer resp.Body.Close()
 	}
 	if err != nil {
-		if !strings.Contains(err.Error(), "connection reset by peer") {
+		if !strings.Contains(err.Error(), "connection reset by peer") && !strings.Contains(err.Error(), "context canceled") {
 			log.Println("[error]", err)
 		}
 		return
