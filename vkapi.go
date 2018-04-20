@@ -1,6 +1,7 @@
 package vkapi
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"io/ioutil"
@@ -713,9 +714,21 @@ func (vk *API) fullRequest(method string, params map[string]string) (ans Respons
 		return
 	}
 
+	// Добавляем контекст
+	ctx, cancel := context.WithCancel(context.Background())
+	key := vk.AccessToken + "_" + strconv.FormatInt(time.Now().UnixNano(), 32)
+	contMap.Lock()
+	contMap.h[key] = cancel
+	contMap.Unlock()
+	defer func() {
+		contMap.Lock()
+		delete(contMap.h, key)
+		contMap.Unlock()
+	}()
+
 	// Отправляем запрос
 	client := &http.Client{Transport: httpTr}
-	resp, err := client.Do(req)
+	resp, err := client.Do(req.WithContext(ctx))
 	if resp != nil {
 		defer resp.Body.Close()
 	}
