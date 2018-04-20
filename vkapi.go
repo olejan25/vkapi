@@ -727,6 +727,7 @@ func (vk *API) fullRequest(method string, params map[string]string) (ans Respons
 	}()
 
 	if exited {
+		err = errors.New("context canceled")
 		return
 	}
 
