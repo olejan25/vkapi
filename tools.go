@@ -1,6 +1,8 @@
 package vkapi
 
 import (
+	"encoding/json"
+	"log"
 	"strings"
 )
 
@@ -53,4 +55,18 @@ func StopAllQuery() {
 		f()
 	}
 	contMap.Unlock()
+}
+
+// GetCriteriaJSON - формируем json для критериев тергетинга
+func GetCriteriaJSON(d AdsGetTargetingStatsCriteria) (b []byte) {
+	b, err := json.Marshal(d)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	if d.GeoPointType == "" {
+		b = []byte(strings.Replace(string(b), `"geo_point_type":"",`, "", -1))
+	}
+	return
 }
