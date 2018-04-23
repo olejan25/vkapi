@@ -929,6 +929,14 @@ type AdsGetTargetingStatsCriteria struct {
 	UniTo                int    `json:"uni_to"`
 }
 
+// AdsGetSuggestionsAns - объект подсказки
+type AdsGetSuggestionsAns struct {
+	ID     int    `json:"id"`
+	Name   string `json:"name"`
+	Type   string `json:"type"`
+	Parent string `json:"parent"`
+}
+
 // AdsGetCampaignsAns - объект ответа при запросе кампаний
 type AdsGetCampaignsAns struct {
 	ID   int    `json:"id"`
