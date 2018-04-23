@@ -574,6 +574,25 @@ func (vk *API) AdsСreateTargetGroup(params map[string]string) (ans AdsСreateTa
 	return
 }
 
+// AdsDeleteTargetGroup - удаляем группу ретаргетинга
+func (vk *API) AdsDeleteTargetGroup(params map[string]string) (ans int, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("ads.deleteTargetGroup", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 // AdsGetCampaigns - Получаем список кампаний
 func (vk *API) AdsGetCampaigns(params map[string]string) (ans []AdsGetCampaignsAns, err error) {
 
