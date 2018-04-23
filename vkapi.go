@@ -612,6 +612,25 @@ func (vk *API) AdsImportTargetContacts(params map[string]string) (ans int, err e
 	return
 }
 
+// AdsGetTargetingStats - Смотрим размер аудитории
+func (vk *API) AdsGetTargetingStats(params map[string]string) (ans AdsGetTargetingStatsAns, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("ads.getTargetingStats", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 // AdsGetCampaigns - Получаем список кампаний
 func (vk *API) AdsGetCampaigns(params map[string]string) (ans []AdsGetCampaignsAns, err error) {
 

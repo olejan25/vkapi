@@ -885,6 +885,13 @@ type AdsСreateTargetGroupAns struct {
 	ID int `json:"id"`
 }
 
+// AdsGetTargetingStatsAns - объект информации о размере аудитории
+type AdsGetTargetingStatsAns struct {
+	AudienceCount  int `json:"audience_count"`
+	RecommendedCPC int `json:"recommended_cpc"`
+	RecommendedCPM int `json:"recommended_cpm"`
+}
+
 // AdsGetCampaignsAns - объект ответа при запросе кампаний
 type AdsGetCampaignsAns struct {
 	ID   int    `json:"id"`
