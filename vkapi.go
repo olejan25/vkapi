@@ -536,6 +536,25 @@ func (vk *API) MarketGet(params map[string]string) (ans MarketGetAns, err error)
 	Ads
 */
 
+// AdsGetAccounts - Получаем список аккаунтов
+func (vk *API) AdsGetAccounts(params map[string]string) (ans []AdsGetAccountsAns, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("ads.getAccounts", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 // AdsGetCampaigns - Получаем список кампаний
 func (vk *API) AdsGetCampaigns(params map[string]string) (ans []AdsGetCampaignsAns, err error) {
 

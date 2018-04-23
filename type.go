@@ -871,6 +871,15 @@ type MultiMarketGetCommentsAns struct {
 	Ads
 */
 
+// AdsGetAccountsAns - объект информации об аккаунте
+type AdsGetAccountsAns struct {
+	AccountID     int    `json:"account_id"`
+	AccountType   string `json:"account_type"`
+	AccountStatus int    `json:"account_status"`
+	AccountName   string `json:"account_name"`
+	AccessRole    string `json:"access_role"`
+}
+
 // AdsGetCampaignsAns - объект ответа при запросе кампаний
 type AdsGetCampaignsAns struct {
 	ID   int    `json:"id"`
