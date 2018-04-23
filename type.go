@@ -880,6 +880,11 @@ type AdsGetAccountsAns struct {
 	AccessRole    string `json:"access_role"`
 }
 
+// AdsСreateTargetGroupAns - Ответ на созданную аудиторию
+type AdsСreateTargetGroupAns struct {
+	ID int `json:"id"`
+}
+
 // AdsGetCampaignsAns - объект ответа при запросе кампаний
 type AdsGetCampaignsAns struct {
 	ID   int    `json:"id"`
