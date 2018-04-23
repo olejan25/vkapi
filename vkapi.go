@@ -593,6 +593,25 @@ func (vk *API) AdsDeleteTargetGroup(params map[string]string) (ans int, err erro
 	return
 }
 
+// AdsImportTargetContacts - добавиление контактов в группу ретаргета
+func (vk *API) AdsImportTargetContacts(params map[string]string) (ans int, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("ads.importTargetContacts", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 // AdsGetCampaigns - Получаем список кампаний
 func (vk *API) AdsGetCampaigns(params map[string]string) (ans []AdsGetCampaignsAns, err error) {
 
