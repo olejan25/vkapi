@@ -892,6 +892,43 @@ type AdsGetTargetingStatsAns struct {
 	RecommendedCPM int `json:"recommended_cpm"`
 }
 
+// AdsGetTargetingStatsCriteria - объект критериев настроек таргета
+type AdsGetTargetingStatsCriteria struct {
+	Sex                  int    `json:"sex"`
+	AgeFrom              int    `json:"age_from"`
+	AgeTo                int    `json:"age_to"`
+	Birthday             int    `json:"birthday"`
+	Country              int    `json:"country"`
+	Cities               string `json:"cities"`
+	CitiesNot            string `json:"cities_not"`
+	GeoNear              string `json:"geo_near"`
+	GeoPointType         string `json:"geo_point_type"`
+	Statuses             string `json:"statuses"`
+	Groups               string `json:"groups"`
+	GroupsNot            string `json:"groups_not"`
+	Apps                 string `json:"apps"`
+	AppsNot              string `json:"apps_not"`
+	Districts            string `json:"districts"`
+	Stations             string `json:"stations"`
+	Streets              string `json:"streets"`
+	Schools              string `json:"schools"`
+	Positions            string `json:"positions"`
+	Religions            string `json:"religions"`
+	InterestCategories   string `json:"interest_categories"`
+	Interests            string `json:"interests"`
+	UserDevices          string `json:"user_devices"`
+	UserOS               string `json:"user_os"`
+	UserBrowsers         string `json:"user_browsers"`
+	RetargetingGroups    string `json:"retargeting_groups"`
+	RetargetingGroupsNot string `json:"retargeting_groups_not"`
+	Paying               int    `json:"paying"`
+	Travellers           int    `json:"travellers"`
+	SchoolFrom           int    `json:"school_from"`
+	SchoolTo             int    `json:"school_to"`
+	UniFrom              int    `json:"uni_from"`
+	UniTo                int    `json:"uni_to"`
+}
+
 // AdsGetCampaignsAns - объект ответа при запросе кампаний
 type AdsGetCampaignsAns struct {
 	ID   int    `json:"id"`
