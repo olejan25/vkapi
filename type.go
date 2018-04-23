@@ -887,9 +887,9 @@ type AdsСreateTargetGroupAns struct {
 
 // AdsGetTargetingStatsAns - объект информации о размере аудитории
 type AdsGetTargetingStatsAns struct {
-	AudienceCount  int     `json:"audience_count"`
-	RecommendedCPC float64 `json:"recommended_cpc"`
-	RecommendedCPM float64 `json:"recommended_cpm"`
+	AudienceCount  int    `json:"audience_count"`
+	RecommendedCPC string `json:"recommended_cpc"`
+	RecommendedCPM string `json:"recommended_cpm"`
 }
 
 // AdsGetTargetingStatsCriteria - объект критериев настроек таргета
