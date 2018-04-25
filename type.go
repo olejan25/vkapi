@@ -980,18 +980,18 @@ type AdsGetStatisticsAnsStatsBug struct {
 
 // AdsGetTargetGroupsAns - объект группы ретаргета
 type AdsGetTargetGroupsAns struct {
-	ID              int    `json:"id"`
-	Name            string `json:"name"`
-	LastUpdated     int    `json:"last_updated"`
-	IsAudience      int    `json:"is_audience"`
-	IsShared        int    `json:"is_shared"`
-	AudienceCount   int    `json:"audience_count"`
-	Lifetime        int    `json:"lifetime"`
-	FileSource      int    `json:"file_source"`
-	APISource       int    `json:"api_source"`
-	LookalikeSource int    `json:"lookalike_source"`
-	Pixel           string `json:"pixel"`
-	Domain          string `json:"domain"`
+	ID              int         `json:"id"`
+	Name            string      `json:"name"`
+	LastUpdated     int         `json:"last_updated"`
+	IsAudience      int         `json:"is_audience"`
+	IsShared        int         `json:"is_shared"`
+	AudienceCount   int         `json:"audience_count"`
+	Lifetime        interface{} `json:"lifetime"`
+	FileSource      int         `json:"file_source"`
+	APISource       int         `json:"api_source"`
+	LookalikeSource int         `json:"lookalike_source"`
+	Pixel           string      `json:"pixel"`
+	Domain          string      `json:"domain"`
 }
 
 /*
