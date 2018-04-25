@@ -631,6 +631,25 @@ func (vk *API) AdsGetSuggestions(params map[string]string) (ans []AdsGetSuggesti
 	return
 }
 
+// AdsGetTargetGroups - получение групп ретаргета
+func (vk *API) AdsGetTargetGroups(params map[string]string) (ans []AdsGetTargetGroupsAns, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("ads.getTargetGroups", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 // AdsGetTargetingStats - Смотрим размер аудитории
 func (vk *API) AdsGetTargetingStats(params map[string]string) (ans AdsGetTargetingStatsAns, err error) {
 
