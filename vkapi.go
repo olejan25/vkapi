@@ -624,6 +624,29 @@ func (vk *API) AdsGetSuggestions(params map[string]string) (ans []AdsGetSuggesti
 	// Парсим данные
 	err = json.Unmarshal(r.Response, &ans)
 	if err != nil {
+		// VK BUG FIX
+		if strings.Contains(err.Error(), "cannot unmarshal string") {
+			var arr []AdsGetSuggestionsAnsStr
+			err = json.Unmarshal(r.Response, &arr)
+			if err != nil {
+				log.Println("[error]", err, string(r.Response))
+				return
+			}
+
+			ans = []AdsGetSuggestionsAns{}
+			for _, a := range arr {
+				id, _ := strconv.ParseInt(a.ID, 10, 64)
+
+				ans = append(ans, AdsGetSuggestionsAns{
+					ID:     int(id),
+					Name:   a.Name,
+					Type:   a.Type,
+					Parent: a.Parent,
+				})
+			}
+			return
+		}
+
 		log.Println("[error]", err, string(r.Response))
 		return
 	}

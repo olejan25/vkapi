@@ -937,6 +937,14 @@ type AdsGetSuggestionsAns struct {
 	Parent string `json:"parent"`
 }
 
+// AdsGetSuggestionsAnsStr - объект подсказки BUG
+type AdsGetSuggestionsAnsStr struct {
+	ID     string `json:"id"`
+	Name   string `json:"name"`
+	Type   string `json:"type"`
+	Parent string `json:"parent"`
+}
+
 // AdsGetCampaignsAns - объект ответа при запросе кампаний
 type AdsGetCampaignsAns struct {
 	ID   int    `json:"id"`
