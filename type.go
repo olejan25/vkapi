@@ -1024,3 +1024,9 @@ type Cities struct {
 	CityID int `json:"city_id"`
 	Views  int `json:"views"`
 }
+
+// PostIDDateInfto - Структура содержитг id и даты постов
+type PostIDDateInfto struct {
+	Ids   []int `json:"ids"`
+	Dates []int `json:"dates"`
+}

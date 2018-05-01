@@ -4,8 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"sort"
+	"strconv"
 	"strings"
 	"time"
+
+	"github.com/fe0b6/tools"
 )
 
 //ScriptWallGetByID - Получаем список постов по их ID (execute)
@@ -2159,6 +2163,95 @@ func (vk *API) ScriptMarketGetComments(ownerID, itemID, startCommentID int) (ans
 	if err != nil {
 		log.Println("[error]", err)
 		return
+	}
+
+	return
+}
+
+// ScriptUserWallInfoGet - Получаем комментарии товара. (execute)
+func (vk *API) ScriptUserWallInfoGet(ownerID int) (ans PostIDDateInfto, err error) {
+
+	ids := []int{}
+	dates := []int{}
+	startPostID := 1
+
+	strOwnerID := strconv.Itoa(ownerID)
+	for {
+		fullPostList := make([]string, 2500)
+		for i := startPostID; i <= startPostID+2500; i++ {
+			fullPostList[i-startPostID] = strOwnerID + "_" + strconv.Itoa(i)
+		}
+
+		posts := make([]string, 25)
+		for i, ps := range tools.ChunkSliceString(fullPostList, 100) {
+			posts[i] = strings.Join(ps, ",")
+		}
+
+		script := fmt.Sprintf(`
+			var arr   = %s;
+			var ids   = [];
+			var dates = [];
+
+			while(arr.length > 0) {
+				var str   = arr.shift();
+				var posts = API.wall.getById({
+					posts: str,
+					copy_history_depth: 1,
+				});
+
+				if(posts) {
+					ids   = ids + posts@.id;
+					dates = dates + posts@.date;
+				}
+			}
+
+			var ans = {
+				ids   : ids,
+				dates : dates,
+			}
+
+			return ans;
+		`, tools.ToJSON(posts))
+
+		var r Response
+		r, err = vk.Execute(script)
+		if err != nil {
+			if !executeErrorSkipReg.MatchString(err.Error()) {
+				if !vk.checkErrorSkip(err.Error()) {
+					log.Println("[error]", err)
+				}
+			}
+			return
+		}
+
+		var a PostIDDateInfto
+		err = json.Unmarshal(r.Response, &a)
+		if err != nil {
+			log.Println("[error]", err)
+			return
+		}
+
+		if len(a.Ids) == 0 {
+			break
+		}
+
+		ids = append(ids, a.Ids...)
+		dates = append(dates, a.Dates...)
+
+		sort.Ints(a.Ids)
+
+		// Если не все посты еще собрали
+		if a.Ids[len(a.Ids)-1] >= startPostID+2300 {
+			startPostID = a.Ids[len(a.Ids)-1]
+			continue
+		}
+
+		break
+	}
+
+	ans = PostIDDateInfto{
+		Ids:   ids,
+		Dates: dates,
 	}
 
 	return
