@@ -2179,6 +2179,7 @@ func (vk *API) ScriptUserWallInfoGet(ownerID int) (ans PostIDDateInfto, err erro
 	for {
 		fullPostList := make([]string, 2500)
 		for i := startPostID; i <= startPostID+2500; i++ {
+			log.Println(i - startPostID)
 			fullPostList[i-startPostID] = strOwnerID + "_" + strconv.Itoa(i)
 		}
 
