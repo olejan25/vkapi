@@ -2208,7 +2208,7 @@ func (vk *API) ScriptUserWallInfoGet(ownerID int) (ans PostIDDateInfto, err erro
 			var ans = {
 				ids   : ids,
 				dates : dates,
-			}
+			};
 
 			return ans;
 		`, tools.ToJSON(posts))
