@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"regexp"
 	"sort"
 	"strconv"
 	"strings"
@@ -1519,8 +1520,11 @@ func (vk *API) ScriptMultiPhotosGet(arr []map[string]interface{}) (ans MultiPhot
 
 	err = json.Unmarshal(r.Response, &ans)
 	if err != nil {
+		regTest := regexp.MustCompile(`("photo_75":[^,]+)`)
 		if err.Error() == "json: cannot unmarshal bool into Go struct field PhotosGetItem.photo_75 of type string" {
-			log.Println("[bug]", string(r.Response))
+			for _, rrrt := range regTest.FindAllStringSubmatch(string(r.Response), -1) {
+				log.Println("[bug]", rrrt)
+			}
 		}
 		log.Println("[error]", err)
 		return
