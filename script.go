@@ -1519,6 +1519,9 @@ func (vk *API) ScriptMultiPhotosGet(arr []map[string]interface{}) (ans MultiPhot
 
 	err = json.Unmarshal(r.Response, &ans)
 	if err != nil {
+		if err.Error() == "json: cannot unmarshal bool into Go struct field PhotosGetItem.photo_75 of type string" {
+			log.Println("[bug]", string(r.Response))
+		}
 		log.Println("[error]", err)
 		return
 	}
