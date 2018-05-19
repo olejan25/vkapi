@@ -1406,17 +1406,21 @@ func (vk *API) ScriptMultiPhotosGetAlbums(arr []map[string]interface{}) (ans Mul
 }
 
 // ScriptPhotosGet - Получаем фото из альбома. (execute)
-func (vk *API) ScriptPhotosGet(ownerID, albumID, offset int) (ans PhotosGetAns, err error) {
+func (vk *API) ScriptPhotosGet(ownerID, albumID, offset, limit int) (ans PhotosGetAns, err error) {
+
+	if limit == 0 {
+		limit = 1000
+	}
 
 	script := fmt.Sprintf(`
 		var owner_id = %d;
 		var album_id = %d;
 		var offset   = %d;
+		var limit    = %d;
 	
 		var cnt    = 25;
 		var count  = offset + 1;
 		var photos = [];
-		var limit  = 1000;
 
 		while(cnt > 0 && offset < count){
 			var res = API.photos.get({ 
@@ -1446,7 +1450,7 @@ func (vk *API) ScriptPhotosGet(ownerID, albumID, offset int) (ans PhotosGetAns, 
 		};
 		
 		return result;
-	`, ownerID, albumID, offset)
+	`, ownerID, albumID, offset, limit)
 
 	r, err := vk.Execute(script)
 	if err != nil {
