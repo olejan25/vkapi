@@ -543,8 +543,6 @@ func (vk *API) ScriptMultiWallGet(arr []map[string]interface{}) (ans MultiWallGe
 		return result;
 	`, b)
 
-	log.Println(script)
-
 	r, err := vk.Execute(script)
 	if err != nil {
 		if !executeErrorSkipReg.MatchString(err.Error()) {
