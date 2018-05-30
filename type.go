@@ -694,6 +694,23 @@ type PhotosGetItem struct {
 	Comments  CommentData `json:"comments"`
 }
 
+// GetBestSize - получаем лучгий ращмер фотки
+func (pgi *PhotosGetItem) GetBestSize() string {
+	if pgi.Photo2560 != "" {
+		return pgi.Photo2560
+	} else if pgi.Photo1280 != "" {
+		return pgi.Photo1280
+	} else if pgi.Photo807 != "" {
+		return pgi.Photo807
+	} else if pgi.Photo604 != "" {
+		return pgi.Photo604
+	} else if pgi.Photo130 != "" {
+		return pgi.Photo130
+	}
+
+	return pgi.Photo75
+}
+
 // PhotosGetCommentsAns - объект списка комментариев фото
 type PhotosGetCommentsAns struct {
 	Count  int                   `json:"count"`
