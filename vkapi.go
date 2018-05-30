@@ -341,7 +341,7 @@ func (vk *API) PhotosGet(params map[string]string) (ans PhotosGetAns, err error)
 }
 
 // PhotosGetByID - Возвращает список фотографий.
-func (vk *API) PhotosGetByID(params map[string]string) (ans PhotosGetItem, err error) {
+func (vk *API) PhotosGetByID(params map[string]string) (ans []PhotosGetItem, err error) {
 
 	// Отправляем запрос
 	r, err := vk.request("photos.getById", params)
