@@ -116,8 +116,17 @@ func (vk *API) ScriptGroupsGetByID(groupIDs []string, fields string) (ans []Grou
 
 	err = json.Unmarshal(r.Response, &ans)
 	if err != nil {
-		log.Println("[error]", err)
-		return
+		if strings.Contains(err.Error(), "cannot unmarshal bool") {
+			nstr := strings.Replace(string(r.Response), `:false,`, `:"",`, -1)
+			err = json.Unmarshal([]byte(nstr), &ans)
+			if err != nil {
+				log.Println("[error]", err)
+				return
+			}
+		} else {
+			log.Println("[error]", err)
+			return
+		}
 	}
 
 	return
