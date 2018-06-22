@@ -1756,7 +1756,7 @@ func (vk *API) ScriptMultiUsersGetSubscriptions(arr []map[string]interface{}) (a
 		while(arr.length > 0) {
 			var h   = arr.shift();
 			if(!h.extended) { h.extended = 0; }
-			if(!h.count)    { h.count = 200; }
+			if(!h.count)    { h.count = 0; }
 			var res = API.users.getSubscriptions({ 
 				user_id  : h.user_id,
 				extended : h.extended,
