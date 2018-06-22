@@ -321,6 +321,23 @@ type ScriptMultiFriendsGetAns struct {
 }
 
 /*
+	Poll
+*/
+
+// ScriptPollsGetVotersAns - объект опроса
+type ScriptPollsGetVotersAns struct {
+	Count  int          `json:"count"`
+	Offset int          `json:"offset"`
+	Items  []PollVoters `json:"items"`
+}
+
+// PollVoters - объект ответов на опросы
+type PollVoters struct {
+	AnswerID int      `json:"answer_id"`
+	Users    CountInt `json:"users"`
+}
+
+/*
 	Groups
 */
 

@@ -2291,3 +2291,67 @@ func (vk *API) ScriptUserWallInfoGet(ownerID int) (ans PostIDDateInfto, err erro
 
 	return
 }
+
+// ScriptPollsGetVoters - Получаем ответы на опросы. (execute)
+func (vk *API) ScriptPollsGetVoters(ownerID, pollID int, answerIDs string, offset int) (ans ScriptPollsGetVotersAns, err error) {
+
+	script := fmt.Sprintf(`
+		var owner_id   = %d;
+		var poll_id    = %d;
+		var answer_ids = "%s";
+		var offset     = %d;
+		var limit      = 1000;
+
+		var cnt   = 25;
+		var count = offset + 1;
+		var ans   = [];
+
+		while(cnt > 0 && offset < count) {
+			var res = API.polls.getVoters({ 
+				owner_id   : owner_id,
+				poll_id    : poll_id,
+				answer_ids : answer_ids,
+				offset     : offset,
+				count      : limit,
+			});
+
+			count  = 0;
+			offset = offset + limit; 
+
+			while(res.lenght > 0) {
+				var v = res.shift();
+				if(count < v.count) {
+					count = v.count;
+				}
+
+				ans.push(v);
+			}
+		}
+
+		var result = {
+			offset : offset,
+			count  : count,
+			items  : ans,
+		};
+		
+		return result;
+	`, ownerID, pollID, answerIDs, offset)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
