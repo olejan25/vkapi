@@ -2315,10 +2315,12 @@ func (vk *API) ScriptPollsGetVoters(ownerID, pollID int, answerIDs string, offse
 				count      : limit,
 			});
 
+			cnt = cnt-1;
+
 			count  = 0;
 			offset = offset + limit; 
 
-			while(res.lenght > 0) {
+			while(res.length > 0) {
 				var v = res.shift();
 				if(count < v.count) {
 					count = v.count;
