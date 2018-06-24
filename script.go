@@ -229,7 +229,7 @@ func (vk *API) ScriptUtilsResolveScreenName(ids []string) (ans []UtilsResolveScr
 }
 
 // ScriptGroupsGetMembers - Получаем подписчиков группы. (execute)
-func (vk *API) ScriptGroupsGetMembers(groupID, offset int, s string) (ans ScriptGroupsGetMembersAns, err error) {
+func (vk *API) ScriptGroupsGetMembers(groupID, offset int, s, filter string) (ans ScriptGroupsGetMembersAns, err error) {
 	if s == "" {
 		s = "id_asc"
 	}
@@ -238,6 +238,7 @@ func (vk *API) ScriptGroupsGetMembers(groupID, offset int, s string) (ans Script
 		var group_id = %d;
 		var offset   = %d;
 		var sort     = "%s";
+		var filter   = "%s";
 
 		var cnt   = 25;
 		var count = offset + 1;
@@ -247,7 +248,8 @@ func (vk *API) ScriptGroupsGetMembers(groupID, offset int, s string) (ans Script
 			var res = API.groups.getMembers({ 
 				group_id : group_id, 
 				offset   : offset, 
-				sort     : sort, 
+				sort     : sort,
+				filter   : filter,
 				count    : 1000
 			}); 
 			cnt = cnt - 1;
@@ -269,7 +271,7 @@ func (vk *API) ScriptGroupsGetMembers(groupID, offset int, s string) (ans Script
 		};
 		
 		return result;
-	`, groupID, offset, s)
+	`, groupID, offset, s, filter)
 
 	r, err := vk.Execute(script)
 	if err != nil {
