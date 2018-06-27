@@ -691,41 +691,41 @@ type MultiPhotosGetAns struct {
 
 // PhotosGetItem - объект фотографии
 type PhotosGetItem struct {
-	ID        int         `json:"id"`
-	AlbumID   int         `json:"album_id"`
-	OwnerID   int         `json:"owner_id"`
-	UserID    int         `json:"user_id"`
-	Photo75   string      `json:"photo_75"`
-	Photo130  string      `json:"photo_130"`
-	Photo604  string      `json:"photo_604"`
-	Photo807  string      `json:"photo_807"`
-	Photo1280 string      `json:"photo_1280"`
-	Photo2560 string      `json:"photo_2560"`
-	Text      string      `json:"text"`
-	Date      int         `json:"date"`
-	Width     int         `json:"width"`
-	Height    int         `json:"height"`
-	PostID    int         `json:"post_id"`
-	Likes     LikeData    `json:"likes"`
-	Reposts   LikeData    `json:"reposts"`
-	Comments  CommentData `json:"comments"`
+	ID       int          `json:"id"`
+	AlbumID  int          `json:"album_id"`
+	OwnerID  int          `json:"owner_id"`
+	UserID   int          `json:"user_id"`
+	Text     string       `json:"text"`
+	Date     int          `json:"date"`
+	Width    int          `json:"width"`
+	Height   int          `json:"height"`
+	PostID   int          `json:"post_id"`
+	Likes    LikeData     `json:"likes"`
+	Reposts  LikeData     `json:"reposts"`
+	Comments CommentData  `json:"comments"`
+	Sizes    []PhotoSizes `json:"sizes"`
+}
+
+// PhotoSizes - объект размеров фоток
+type PhotoSizes struct {
+	Type   string `json:"type"`
+	URL    string `json:"url"`
+	Width  int    `json:"width"`
+	Height int    `json:"height"`
 }
 
 // GetBestSize - получаем лучгий ращмер фотки
-func (pgi *PhotosGetItem) GetBestSize() string {
-	if pgi.Photo2560 != "" {
-		return pgi.Photo2560
-	} else if pgi.Photo1280 != "" {
-		return pgi.Photo1280
-	} else if pgi.Photo807 != "" {
-		return pgi.Photo807
-	} else if pgi.Photo604 != "" {
-		return pgi.Photo604
-	} else if pgi.Photo130 != "" {
-		return pgi.Photo130
+func (pgi *PhotosGetItem) GetBestSize() (url string) {
+	var nowWidth int
+
+	for _, p := range pgi.Sizes {
+		if nowWidth < p.Width {
+			nowWidth = p.Width
+			url = p.URL
+		}
 	}
 
-	return pgi.Photo75
+	return
 }
 
 // PhotosGetCommentsAns - объект списка комментариев фото
