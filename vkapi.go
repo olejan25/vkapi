@@ -116,7 +116,7 @@ func (vk *API) UsersGet(params map[string]string) (ans []UsersGetAns, err error)
 */
 
 // GroupsGet - Получаем информацию о группах
-func (vk *API) GroupsGet(params map[string]string) (ans []GroupsGetAns, err error) {
+func (vk *API) GroupsGet(params map[string]string) (ans GroupsGetAns, err error) {
 
 	// Отправляем запрос
 	r, err := vk.request("groups.get", params)
