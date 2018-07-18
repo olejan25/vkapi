@@ -292,10 +292,10 @@ type ScriptUsersMultiGetAns struct {
 
 // UsersGetSubscriptionsAns - объект списка подписок человека
 type UsersGetSubscriptionsAns struct {
-	Count  int            `json:"count"`
-	Items  []GroupsGetAns `json:"items"`
-	Users  CountInt       `json:"users"`
-	Groups CountInt       `json:"groups"`
+	Count  int                `json:"count"`
+	Items  []GroupsGetByIDAns `json:"items"`
+	Users  CountInt           `json:"users"`
+	Groups CountInt           `json:"groups"`
 }
 
 // CountInt - объект из списка идентификаторов и их кол-ва
@@ -343,6 +343,12 @@ type PollVoters struct {
 
 // GroupsGetAns - объект ответа при запросе групп
 type GroupsGetAns struct {
+	Count int                `json:"count"`
+	Items []GroupsGetByIDAns `json:"items"`
+}
+
+// GroupsGetByIDAns - объект ответа при запросе групп
+type GroupsGetByIDAns struct {
 	ID           int             `json:"id"`
 	Name         string          `json:"name"`
 	ScreenName   string          `json:"screen_name"`

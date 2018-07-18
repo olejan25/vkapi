@@ -115,8 +115,27 @@ func (vk *API) UsersGet(params map[string]string) (ans []UsersGetAns, err error)
 	Groups
 */
 
+// GroupsGet - Получаем информацию о группах
+func (vk *API) GroupsGet(params map[string]string) (ans []GroupsGetAns, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("groups.get", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 // GroupsGetByID - Получаем информацию о группах
-func (vk *API) GroupsGetByID(params map[string]string) (ans []GroupsGetAns, err error) {
+func (vk *API) GroupsGetByID(params map[string]string) (ans []GroupsGetByIDAns, err error) {
 
 	// Отправляем запрос
 	r, err := vk.request("groups.getById", params)
