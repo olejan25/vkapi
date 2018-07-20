@@ -68,7 +68,7 @@ func (vk *API) ScriptWallGetByID(posts []string) (ans []WallGetByIDAns, err erro
 }
 
 // ScriptGroupsGetByID - Получаем группы по их ID (execute)
-func (vk *API) ScriptGroupsGetByID(groupIDs []string, fields string) (ans []GroupsGetAns, err error) {
+func (vk *API) ScriptGroupsGetByID(groupIDs []string, fields string) (ans []GroupsGetByIDAns, err error) {
 	// Разбиваем посты на нужное кол-во
 	arr := chunkSliceString(groupIDs, 500)
 	// Формируем массив для запроса
