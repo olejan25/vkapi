@@ -117,10 +117,10 @@ func (vk *API) ScriptGroupsGetByID(groupIDs []string, fields string) (ans []Grou
 	err = json.Unmarshal(r.Response, &ans)
 	if err != nil {
 		if strings.Contains(err.Error(), "cannot unmarshal bool") {
-			nstr := strings.Replace(string(r.Response), `:false,`, `:"",`, -1)
+			nstr := strings.Replace(string(r.Response), `:false`, `:""`, -1)
 			err = json.Unmarshal([]byte(nstr), &ans)
 			if err != nil {
-				log.Println("[error]", err, string(r.Response))
+				log.Println("[error]", err)
 				return
 			}
 		} else {
@@ -1476,7 +1476,7 @@ func (vk *API) ScriptPhotosGet(ownerID, albumID, offset, limit int) (ans PhotosG
 	err = json.Unmarshal(r.Response, &ans)
 	if err != nil {
 		if strings.Contains(err.Error(), "cannot unmarshal bool") {
-			nstr := strings.Replace(string(r.Response), `:false,`, `:"",`, -1)
+			nstr := strings.Replace(string(r.Response), `:false`, `:""`, -1)
 			err = json.Unmarshal([]byte(nstr), &ans)
 			if err != nil {
 				log.Println("[error]", err)
@@ -1544,7 +1544,7 @@ func (vk *API) ScriptMultiPhotosGet(arr []map[string]interface{}) (ans MultiPhot
 	err = json.Unmarshal(r.Response, &ans)
 	if err != nil {
 		if strings.Contains(err.Error(), "cannot unmarshal bool") {
-			nstr := strings.Replace(string(r.Response), `:false,`, `:"",`, -1)
+			nstr := strings.Replace(string(r.Response), `:false`, `:""`, -1)
 			err = json.Unmarshal([]byte(nstr), &ans)
 			if err != nil {
 				log.Println("[error]", err)
@@ -1792,7 +1792,7 @@ func (vk *API) ScriptMultiUsersGetSubscriptions(arr []map[string]interface{}) (a
 	err = json.Unmarshal(r.Response, &ans)
 	if err != nil {
 		if strings.Contains(err.Error(), "cannot unmarshal bool") {
-			nstr := strings.Replace(string(r.Response), `:false,`, `:"",`, -1)
+			nstr := strings.Replace(string(r.Response), `:false`, `:""`, -1)
 			err = json.Unmarshal([]byte(nstr), &ans)
 			if err != nil {
 				log.Println("[error]", err)
