@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -41,30 +42,27 @@ func init() {
 
 // GetAuthURL - получаем ссылку для авторизации
 func GetAuthURL(d AuthURLData) string {
-	q := url.Values{}
-	q.Add("client_id", strconv.Itoa(d.ClientID))
-	q.Add("redirect_uri", d.RedirectURI)
-	q.Add("response_type", "code")
+	str := APIAuthURL + fmt.Sprintf("?client_id=%d&redirect_uri=%s&response_type=code", d.ClientID, d.RedirectURI)
 	if d.V != 0 {
-		q.Add("v", strconv.FormatFloat(d.V, 'f', -1, 64))
+		str += fmt.Sprintf("&v=%g", d.V)
 	} else {
-		q.Add("v", APIVersion)
+		str += "&v=" + APIVersion
 	}
 
 	if d.Scope != "" {
-		q.Add("scope", d.Scope)
+		str += "&scope=" + d.Scope
 	}
 	if d.GroupIDs != "" {
-		q.Add("group_ids", d.GroupIDs)
+		str += "&scope=" + d.GroupIDs
 	}
 	if d.Display != "" {
-		q.Add("display", d.Display)
+		str += "&scope=" + d.Display
 	}
 	if d.State != "" {
-		q.Add("state", d.State)
+		str += "&scope=" + d.State
 	}
 
-	return APIAuthURL + "?" + q.Encode()
+	return str
 }
 
 // GetToken - Получение токена
