@@ -54,6 +54,7 @@ type TokenData struct {
 	ClientSecret string
 	Code         string
 	RedirectURI  string
+	IsGroup      bool
 }
 
 // Response - объект ответа VK

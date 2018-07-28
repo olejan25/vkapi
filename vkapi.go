@@ -65,8 +65,43 @@ func GetAuthURL(d AuthURLData) string {
 	return str
 }
 
+// GetTokenGroup - Получение токена группы
+func (vk *API) GetTokenGroup(d TokenData) (ans map[string]interface{}, err error) {
+	content, err := getToken(d)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	// Парсим ответ
+	err = json.Unmarshal(content, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
 // GetToken - Получение токена
 func (vk *API) GetToken(d TokenData) (ans GetTokenAns, err error) {
+	content, err := getToken(d)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	// Парсим ответ
+	err = json.Unmarshal(content, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
+func getToken(d TokenData) (content []byte, err error) {
 	q := url.Values{}
 	q.Add("code", d.Code)
 	q.Add("client_id", strconv.Itoa(d.ClientID))
@@ -100,14 +135,7 @@ func (vk *API) GetToken(d TokenData) (ans GetTokenAns, err error) {
 	}
 
 	// Читаем ответ
-	content, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Println("[error]", err)
-		return
-	}
-
-	// Парсим ответ
-	err = json.Unmarshal(content, &ans)
+	content, err = ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Println("[error]", err)
 		return
