@@ -20,6 +20,8 @@ const (
 	APIMethodURL = "https://api.vk.com/method/"
 	// APITokenURL - URL oauth авторизации
 	APITokenURL = "https://oauth.vk.com/access_token"
+	// APIAuthURL - URL для oauth авторизации
+	APIAuthURL = "https://oauth.vk.com/authorize"
 )
 
 var (
@@ -36,6 +38,34 @@ func init() {
 /*
 	Получение токена
 */
+
+// GetAuthURL - получаем ссылку для авторизации
+func GetAuthURL(d AuthURLData) string {
+	q := url.Values{}
+	q.Add("client_id", strconv.Itoa(d.ClientID))
+	q.Add("redirect_uri", d.RedirectURI)
+	q.Add("response_type", "code")
+	if d.V != 0 {
+		q.Add("v", strconv.FormatFloat(d.V, 'f', -1, 64))
+	} else {
+		q.Add("v", APIVersion)
+	}
+
+	if d.Scope != "" {
+		q.Add("scope", d.Scope)
+	}
+	if d.GroupIDs != "" {
+		q.Add("group_ids", d.GroupIDs)
+	}
+	if d.Display != "" {
+		q.Add("display", d.Display)
+	}
+	if d.State != "" {
+		q.Add("state", d.State)
+	}
+
+	return APIAuthURL + "?" + q.Encode()
+}
 
 // GetToken - Получение токена
 func (vk *API) GetToken(d TokenData) (ans GetTokenAns, err error) {

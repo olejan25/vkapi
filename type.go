@@ -37,6 +37,17 @@ type API struct {
 	ExecuteCode   string
 }
 
+// AuthURLData - Объект для формирования url авторизации
+type AuthURLData struct {
+	ClientID    int
+	RedirectURI string
+	GroupIDs    string
+	Display     string
+	Scope       string
+	V           float64
+	State       string
+}
+
 // TokenData - объект получения токена
 type TokenData struct {
 	ClientID     int
