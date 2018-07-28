@@ -53,13 +53,13 @@ func GetAuthURL(d AuthURLData) string {
 		str += "&scope=" + d.Scope
 	}
 	if d.GroupIDs != "" {
-		str += "&scope=" + d.GroupIDs
+		str += "&group_ids=" + d.GroupIDs
 	}
 	if d.Display != "" {
-		str += "&scope=" + d.Display
+		str += "&display=" + d.Display
 	}
 	if d.State != "" {
-		str += "&scope=" + d.State
+		str += "&state=" + d.State
 	}
 
 	return str
