@@ -805,6 +805,25 @@ func (vk *API) AdsGetCampaigns(params map[string]string) (ans []AdsGetCampaignsA
 	return
 }
 
+// AdsGetAds - Получаем список объявлений
+func (vk *API) AdsGetAds(params map[string]string) (ans []AdsGetAdsAns, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("ads.getAds", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 // AdsGetAdsLayout - Получаем список список объявлений
 func (vk *API) AdsGetAdsLayout(params map[string]string) (ans []AdsGetAdsLayoutAns, err error) {
 
