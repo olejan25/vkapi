@@ -1004,6 +1004,7 @@ type AdsGetCampaignsAns struct {
 	Name string `json:"name"`
 }
 
+// AdsGetAdsAns - объект ответа при запросе объявления
 type AdsGetAdsAns struct {
 	ID         string `json:"id"`
 	CampaignID int    `json:"campaign_id"`
