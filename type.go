@@ -414,6 +414,22 @@ type GroupsGetTokenPermissionsAnsSettings struct {
 	Name    string `json:"name"`
 }
 
+// GroupsGetCallbackServersAns - объект ответа на запрос callback серверов
+type GroupsGetCallbackServersAns struct {
+	Count int                               `json:"count"`
+	Items []GroupsGetCallbackServersAnsItem `json:"items"`
+}
+
+// GroupsGetCallbackServersAnsItem - объект callback сервера
+type GroupsGetCallbackServersAnsItem struct {
+	ID        int    `json:"id"`
+	Title     string `json:"title"`
+	CreatorID int    `json:"creator_id"`
+	URL       string `json:"url"`
+	SecretKey string `json:"secret_key"`
+	Status    string `json:"status"`
+}
+
 /*
 	Stats
 */

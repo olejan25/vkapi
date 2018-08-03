@@ -247,6 +247,25 @@ func (vk *API) GroupsGetTokenPermissions() (ans GroupsGetTokenPermissionsAns, er
 	return
 }
 
+// GroupsGetCallbackServers - Получаем информацию о callback серверах
+func (vk *API) GroupsGetCallbackServers() (ans GroupsGetCallbackServersAns, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("groups.getCallbackServers", map[string]string{})
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 /*
 	Wall
 */
