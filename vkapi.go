@@ -266,6 +266,25 @@ func (vk *API) GroupsGetCallbackServers(params map[string]string) (ans GroupsGet
 	return
 }
 
+// GroupsAddCallbackServer - Добавляем callback сервер
+func (vk *API) GroupsAddCallbackServer(params map[string]string) (ans GroupsAddCallbackServerAns, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("groups.addCallbackServer", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 /*
 	Wall
 */

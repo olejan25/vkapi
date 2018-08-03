@@ -430,6 +430,11 @@ type GroupsGetCallbackServersAnsItem struct {
 	Status    string `json:"status"`
 }
 
+// GroupsAddCallbackServerAns - ответ при установке callback сервера
+type GroupsAddCallbackServerAns struct {
+	ServerID int `json:"server_id"`
+}
+
 /*
 	Stats
 */
