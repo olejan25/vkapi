@@ -323,6 +323,25 @@ func (vk *API) GroupsSetCallbackSettings(params map[string]string) (ans int, err
 	return
 }
 
+// GroupsGetCallbackConfirmationCode - Получаем код подтверждения для сервера callback
+func (vk *API) GroupsGetCallbackConfirmationCode(params map[string]string) (ans GroupsGetCallbackConfirmationCodeAns, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("groups.getCallbackConfirmationCode", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 /*
 	Wall
 */

@@ -435,6 +435,11 @@ type GroupsAddCallbackServerAns struct {
 	ServerID int `json:"server_id"`
 }
 
+// GroupsGetCallbackConfirmationCodeAns - объет подтверждающего кода callback сервера
+type GroupsGetCallbackConfirmationCodeAns struct {
+	Code string `json:"code"`
+}
+
 /*
 	Stats
 */
