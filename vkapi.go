@@ -285,6 +285,25 @@ func (vk *API) GroupsAddCallbackServer(params map[string]string) (ans GroupsAddC
 	return
 }
 
+// GroupsEditCallbackServer - Редактирование callback сервер
+func (vk *API) GroupsEditCallbackServer(params map[string]string) (ans int, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("groups.editCallbackServer", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 /*
 	Wall
 */
