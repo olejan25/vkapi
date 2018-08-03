@@ -3,8 +3,18 @@ package vkapi
 import (
 	"encoding/json"
 	"log"
+	"regexp"
 	"strings"
 )
+
+var (
+	// GroupAccessTokenReg - регуларка для получения id группы для которой получен токен
+	GroupAccessTokenReg *regexp.Regexp
+)
+
+func init() {
+	GroupAccessTokenReg = regexp.MustCompile("^access_token_([0-9]+)$")
+}
 
 // Разбиваем массив строк на несколько
 func chunkSliceString(arr []string, size int) (ans [][]string) {
