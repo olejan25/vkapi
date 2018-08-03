@@ -248,10 +248,10 @@ func (vk *API) GroupsGetTokenPermissions() (ans GroupsGetTokenPermissionsAns, er
 }
 
 // GroupsGetCallbackServers - Получаем информацию о callback серверах
-func (vk *API) GroupsGetCallbackServers() (ans GroupsGetCallbackServersAns, err error) {
+func (vk *API) GroupsGetCallbackServers(params map[string]string) (ans GroupsGetCallbackServersAns, err error) {
 
 	// Отправляем запрос
-	r, err := vk.request("groups.getCallbackServers", map[string]string{})
+	r, err := vk.request("groups.getCallbackServers", params)
 	if err != nil {
 		return
 	}
