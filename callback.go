@@ -12,18 +12,21 @@ type CallBackObj struct {
 	GroupID int             `json:"group_id"`
 	Secret  string          `json:"secret"`
 
-	Message       MessagesGetAns        `json:"-"`
-	MessageAllow  CallbackMessageAllow  `json:"-"`
-	Photo         PhotosGetItem         `json:"-"`
-	PhotoComment  WallGetCommentsItem   `json:"-"`
-	Video         VideoGetItem          `json:"-"`
-	VideoComment  WallGetCommentsItem   `json:"-"`
-	Wall          WallGetByIDAns        `json:"-"`
-	WallComment   WallGetCommentsItem   `json:"-"`
-	Board         BoardGetTopicsItem    `json:"-"`
-	MarketComment WallGetCommentsItem   `json:"-"`
-	UserChange    CallBackUserChange    `json:"-"`
-	CommentDelete CallbackCommentDelete `json:"-"`
+	Message        MessagesGetAns         `json:"-"`
+	MessageAllow   CallbackMessageAllow   `json:"-"`
+	Photo          PhotosGetItem          `json:"-"`
+	PhotoComment   WallGetCommentsItem    `json:"-"`
+	Video          VideoGetItem           `json:"-"`
+	VideoComment   WallGetCommentsItem    `json:"-"`
+	Wall           WallGetByIDAns         `json:"-"`
+	WallComment    WallGetCommentsItem    `json:"-"`
+	Board          BoardGetTopicsItem     `json:"-"`
+	MarketComment  WallGetCommentsItem    `json:"-"`
+	UserChange     CallBackUserChange     `json:"-"`
+	CommentDelete  CallbackCommentDelete  `json:"-"`
+	OfficersEdit   CallbackOfficersEdit   `json:"-"`
+	ChangeSettings CallbackChangeSettings `json:"-"`
+	ChangePhoto    CallbackChangePhoto    `json:"-"`
 }
 
 // Parse - Парсим объект
@@ -54,6 +57,12 @@ func (cbo *CallBackObj) Parse() (err error) {
 		err = json.Unmarshal(cbo.Object, &cbo.UserChange)
 	case "photo_comment_delete", "video_comment_delete", "wall_reply_delete", "board_post_delete", "market_comment_delete":
 		err = json.Unmarshal(cbo.Object, &cbo.CommentDelete)
+	case "group_officers_edit":
+		err = json.Unmarshal(cbo.Object, &cbo.OfficersEdit)
+	case "group_change_settings":
+		err = json.Unmarshal(cbo.Object, &cbo.ChangeSettings)
+	case "group_change_photo ":
+		err = json.Unmarshal(cbo.Object, &cbo.ChangePhoto)
 	}
 
 	if err != nil {
@@ -89,4 +98,30 @@ type CallBackUserChange struct {
 	UserID   int    `json:"user_id"`
 	Self     int    `json:"self"`
 	JoinType string `json:"join_type"`
+}
+
+// CallbackOfficersEdit - объект редактирования админа в группе
+type CallbackOfficersEdit struct {
+	AdminID  int `json:"admin_id"`
+	UserID   int `json:"user_id"`
+	LevelOld int `json:"level_old"`
+	LevelNew int `json:"level_new"`
+}
+
+// CallbackChangeSettings - объект смены настроек группы
+type CallbackChangeSettings struct {
+	UserID  int                                      `json:"user_id"`
+	Changes map[string]CallbackChangeSettingsChanges `json:"CallbackChangeSettings"`
+}
+
+// CallbackChangeSettingsChanges - объект значений при смене настроек
+type CallbackChangeSettingsChanges struct {
+	OldValue interface{} `json:"old_value"`
+	NewValue interface{} `json:"new_value"`
+}
+
+// CallbackChangePhoto - объект смены фото
+type CallbackChangePhoto struct {
+	UserID int           `json:"user_id"`
+	Photo  PhotosGetItem `json:"photo"`
 }
