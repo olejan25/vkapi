@@ -10,10 +10,12 @@ import (
 var (
 	// GroupAccessTokenReg - регуларка для получения id группы для которой получен токен
 	GroupAccessTokenReg *regexp.Regexp
+	linkScreenNameReg   *regexp.Regexp
 )
 
 func init() {
 	GroupAccessTokenReg = regexp.MustCompile("^access_token_([0-9]+)$")
+	linkScreenNameReg = regexp.MustCompile("vk.com/(.+)")
 }
 
 // Разбиваем массив строк на несколько
@@ -78,5 +80,16 @@ func GetCriteriaJSON(d AdsGetTargetingStatsCriteria) (b []byte) {
 	if d.GeoPointType == "" {
 		b = []byte(strings.Replace(string(b), `"geo_point_type":"",`, "", -1))
 	}
+	return
+}
+
+// GetScreenNameFromLink - получаем screen_name из ссылке
+func GetScreenNameFromLink(link string) (screenName string) {
+	f := linkScreenNameReg.FindStringSubmatch(link)
+	if len(f) == 0 {
+		return
+	}
+
+	screenName = f[1]
 	return
 }
