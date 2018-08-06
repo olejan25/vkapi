@@ -524,6 +524,17 @@ type Attachments struct {
 	PrettyCards *json.RawMessage `json:"pretty_cards"`
 }
 
+// AttachmentsLink - объект ссылки аатача
+type AttachmentsLink struct {
+	URL         string        `json:"url"`
+	Title       string        `json:"title"`
+	Caption     string        `json:"caption"`
+	Description string        `json:"description"`
+	Photo       PhotosGetItem `json:"photo"`
+	PreviewPage string        `json:"preview_page"`
+	PreviewURL  string        `json:"preview_url"`
+}
+
 // AttachmentsPrettyCards - объект карточек аттача
 type AttachmentsPrettyCards struct {
 	Cards []AttachmentsPrettyCardsCards `json:"cards"`
@@ -539,6 +550,17 @@ type AttachmentsPrettyCardsCards struct {
 // GetPrettyCards - Преобрахуем данные карточек в объекты
 func (a *Attachments) GetPrettyCards() (t AttachmentsPrettyCards) {
 	err := json.Unmarshal(*a.PrettyCards, &t)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
+// GetLink - Преобрахуем данные ссылки в объекты
+func (a *Attachments) GetLink() (t AttachmentsLink) {
+	err := json.Unmarshal(*a.Link, &t)
 	if err != nil {
 		log.Println("[error]", err)
 		return
