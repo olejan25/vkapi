@@ -12,6 +12,8 @@ var (
 	GroupAccessTokenReg *regexp.Regexp
 	// ObjLinkReg - регулярка для получения владельца и ид по ссылке
 	ObjLinkReg *regexp.Regexp
+	// InternalLinkReg - регулярка для получения данных из внутренних ссылок
+	InternalLinkReg *regexp.Regexp
 
 	linkScreenNameReg *regexp.Regexp
 )
@@ -20,6 +22,7 @@ func init() {
 	GroupAccessTokenReg = regexp.MustCompile("^access_token_([0-9]+)$")
 	linkScreenNameReg = regexp.MustCompile("vk.com/(.+)")
 	ObjLinkReg = regexp.MustCompile("(?:wall|page|topic|photo|album|video|product|market)(-)?([0-9]+)(?:_([0-9]+))?")
+	InternalLinkReg = regexp.MustCompile("\\[(id|club|public|group)([0-9]+)\\|[^\\]]+\\]")
 }
 
 // Разбиваем массив строк на несколько
