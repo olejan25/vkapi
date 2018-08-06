@@ -10,8 +10,8 @@ import (
 var (
 	// GroupAccessTokenReg - регуларка для получения id группы для которой получен токен
 	GroupAccessTokenReg *regexp.Regexp
-	// BoardLinkReg  - регулярка для получения владельца и ид топика
-	BoardLinkReg *regexp.Regexp
+	// ObjLinkReg - регулярка для получения владельца и ид по ссылке
+	ObjLinkReg *regexp.Regexp
 
 	linkScreenNameReg *regexp.Regexp
 )
@@ -19,7 +19,7 @@ var (
 func init() {
 	GroupAccessTokenReg = regexp.MustCompile("^access_token_([0-9]+)$")
 	linkScreenNameReg = regexp.MustCompile("vk.com/(.+)")
-	BoardLinkReg = regexp.MustCompile("topic-([0-9]+)_([0-9]+)")
+	ObjLinkReg = regexp.MustCompile("(?:wall|page|topic|photo|album|video|product)-?([0-9]+)_([0-9]+)")
 }
 
 // Разбиваем массив строк на несколько
