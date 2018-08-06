@@ -20,7 +20,7 @@ type CallBackObj struct {
 	VideoComment   WallGetCommentsItem    `json:"-"`
 	Wall           WallGetByIDAns         `json:"-"`
 	WallComment    WallGetCommentsItem    `json:"-"`
-	Board          BoardGetTopicsItem     `json:"-"`
+	Board          WallGetCommentsItem    `json:"-"`
 	MarketComment  WallGetCommentsItem    `json:"-"`
 	UserChange     CallBackUserChange     `json:"-"`
 	CommentDelete  CallbackCommentDelete  `json:"-"`

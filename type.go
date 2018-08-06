@@ -590,6 +590,8 @@ type WallGetCommentsItem struct {
 	PostOwnerID    int           `json:"post_owner_id"`
 	MarketOwnerID  int           `json:"market_owner_id"`
 	ItemID         int           `json:"item_id"`
+	TopicID        int           `json:"topic_id"`
+	TopicOwnerID   int           `json:"topic_owner_id"`
 }
 
 /*
@@ -672,8 +674,6 @@ type BoardGetTopicsItem struct {
 	Comments     int    `json:"comments"`
 	FirstComment int    `json:"first_comment"`
 	LastComment  int    `json:"last_comment"`
-	TopicID      int    `json:"topic_id"`
-	TopicOwnerID int    `json:"topic_owner_id"`
 }
 
 // BoardGetCommentsAns - объект списка комментариев обсуждения
