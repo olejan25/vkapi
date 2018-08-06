@@ -19,7 +19,7 @@ var (
 func init() {
 	GroupAccessTokenReg = regexp.MustCompile("^access_token_([0-9]+)$")
 	linkScreenNameReg = regexp.MustCompile("vk.com/(.+)")
-	ObjLinkReg = regexp.MustCompile("(?:wall|page|topic|photo|album|video|product)-?([0-9]+)_([0-9]+)")
+	ObjLinkReg = regexp.MustCompile("(?:wall|page|topic|photo|album|video|product|market)-?([0-9]+)_(?:_([0-9]+))?")
 }
 
 // Разбиваем массив строк на несколько

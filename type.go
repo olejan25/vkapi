@@ -558,7 +558,7 @@ func (a *Attachments) GetPrettyCards() (t AttachmentsPrettyCards) {
 	return
 }
 
-// GetLink - Преобрахуем данные ссылки в объекты
+// GetLink - Преобразуем данные ссылки в объекты
 func (a *Attachments) GetLink() (t AttachmentsLink) {
 	err := json.Unmarshal(*a.Link, &t)
 	if err != nil {
