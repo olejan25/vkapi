@@ -11,11 +11,13 @@ var (
 	// GroupAccessTokenReg - регуларка для получения id группы для которой получен токен
 	GroupAccessTokenReg *regexp.Regexp
 	linkScreenNameReg   *regexp.Regexp
+	topicLinkReg        *regexp.Regexp
 )
 
 func init() {
 	GroupAccessTokenReg = regexp.MustCompile("^access_token_([0-9]+)$")
 	linkScreenNameReg = regexp.MustCompile("vk.com/(.+)")
+	topicLinkReg = regexp.MustCompile("topic-([0-9]+)_([0-9]+)")
 }
 
 // Разбиваем массив строк на несколько
