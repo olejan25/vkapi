@@ -349,6 +349,26 @@ type PollVoters struct {
 	Users    CountInt `json:"users"`
 }
 
+// PollItem - объект опроса
+type PollItem struct {
+	ID        int              `json:"id"`
+	OwnerID   int              `json:"owner_id"`
+	Created   int              `json:"created"`
+	Question  string           `json:"question"`
+	Votes     int              `json:"votes"`
+	AnswerID  int              `json:"answer_id"`
+	Answers   []PollItemAnswer `json:"answers"`
+	Anonymous int              `json:"anonymous"`
+}
+
+// PollItemAnswer - объект ответа в опросе
+type PollItemAnswer struct {
+	ID    int    `json:"id"`
+	Text  string `json:"text"`
+	Votes int    `json:"votes"`
+	Rate  int    `json:"rate"`
+}
+
 /*
 	Groups
 */
@@ -535,6 +555,40 @@ type AttachmentsLink struct {
 	PreviewURL  string        `json:"preview_url"`
 }
 
+// AttachmentsDoc - объект документа аатача
+type AttachmentsDoc struct {
+	ID      int              `json:"id"`
+	OwnerID int              `json:"owner_id"`
+	Title   string           `json:"title"`
+	Size    int              `json:"size"`
+	Ext     string           `json:"ext"`
+	URL     string           `json:"url"`
+	Date    int              `json:"date"`
+	Type    int              `json:"type"`
+	Preview *json.RawMessage `json:"preview"`
+}
+
+// AttachmentsPage - объект документа аатача
+type AttachmentsPage struct {
+	ID                       int    `json:"id"`
+	GroupID                  int    `json:"group_id"`
+	CreatorID                int    `json:"creator_id"`
+	Title                    string `json:"title"`
+	CurrentUserCanEdit       int    `json:"current_user_can_edit"`
+	CurrentUserCanEditAccess int    `json:"current_user_can_edit_access"`
+	WhoCanView               int    `json:"who_can_view"`
+	WhoCanEdit               int    `json:"who_can_edit"`
+	Edited                   int    `json:"edited"`
+	Created                  int    `json:"created"`
+	EditorID                 int    `json:"editor_id"`
+	Views                    int    `json:"views"`
+	Parent                   string `json:"parent"`
+	Parent2                  string `json:"parent2"`
+	Source                   string `json:"source"`
+	HTML                     string `json:"html"`
+	ViewURL                  string `json:"view_url"`
+}
+
 // AttachmentsPrettyCards - объект карточек аттача
 type AttachmentsPrettyCards struct {
 	Cards []AttachmentsPrettyCardsCards `json:"cards"`
@@ -558,7 +612,7 @@ func (a *Attachments) GetPrettyCards() (t AttachmentsPrettyCards) {
 	return
 }
 
-// GetLink - Преобразуем данные ссылки в объекты
+// GetLink - Преобразуем данные ссылки в объект
 func (a *Attachments) GetLink() (t AttachmentsLink) {
 	err := json.Unmarshal(*a.Link, &t)
 	if err != nil {
@@ -569,9 +623,53 @@ func (a *Attachments) GetLink() (t AttachmentsLink) {
 	return
 }
 
-// GetPhoto - Преобразуем данные фото в объекты
+// GetPhoto - Преобразуем данные фото в объект
 func (a *Attachments) GetPhoto() (t PhotosGetItem) {
 	err := json.Unmarshal(*a.Photo, &t)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
+// GetDoc - Преобразуем данные документа в объект
+func (a *Attachments) GetDoc() (t AttachmentsDoc) {
+	err := json.Unmarshal(*a.Doc, &t)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
+// GetVideo - Преобразуем данные видео в объект
+func (a *Attachments) GetVideo() (t VideoGetItem) {
+	err := json.Unmarshal(*a.Video, &t)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
+// GetPage - Преобразуем данные видео в объект
+func (a *Attachments) GetPage() (t AttachmentsPage) {
+	err := json.Unmarshal(*a.Page, &t)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
+// GetPoll - Преобразуем данные видео в объект
+func (a *Attachments) GetPoll() (t PollItem) {
+	err := json.Unmarshal(*a.Poll, &t)
 	if err != nil {
 		log.Println("[error]", err)
 		return
