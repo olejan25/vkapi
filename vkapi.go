@@ -403,6 +403,44 @@ func (vk *API) WallGetComments(params map[string]string) (ans WallGetCommentsAns
 	return
 }
 
+// WallDelete - Удаляем пост со стены
+func (vk *API) WallDelete(params map[string]string) (ans int, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("wall.delete", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
+// WallDeleteComment - Удаляем комментарий со стены
+func (vk *API) WallDeleteComment(params map[string]string) (ans int, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("wall.deleteComment", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 /*
 	Likes
 */
@@ -454,6 +492,25 @@ func (vk *API) BoardGetComments(params map[string]string) (ans BoardGetCommentsA
 
 	// Отправляем запрос
 	r, err := vk.request("board.getComments", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
+// BoardDeleteComment - Удаляем комментарий из обсуждения
+func (vk *API) BoardDeleteComment(params map[string]string) (ans int, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("board.deleteComment", params)
 	if err != nil {
 		return
 	}
@@ -548,6 +605,44 @@ func (vk *API) PhotosGetComments(params map[string]string) (ans PhotosGetComment
 	return
 }
 
+// PhotosDelete - Удаление фотки
+func (vk *API) PhotosDelete(params map[string]string) (ans int, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("photos.delete", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
+// PhotosDeleteComment - Удаление комментарий фотки
+func (vk *API) PhotosDeleteComment(params map[string]string) (ans int, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("photos.deleteComment", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 /*
 	Video
 */
@@ -576,6 +671,25 @@ func (vk *API) VideoGetComments(params map[string]string) (ans VideoGetCommentsA
 
 	// Отправляем запрос
 	r, err := vk.request("video.getComments", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
+// VideoDeleteComment - Удаление комментарий видео
+func (vk *API) VideoDeleteComment(params map[string]string) (ans int, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("video.deleteComment", params)
 	if err != nil {
 		return
 	}
@@ -707,6 +821,25 @@ func (vk *API) MarketGet(params map[string]string) (ans MarketGetAns, err error)
 
 	// Отправляем запрос
 	r, err := vk.request("market.get", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
+// MarketDeleteComment - удаляем комментарий у товаров
+func (vk *API) MarketDeleteComment(params map[string]string) (ans int, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("market.deleteComment", params)
 	if err != nil {
 		return
 	}
