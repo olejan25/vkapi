@@ -569,6 +569,17 @@ func (a *Attachments) GetLink() (t AttachmentsLink) {
 	return
 }
 
+// GetPhoto - Преобразуем данные фото в объекты
+func (a *Attachments) GetPhoto() (t PhotosGetItem) {
+	err := json.Unmarshal(*a.Photo, &t)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
 // CommentData - объект комментариев
 type CommentData struct {
 	Count         int  `json:"count"`
