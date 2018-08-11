@@ -100,6 +100,7 @@ type UsersGetAns struct {
 	ID                     int                  `json:"id"`
 	FirstName              string               `json:"first_name"`
 	LastName               string               `json:"last_name"`
+	Deactivated            string               `json:"deactivated"`
 	About                  string               `json:"about"`
 	Activities             string               `json:"activities"`
 	Bdate                  string               `json:"bdate"`
