@@ -2368,3 +2368,51 @@ func (vk *API) ScriptPollsGetVoters(ownerID, pollID int, answerIDs string, offse
 
 	return
 }
+
+// ScriptWallGetIDs - получаем id постов со стены
+func (vk *API) ScriptWallGetIDs(idArr []string) (ans []int, err error) {
+
+	b, err := json.Marshal(idArr)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	script := fmt.Sprintf(`
+		var arr = %s;
+		var ans = [];
+
+		while(arr.length > 0) {
+			var str = arr.shift();
+
+			var posts = API.wall.getById({
+				posts: str,
+				copy_history_depth: 1,
+			});
+
+			if(posts) {
+				ans = ans + posts@.id;
+			}
+		}
+
+		return ans;
+	`, b)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
