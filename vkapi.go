@@ -228,6 +228,26 @@ func (vk *API) GroupsGetMembers(params map[string]string) (ans GroupsGetMembersA
 	return
 }
 
+// GroupsIsMember - Получаем информацию о подписчиках
+// При запросе нескольких человек одновременно результат может быть не верным. баг ВК
+func (vk *API) GroupsIsMember(params map[string]string) (ans []GroupsIsMemberAns, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("groups.isMember", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 // GroupsGetTokenPermissions - Получаем информацию о правах токена
 func (vk *API) GroupsGetTokenPermissions() (ans GroupsGetTokenPermissionsAns, err error) {
 

@@ -460,6 +460,14 @@ type GroupsGetCallbackConfirmationCodeAns struct {
 	Code string `json:"code"`
 }
 
+// GroupsIsMemberAns - объект с ответом подписчик ли человек или нет
+type GroupsIsMemberAns struct {
+	Member     int `json:"member"`
+	UserID     int `json:"user_id"`
+	Request    int `json:"request"`
+	Invitation int `json:"invitation"`
+}
+
 /*
 	Stats
 */
