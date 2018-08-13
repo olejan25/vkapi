@@ -171,6 +171,25 @@ func (vk *API) UsersGet(params map[string]string) (ans []UsersGetAns, err error)
 	Groups
 */
 
+// GroupsJoin - Присоединяемся к группе
+func (vk *API) GroupsJoin(params map[string]string) (ans int, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("groups.join", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 // GroupsGet - Получаем информацию о группах
 func (vk *API) GroupsGet(params map[string]string) (ans GroupsGetAns, err error) {
 
