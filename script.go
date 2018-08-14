@@ -2164,7 +2164,7 @@ func (vk *API) ScriptMarketGetComments(ownerID, itemID, startCommentID int) (ans
 		var limit       = 100;
 
 		while(cnt > 0 && real_offset < count){
-			var res = API.wall.getComments({ 
+			var res = API.market.getComments({ 
 				owner_id         : owner_id, 
 				item_id          : item_id,
 				start_comment_id : start_comment_id,
