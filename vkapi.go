@@ -461,11 +461,49 @@ func (vk *API) WallDelete(params map[string]string) (ans int, err error) {
 	return
 }
 
+// WallRestore - Восстанавливаем пост на стене
+func (vk *API) WallRestore(params map[string]string) (ans int, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("wall.restore", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 // WallDeleteComment - Удаляем комментарий со стены
 func (vk *API) WallDeleteComment(params map[string]string) (ans int, err error) {
 
 	// Отправляем запрос
 	r, err := vk.request("wall.deleteComment", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
+// WallRestoreComment - Восстанавливаем комментарий на стене
+func (vk *API) WallRestoreComment(params map[string]string) (ans int, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("wall.restoreComment", params)
 	if err != nil {
 		return
 	}
@@ -550,6 +588,25 @@ func (vk *API) BoardDeleteComment(params map[string]string) (ans int, err error)
 
 	// Отправляем запрос
 	r, err := vk.request("board.deleteComment", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
+// BoardRestoreComment - восстанавливаем комментарий из обсуждения
+func (vk *API) BoardRestoreComment(params map[string]string) (ans int, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("board.restoreComment", params)
 	if err != nil {
 		return
 	}
@@ -663,11 +720,49 @@ func (vk *API) PhotosDelete(params map[string]string) (ans int, err error) {
 	return
 }
 
+// PhotosRestore - Восстановление фотки
+func (vk *API) PhotosRestore(params map[string]string) (ans int, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("photos.restore", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 // PhotosDeleteComment - Удаление комментарий фотки
 func (vk *API) PhotosDeleteComment(params map[string]string) (ans int, err error) {
 
 	// Отправляем запрос
 	r, err := vk.request("photos.deleteComment", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
+// PhotosRestoreComment - Восстановление комментарий фотки
+func (vk *API) PhotosRestoreComment(params map[string]string) (ans int, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("photos.restoreComment", params)
 	if err != nil {
 		return
 	}
@@ -729,6 +824,25 @@ func (vk *API) VideoDeleteComment(params map[string]string) (ans int, err error)
 
 	// Отправляем запрос
 	r, err := vk.request("video.deleteComment", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
+// VideoRestoreComment - Восстановление комментарий видео
+func (vk *API) VideoRestoreComment(params map[string]string) (ans int, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("video.restoreComment", params)
 	if err != nil {
 		return
 	}
@@ -879,6 +993,25 @@ func (vk *API) MarketDeleteComment(params map[string]string) (ans int, err error
 
 	// Отправляем запрос
 	r, err := vk.request("market.deleteComment", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
+// MarketRestoreComment - восстанавливаем комментарий у товаров
+func (vk *API) MarketRestoreComment(params map[string]string) (ans int, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("market.restoreComment", params)
 	if err != nil {
 		return
 	}
