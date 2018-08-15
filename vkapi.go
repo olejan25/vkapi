@@ -381,6 +381,25 @@ func (vk *API) GroupsGetCallbackConfirmationCode(params map[string]string) (ans 
 	return
 }
 
+// GroupsBan - баним в сообществе
+func (vk *API) GroupsBan(params map[string]string) (ans int, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("groups.ban", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 /*
 	Wall
 */
