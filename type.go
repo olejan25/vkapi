@@ -469,6 +469,29 @@ type GroupsIsMemberAns struct {
 	Invitation int `json:"invitation"`
 }
 
+// GroupsGetBannedAns - ответ на запрос о бане
+type GroupsGetBannedAns struct {
+	Count int                   `json:"count"`
+	Items []GroupsGetBannedItem `json:"items"`
+}
+
+// GroupsGetBannedItem - объект инфы о бане
+type GroupsGetBannedItem struct {
+	Type    string           `json:"type"`
+	Group   GroupsGetByIDAns `json:"group"`
+	Profile UsersGetAns      `json:"profile"`
+	BanInfo BanInfo          `json:"ban_info"`
+}
+
+// BanInfo - объект бана
+type BanInfo struct {
+	AdminID int    `json:"admin_id"`
+	Date    int    `json:"date"`
+	Reason  int    `json:"reason"`
+	Comment string `json:"comment"`
+	EndDate int    `json:"end_date"`
+}
+
 /*
 	Stats
 */
