@@ -343,6 +343,25 @@ func (vk *API) GroupsEditCallbackServer(params map[string]string) (ans int, err 
 	return
 }
 
+// GroupsDeleteCallbackServer - удаляем callback сервер
+func (vk *API) GroupsDeleteCallbackServer(params map[string]string) (ans int, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("groups.deleteCallbackServer", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 // GroupsSetCallbackSettings - настройка callback сервер
 func (vk *API) GroupsSetCallbackSettings(params map[string]string) (ans int, err error) {
 
