@@ -425,8 +425,8 @@ type ScriptGroupsGetMembersAns struct {
 
 // GroupsGetTokenPermissionsAns - объект прав доступа сообщества
 type GroupsGetTokenPermissionsAns struct {
-	Mask     int                                    `json:"mask"`
-	Settings []GroupsGetTokenPermissionsAnsSettings `json:"settings"`
+	Mask        int                                    `json:"mask"`
+	Permissions []GroupsGetTokenPermissionsAnsSettings `json:"permissions"`
 }
 
 // GroupsGetTokenPermissionsAnsSettings - подробные права сообщества

@@ -283,8 +283,6 @@ func (vk *API) GroupsGetTokenPermissions() (ans GroupsGetTokenPermissionsAns, er
 		return
 	}
 
-	log.Println(string(r.Response))
-
 	return
 }
 
