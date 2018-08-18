@@ -1,10 +1,13 @@
 package vkapi
 
 import (
+	"encoding/hex"
 	"encoding/json"
 	"log"
 	"regexp"
 	"strings"
+
+	"github.com/fe0b6/tools"
 )
 
 var (
@@ -98,5 +101,35 @@ func GetScreenNameFromLink(link string) (screenName string) {
 	}
 
 	screenName = f[1]
+	return
+}
+
+// EncryptToken - шифруем токен
+func EncryptToken(key string, token string) (encToken string, err error) {
+	b, err := tools.AESEncrypt([]byte(key), []byte(token))
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	encToken = hex.EncodeToString(b)
+	return
+}
+
+// DecryptToken - расшифровываем токен
+func DecryptToken(key string, encToken string) (token string, err error) {
+	bToken, err := hex.DecodeString(encToken)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	b, err := tools.AESDecrypt([]byte(key), bToken)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	token = string(b)
 	return
 }
