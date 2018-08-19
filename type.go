@@ -1000,20 +1000,18 @@ type MultiVideoGetCommentsAns struct {
 
 // MessagesGetAns - объект сообщений
 type MessagesGetAns struct {
-	ID          int               `json:"id"`
-	UserID      int               `json:"user_id"`
-	FromID      int               `json:"from_id"`
-	Date        int               `json:"date"`
-	ReadState   int               `json:"read_state"`
-	Out         int               `json:"out"`
-	Title       string            `json:"title"`
-	Body        string            `json:"body"`
-	Geo         MessagesGetAnsGeo `json:"geo"`
-	Attachments []Attachments     `json:"attachments"`
-	Emoji       int               `json:"emoji"`
-	Important   int               `json:"important"`
-	Deleted     int               `json:"deleted"`
-	RandomID    int               `json:"random_id"`
+	ID          int                  `json:"id"`
+	Date        int                  `json:"date"`
+	PeerID      int                  `json:"peer_id"`
+	FromID      int                  `json:"from_id"`
+	Text        string               `json:"text"`
+	RandomID    int                  `json:"random_id"`
+	Attachments []Attachments        `json:"attachments"`
+	Important   bool                 `json:"important"`
+	Geo         MessagesGetAnsGeo    `json:"geo"`
+	Payload     string               `json:"payload"`
+	FwdMessages []MessagesGetAns     `json:"fwd_messages"`
+	Action      MessagesGetAnsAction `json:"action"`
 }
 
 // MessagesGetAnsGeo - объект места в сообщении
@@ -1033,6 +1031,15 @@ type MessagesGetAnsGeoPlace struct {
 	Icon      string  `json:"icon"`
 	Country   string  `json:"country"`
 	City      string  `json:"city"`
+}
+
+// MessagesGetAnsAction - информация о сервисном действии с чатом
+type MessagesGetAnsAction struct {
+	Type     string            `json:"type"`
+	MemberID int               `json:"member_id"`
+	Text     string            `json:"text"`
+	Email    string            `json:"email"`
+	Photo    map[string]string `json:"photo"`
 }
 
 // MessagesIsMessagesFromGroupAllowedAns - объект проверки разрешена ли отправка сообщений
