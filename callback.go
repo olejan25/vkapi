@@ -27,10 +27,15 @@ type CallBackObj struct {
 	OfficersEdit   CallbackOfficersEdit   `json:"-"`
 	ChangeSettings CallbackChangeSettings `json:"-"`
 	ChangePhoto    CallbackChangePhoto    `json:"-"`
+
+	Parsed bool `json:"-"`
 }
 
 // Parse - Парсим объект
 func (cbo *CallBackObj) Parse() (err error) {
+	if cbo.Parsed {
+		return
+	}
 
 	switch cbo.Type {
 	case "message_new", "message_reply", "message_edit":
@@ -70,6 +75,7 @@ func (cbo *CallBackObj) Parse() (err error) {
 		return
 	}
 
+	cbo.Parsed = true
 	return
 }
 
