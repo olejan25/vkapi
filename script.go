@@ -2418,3 +2418,42 @@ func (vk *API) ScriptWallGetIDs(idArr []string) (ans []int, err error) {
 
 	return
 }
+
+// ScriptGroupFullStat - получаем полную статитсику по группе
+func (vk *API) ScriptGroupFullStat(groupID int64) (ans ScriptGroupFullStatAns, err error) {
+
+	script := fmt.Sprintf(`
+		var group_id   = %d;
+		var date       = %s;
+
+		var posts = API.wall.get({ owner_id: -group_id, count: 100});
+		var stats = API.stats.get({ group_id: group_id, date_from: date, date_to: date});
+		var gr    = API.groups.getMembers({ group_id: group_id, count: 1 });
+
+		var ans = {
+			posts      : posts,
+			stats      : stats,
+			subsribers : gr.count,
+		};
+
+		return ans;
+	`, groupID, time.Now().Format("2006-01-02"))
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}

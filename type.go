@@ -537,6 +537,13 @@ type StatsGetValue struct {
 	Code  string      `json:"code"`
 }
 
+// ScriptGroupFullStatAns - объект полной статы по сообществу
+type ScriptGroupFullStatAns struct {
+	Posts      WallGetAns    `json:"posts"`
+	Stats      []StatsGetAns `json:"stats"`
+	Subsribers int           `json:"subsribers"`
+}
+
 /*
 	Wall
 */
