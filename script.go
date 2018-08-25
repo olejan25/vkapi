@@ -2220,7 +2220,7 @@ func (vk *API) ScriptMarketGetComments(ownerID, itemID, startCommentID int) (ans
 func (vk *API) ScriptUserWallInfoGet(ownerID int) (ans PostIDDateInfto, err error) {
 
 	ids := []int{}
-	dates := []int{}
+	dates := []int64{}
 	startPostID := 1
 
 	strOwnerID := strconv.Itoa(ownerID)

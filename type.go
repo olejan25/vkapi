@@ -486,10 +486,10 @@ type GroupsGetBannedItem struct {
 // BanInfo - объект бана
 type BanInfo struct {
 	AdminID int    `json:"admin_id"`
-	Date    int    `json:"date"`
+	Date    int64  `json:"date"`
 	Reason  int    `json:"reason"`
 	Comment string `json:"comment"`
-	EndDate int    `json:"end_date"`
+	EndDate int64  `json:"end_date"`
 }
 
 /*
@@ -498,26 +498,43 @@ type BanInfo struct {
 
 // StatsGetAns - объект ответа при запросе статистики группы
 type StatsGetAns struct {
-	GroupID          int             `json:"group_id"`
-	Day              string          `json:"day"`
-	Views            int             `json:"views"`
-	Visitors         int             `json:"visitors"`
+	PeriodFrom string         `json:"period_from"`
+	PeriodTo   string         `json:"period_to"`
+	Visitors   StatsVisitors  `json:"visitors"`
+	Reach      StatsReach     `json:"reach"`
+	Activity   map[string]int `json:"activity"`
+}
+
+// StatsVisitors - объект с инфой о посетителях
+type StatsVisitors struct {
+	Views       int             `json:"views"`
+	Visitors    int             `json:"visitors"`
+	MobileViews int             `json:"mobile_views"`
+	Sex         []StatsGetValue `json:"sex"`
+	Age         []StatsGetValue `json:"age"`
+	SexAge      []StatsGetValue `json:"sex_age"`
+	Countries   []StatsGetValue `json:"countries"`
+	Cities      []StatsGetValue `json:"cities"`
+}
+
+// StatsReach - объект с инфой об охвате
+type StatsReach struct {
 	Reach            int             `json:"reach"`
 	ReachSubscribers int             `json:"reach_subscribers"`
-	Subscribed       int             `json:"subscribed"`
-	Unsubscribed     int             `json:"unsubscribed"`
+	MobileReach      int             `json:"mobile_reach"`
 	Sex              []StatsGetValue `json:"sex"`
 	Age              []StatsGetValue `json:"age"`
 	SexAge           []StatsGetValue `json:"sex_age"`
-	Cities           []StatsGetValue `json:"cities"`
 	Countries        []StatsGetValue `json:"countries"`
+	Cities           []StatsGetValue `json:"cities"`
 }
 
 // StatsGetValue - объект статистики
 type StatsGetValue struct {
-	Visitors int         `json:"visitors"`
-	Value    interface{} `json:"value"`
-	Name     string      `json:"name"`
+	Count int         `json:"count"`
+	Value interface{} `json:"value"`
+	Name  string      `json:"name"`
+	Code  string      `json:"code"`
 }
 
 /*
@@ -542,7 +559,7 @@ type WallGetByIDAns struct {
 	OwnerID      int              `json:"owner_id"`
 	FromID       int              `json:"from_id"`
 	CreatedBy    int              `json:"created_by"`
-	Date         int              `json:"date"`
+	Date         int64            `json:"date"`
 	Text         string           `json:"text"`
 	ReplyOwnerID int              `json:"reply_owner_id"`
 	ReplyPostID  int              `json:"reply_post_id"`
@@ -595,7 +612,7 @@ type AttachmentsDoc struct {
 	Size    int              `json:"size"`
 	Ext     string           `json:"ext"`
 	URL     string           `json:"url"`
-	Date    int              `json:"date"`
+	Date    int64            `json:"date"`
 	Type    int              `json:"type"`
 	Preview *json.RawMessage `json:"preview"`
 }
@@ -739,7 +756,7 @@ type MultiWallGetCommentsAns struct {
 type WallGetCommentsItem struct {
 	ID             int           `json:"id"`
 	FromID         int           `json:"from_id"`
-	Date           int           `json:"date"`
+	Date           int64         `json:"date"`
 	Text           string        `json:"text"`
 	ReplyToUser    int           `json:"reply_to_user"`
 	ReplyToComment int           `json:"reply_to_comment"`
@@ -828,9 +845,9 @@ type MultiBoardGetTopicsAns struct {
 type BoardGetTopicsItem struct {
 	ID           int    `json:"id"`
 	Title        string `json:"title"`
-	Created      int    `json:"created"`
+	Created      int64  `json:"created"`
 	CreatedBy    int    `json:"created_by"`
-	Updated      int    `json:"updated"`
+	Updated      int64  `json:"updated"`
 	UpdatedBy    int    `json:"updated_by"`
 	IsClosed     int    `json:"is_closed"`
 	IsFixed      int    `json:"is_fixed"`
@@ -875,8 +892,8 @@ type PhotosGetAlbumsItem struct {
 	OwnerID            int    `json:"owner_id"`
 	Title              string `json:"title"`
 	Description        string `json:"description"`
-	Created            int    `json:"created"`
-	Updated            int    `json:"updated"`
+	Created            int64  `json:"created"`
+	Updated            int64  `json:"updated"`
 	Size               int    `json:"size"`
 	CanUpload          int    `json:"can_upload"`
 	UploadByAdminsOnly int    `json:"UploadByAdminsOnly"`
@@ -903,7 +920,7 @@ type PhotosGetItem struct {
 	OwnerID  int          `json:"owner_id"`
 	UserID   int          `json:"user_id"`
 	Text     string       `json:"text"`
-	Date     int          `json:"date"`
+	Date     int64        `json:"date"`
 	Width    int          `json:"width"`
 	Height   int          `json:"height"`
 	PostID   int          `json:"post_id"`
@@ -971,14 +988,14 @@ type VideoGetItem struct {
 	OwnerID    int      `json:"owner_id"`
 	Title      string   `json:"title"`
 	Duration   int      `json:"duration"`
-	Date       int      `json:"date"`
+	Date       int64    `json:"date"`
 	Comments   int      `json:"comments"`
 	Views      int      `json:"views"`
 	Likes      LikeData `json:"likes"`
 	Reposts    LikeData `json:"reposts"`
 	Platform   string   `json:"platform"`
 	Player     string   `json:"player"`
-	AddingDate int      `json:"adding_date"`
+	AddingDate int64    `json:"adding_date"`
 }
 
 // VideoGetCommentsAns - объект списка комментариев
@@ -1001,7 +1018,7 @@ type MultiVideoGetCommentsAns struct {
 // MessagesGetAns - объект сообщений
 type MessagesGetAns struct {
 	ID          int                  `json:"id"`
-	Date        int                  `json:"date"`
+	Date        int64                `json:"date"`
 	PeerID      int                  `json:"peer_id"`
 	FromID      int                  `json:"from_id"`
 	Text        string               `json:"text"`
@@ -1072,7 +1089,7 @@ type MarketGetByIDAns struct {
 	Description  string          `json:"description"`
 	Price        MarketPrice     `json:"price"`
 	Category     MarketCategory  `json:"category"`
-	Date         int             `json:"date"`
+	Date         int64           `json:"date"`
 	ThumbPhoto   string          `json:"thumb_photo"`
 	Availability int             `json:"availability"`
 	AlbumsIDs    []int           `json:"albums_ids"`
@@ -1245,7 +1262,7 @@ type AdsGetStatisticsAnsStatsBug struct {
 type AdsGetTargetGroupsAns struct {
 	ID              int         `json:"id"`
 	Name            string      `json:"name"`
-	LastUpdated     int         `json:"last_updated"`
+	LastUpdated     int64       `json:"last_updated"`
 	AudienceCount   int         `json:"audience_count"`
 	Lifetime        interface{} `json:"lifetime"`
 	IsAudience      bool        `json:"is_audience"`
@@ -1282,6 +1299,6 @@ type Cities struct {
 
 // PostIDDateInfto - Структура содержитг id и даты постов
 type PostIDDateInfto struct {
-	Ids   []int `json:"ids"`
-	Dates []int `json:"dates"`
+	Ids   []int   `json:"ids"`
+	Dates []int64 `json:"dates"`
 }
