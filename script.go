@@ -2423,8 +2423,8 @@ func (vk *API) ScriptWallGetIDs(idArr []string) (ans []int, err error) {
 func (vk *API) ScriptGroupFullStat(groupID int64) (ans ScriptGroupFullStatAns, err error) {
 
 	script := fmt.Sprintf(`
-		var group_id   = %d;
-		var date       = %s;
+		var group_id = %d;
+		var date     = "%s";
 
 		var posts = API.wall.get({ owner_id: -group_id, count: 100});
 		var stats = API.stats.get({ group_id: group_id, date_from: date, date_to: date});
