@@ -1287,8 +1287,8 @@ type AdsGetTargetGroupsAns struct {
 
 // ScriptGetAdminPagesAns - объект инфы об админе
 type ScriptGetAdminPagesAns struct {
-	Groups  []GroupsGetAns `json:"groups"`
-	Profile []UsersGetAns  `json:"profile"`
+	Groups  GroupsGetAns  `json:"groups"`
+	Profile []UsersGetAns `json:"profile"`
 }
 
 // SexAge - объект пола/возраста
