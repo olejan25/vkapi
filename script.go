@@ -2457,3 +2457,37 @@ func (vk *API) ScriptGroupFullStat(groupID int64) (ans ScriptGroupFullStatAns, e
 
 	return
 }
+
+// ScriptGetAdminPages - получаем свою страницу и группы где модератор или выше
+func (vk *API) ScriptGetAdminPages() (ans ScriptGetAdminPagesAns, err error) {
+
+	script := fmt.Sprintf(`
+		var groups  = API.groups.get({ filter: "moder", extended: 1, fields: "members_count", count: 50 });
+		var profile = API.users.get({ fields: "photo_100,followers_count" });
+
+		var ans = {
+			groups  : groups,
+			profile : profile,
+		};
+
+		return ans;
+	`)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
