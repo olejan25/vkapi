@@ -2431,13 +2431,15 @@ func (vk *API) ScriptGroupFullStat(groupID int64) (ans ScriptGroupFullStatAns, e
 		var gr    = API.groups.getMembers({ group_id: group_id, count: 1 });
 
 		var ans = {
-			posts      : posts,
+			
 			stats      : stats,
 			subsribers : gr.count,
 		};
 
 		return ans;
 	`, groupID, time.Now().Format("2006-01-02"))
+
+	log.Println(script)
 
 	r, err := vk.Execute(script)
 	if err != nil {
@@ -2448,6 +2450,8 @@ func (vk *API) ScriptGroupFullStat(groupID int64) (ans ScriptGroupFullStatAns, e
 		}
 		return
 	}
+
+	log.Println(string(r.Response))
 
 	err = json.Unmarshal(r.Response, &ans)
 	if err != nil {
