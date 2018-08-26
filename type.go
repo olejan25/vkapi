@@ -492,6 +492,12 @@ type BanInfo struct {
 	EndDate int64  `json:"end_date"`
 }
 
+// GroupsGetCallbackSettingsAns - объект настроек callback сервера
+type GroupsGetCallbackSettingsAns struct {
+	APIVersion string         `json:"api_version"`
+	Events     map[string]int `json:"events"`
+}
+
 /*
 	Stats
 */
