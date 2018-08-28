@@ -2503,6 +2503,8 @@ func (vk *API) ScriptPostFullStat(ownerID, postID int) (ans ScriptPostFullStatAn
 		var posts = API.wall.getById({ posts: owner_id + "_" + post_id });
 		var stats = API.stats.get({ group_id: -owner_id, date_from: date, date_to: date});
 		var pstat = API.stats.getPostReach({ owner_id: owner_id, post_id: post_id });
+		if(!pstat) { pstat = []; }
+		if(!stats) { stats = []; }
 
 		var ans = {
 			post      : posts[0],
