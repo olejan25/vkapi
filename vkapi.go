@@ -1371,6 +1371,29 @@ func (vk *API) AdsGetStatistics(params map[string]string) (ans []AdsGetStatistic
 }
 
 /*
+	Stats
+*/
+
+// StatsGetPostReach - Получаем стату поста
+func (vk *API) StatsGetPostReach(params map[string]string) (ans []StatsGetPostReachAns, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("stats.getPostReach", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
+/*
 	Execute
 */
 

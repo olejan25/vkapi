@@ -2491,3 +2491,43 @@ func (vk *API) ScriptGetAdminPages() (ans ScriptGetAdminPagesAns, err error) {
 
 	return
 }
+
+// ScriptPostFullStat - получаем полную статитсику по посту
+func (vk *API) ScriptPostFullStat(ownerID, postID int) (ans ScriptPostFullStatAns, err error) {
+
+	script := fmt.Sprintf(`
+		var group_id = %d;
+		var post_id  = %d;
+		var date     = "%s";
+
+		var posts = API.wall.getById({ posts: owner_id + "_" + post_id });
+		var stats = API.stats.get({ group_id: -owner_id, date_from: date, date_to: date});
+		var pstat = API.stats.getPostReach({ owner_id: owner_id, post_id: post_id });
+
+		var ans = {
+			post      : posts[0],
+			stats     : stats,
+			post_stat : pstat,
+		};
+
+		return ans;
+	`, ownerID, postID, time.Now().Format("2006-01-02"))
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}

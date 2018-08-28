@@ -787,6 +787,31 @@ type WallGetCommentsItem struct {
 	TopicOwnerID   int           `json:"topic_owner_id"`
 }
 
+// ScriptPostFullStatAns - объект с инфой о стате поста
+type ScriptPostFullStatAns struct {
+	Post     WallGetByIDAns         `json:"post"`
+	Stats    []StatsGetAns          `json:"stats"`
+	PostStat []StatsGetPostReachAns `json:"post_stat"`
+}
+
+/*
+	Stats
+*/
+
+// StatsGetPostReachAns - Объект статистики поста
+type StatsGetPostReachAns struct {
+	ReachSubscribers int `json:"reach_subscribers"`
+	ReachTotal       int `json:"reach_total"`
+	ReachAds         int `json:"reach_ads"`
+	ReachViral       int `json:"reach_viral"`
+	Links            int `json:"links"`
+	ToGroup          int `json:"to_group"`
+	JoinGroup        int `json:"join_group"`
+	Report           int `json:"report"`
+	Hide             int `json:"hide"`
+	Unsubscribe      int `json:"unsubscribe"`
+}
+
 /*
 	Likes
 */
