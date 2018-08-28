@@ -2496,7 +2496,7 @@ func (vk *API) ScriptGetAdminPages() (ans ScriptGetAdminPagesAns, err error) {
 func (vk *API) ScriptPostFullStat(ownerID, postID int) (ans ScriptPostFullStatAns, err error) {
 
 	script := fmt.Sprintf(`
-		var group_id = %d;
+		var owner_id = %d;
 		var post_id  = %d;
 		var date     = "%s";
 
