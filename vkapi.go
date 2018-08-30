@@ -739,6 +739,25 @@ func (vk *API) PhotosGet(params map[string]string) (ans PhotosGetAns, err error)
 	return
 }
 
+// PhotosGetAll - Возвращает список фотографий.
+func (vk *API) PhotosGetAll(params map[string]string) (ans PhotosGetAns, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("photos.getAll", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 // PhotosGetByID - Возвращает список фотографий.
 func (vk *API) PhotosGetByID(params map[string]string) (ans []PhotosGetItem, err error) {
 
