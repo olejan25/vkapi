@@ -504,11 +504,11 @@ type GroupsGetCallbackSettingsAns struct {
 
 // StatsGetAns - объект ответа при запросе статистики группы
 type StatsGetAns struct {
-	PeriodFrom string         `json:"period_from"`
-	PeriodTo   string         `json:"period_to"`
-	Visitors   StatsVisitors  `json:"visitors"`
-	Reach      StatsReach     `json:"reach"`
-	Activity   map[string]int `json:"activity"`
+	PeriodFrom string        `json:"period_from"`
+	PeriodTo   string        `json:"period_to"`
+	Visitors   StatsVisitors `json:"visitors"`
+	Reach      StatsReach    `json:"reach"`
+	Activity   interface{}   `json:"activity"`
 }
 
 // StatsVisitors - объект с инфой о посетителях
