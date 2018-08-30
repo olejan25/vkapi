@@ -785,6 +785,7 @@ type WallGetCommentsItem struct {
 	ItemID         int           `json:"item_id"`
 	TopicID        int           `json:"topic_id"`
 	TopicOwnerID   int           `json:"topic_owner_id"`
+	PID            int           `json:"pid"`
 }
 
 // ScriptPostFullStatAns - объект с инфой о стате поста
