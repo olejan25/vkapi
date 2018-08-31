@@ -2547,7 +2547,6 @@ func (vk *API) ScriptPostStat(ownerID, postID int) (ans ScriptPostFullStatAns, e
 	
 		var ans = {
 			post      : posts[0],
-			stats     : stats,
 			post_stat : pstat,
 		};
 
