@@ -2533,3 +2533,42 @@ func (vk *API) ScriptPostFullStat(ownerID, postID int) (ans ScriptPostFullStatAn
 
 	return
 }
+
+// ScriptPostStat - получаем полную статитсику по посту
+func (vk *API) ScriptPostStat(ownerID, postID int) (ans ScriptPostFullStatAns, err error) {
+
+	script := fmt.Sprintf(`
+		var owner_id = %d;
+		var post_id  = %d;
+
+		var posts = API.wall.getById({ posts: owner_id + "_" + post_id });
+		var pstat = API.stats.getPostReach({ owner_id: owner_id, post_id: post_id });
+		if(!pstat) { pstat = []; }
+	
+		var ans = {
+			post      : posts[0],
+			stats     : stats,
+			post_stat : pstat,
+		};
+
+		return ans;
+	`, ownerID, postID)
+
+	r, err := vk.Execute(script)
+	if err != nil {
+		if !executeErrorSkipReg.MatchString(err.Error()) {
+			if !vk.checkErrorSkip(err.Error()) {
+				log.Println("[error]", err)
+			}
+		}
+		return
+	}
+
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
