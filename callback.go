@@ -3,6 +3,7 @@ package vkapi
 import (
 	"encoding/json"
 	"log"
+	"strings"
 )
 
 // CallBackObj - Объект запроса через callback
@@ -29,6 +30,7 @@ type CallBackObj struct {
 	ChangePhoto    CallbackChangePhoto    `json:"-"`
 
 	Parsed bool `json:"-"`
+	Retry  bool `json:"-"`
 }
 
 // Parse - Парсим объект
@@ -71,6 +73,18 @@ func (cbo *CallBackObj) Parse() (err error) {
 	}
 
 	if err != nil {
+		if !cbo.Retry {
+			cbo.Retry = true
+
+			if err.Error() == `json: cannot unmarshal string into Go struct field CallbackCommentDelete.topic_id of type int` {
+				str := fixTopicIDStr.ReplaceAllStringFunc(string(cbo.Object), func(t string) string {
+					return strings.Replace(strings.Replace(t, `"`, "", -1), "topic_id", `"topic_id"`, -1)
+				})
+				cbo.Object = []byte(str)
+				return cbo.Parse()
+			}
+		}
+
 		log.Println("[error]", err)
 		return
 	}
