@@ -16,7 +16,7 @@ import (
 
 const (
 	// APIVersion - используемая версия API
-	APIVersion = "5.80"
+	APIVersion = "5.84"
 	// APIMethodURL - URL запросов к API
 	APIMethodURL = "https://api.vk.com/method/"
 	// APITokenURL - URL oauth авторизации
