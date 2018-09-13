@@ -821,6 +821,8 @@ func (vk *API) ScriptMultiLikesGetList(arr []map[string]interface{}) (ans MultiL
 		return
 	}
 
+	log.Println(string(r.Response))
+
 	return
 }
 
