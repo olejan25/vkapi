@@ -303,6 +303,12 @@ type ScriptUsersMultiGetAns struct {
 	Items  []UsersGetAns            `json:"items"`
 }
 
+// UsersGetSubscriptionsNoExtAns - объект списка подписок
+type UsersGetSubscriptionsNoExtAns struct {
+	Users  GroupsGetByIDAns `json:"users"`
+	Groups GroupsGetByIDAns `json:"groups"`
+}
+
 // UsersGetSubscriptionsAns - объект списка подписок человека
 type UsersGetSubscriptionsAns struct {
 	Count  int                `json:"count"`

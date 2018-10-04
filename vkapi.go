@@ -167,6 +167,25 @@ func (vk *API) UsersGet(params map[string]string) (ans []UsersGetAns, err error)
 	return
 }
 
+// UsersGetSubscriptionsNoExt - Получаем информацию о пользователях
+func (vk *API) UsersGetSubscriptionsNoExt(params map[string]string) (ans []UsersGetSubscriptionsNoExtAns, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("users.getSubscriptions", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 /*
 	Groups
 */
