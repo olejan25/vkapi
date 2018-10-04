@@ -167,8 +167,8 @@ func (vk *API) UsersGet(params map[string]string) (ans []UsersGetAns, err error)
 	return
 }
 
-// UsersGetSubscriptionsNoExt - Получаем информацию о пользователях
-func (vk *API) UsersGetSubscriptionsNoExt(params map[string]string) (ans UsersGetSubscriptionsNoExtAns, err error) {
+// UsersGetSubscriptions - Получаем информацию о пользователях
+func (vk *API) UsersGetSubscriptions(params map[string]string) (ans UsersGetSubscriptionsAns, err error) {
 
 	// Отправляем запрос
 	r, err := vk.request("users.getSubscriptions", params)
