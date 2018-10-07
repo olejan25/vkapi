@@ -1073,7 +1073,7 @@ type MessagesGetAns struct {
 // MessagesGetAnsGeo - объект места в сообщении
 type MessagesGetAnsGeo struct {
 	Type        string                 `json:"type"`
-	Coordinates string                 `json:"coordinates"`
+	Coordinates map[string]float64     `json:"coordinates"`
 	Place       MessagesGetAnsGeoPlace `json:"place"`
 }
 
