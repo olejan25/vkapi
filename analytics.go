@@ -14,11 +14,11 @@ type RqStatObj struct {
 }
 
 // InitStatChan - Создаем канал для аналитики
-func InitStatChan(l int) {
+func InitStatChan(l int) chan RqStatObj {
 
 	statRqChan = make(chan RqStatObj, l)
 	statRqQueueLen = int(float64(l) * 0.1)
 	statRqCollect = true
 
-	return
+	return statRqChan
 }
