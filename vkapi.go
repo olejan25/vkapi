@@ -1562,6 +1562,21 @@ func (vk *API) request(method string, params map[string]string) (ans Response, e
 
 // Запрос к ВК
 func (vk *API) fullRequest(method string, params map[string]string) (ans Response, err error) {
+	if statRqCollect {
+		// Проверим что очередь не переполнена
+		if len(statRqChan) <= statRqQueueLen {
+			rqStart := time.Now().UnixNano() // Время начала запроса
+			defer func() {
+				rqTimeout := (time.Now().UnixNano() - rqStart) / int64(time.Millisecond)
+				statRqChan <- RqStatObj{
+					Method:  method,
+					Error:   err,
+					Timeout: rqTimeout,
+				}
+			}()
+		}
+	}
+
 	q := url.Values{}
 	for k, v := range params {
 		q.Add(k, v)
