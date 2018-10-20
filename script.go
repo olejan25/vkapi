@@ -2427,6 +2427,8 @@ func (vk *API) ScriptGroupFullStat(groupID int64) (ans ScriptGroupFullStatAns, e
 		var date     = "%s";
 
 		var posts = API.wall.get({ owner_id: -group_id, count: 100});
+		if(!posts) { posts = []; }
+
 		var stats = API.stats.get({ group_id: group_id, date_from: date, date_to: date});
 		var gr    = API.groups.getMembers({ group_id: group_id, count: 1 });
 
