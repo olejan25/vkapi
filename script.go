@@ -2454,6 +2454,7 @@ func (vk *API) ScriptGroupFullStat(groupID int64) (ans ScriptGroupFullStatAns, e
 	err = json.Unmarshal(r.Response, &ans)
 	if err != nil {
 		log.Println("[error]", err)
+		log.Println(string(r.Response))
 		return
 	}
 
