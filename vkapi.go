@@ -1644,7 +1644,7 @@ func (vk *API) fullRequest(method string, params map[string]string) (ans Respons
 	// Парсим ответ
 	err = json.Unmarshal(content, &ans)
 	if err != nil {
-		log.Println("[error]", err, string(content))
+		log.Println("[error]", method, err, string(content))
 		return
 	}
 
