@@ -2431,6 +2431,7 @@ func (vk *API) ScriptGroupFullStat(groupID int64) (ans ScriptGroupFullStatAns, e
 
 		var stats = API.stats.get({ group_id: group_id, date_from: date, date_to: date});
 		var gr    = API.groups.getMembers({ group_id: group_id, count: 1 });
+		if(!stats) { stats = {}; }
 
 		var ans = {
 			posts      : posts,
@@ -2454,7 +2455,7 @@ func (vk *API) ScriptGroupFullStat(groupID int64) (ans ScriptGroupFullStatAns, e
 	err = json.Unmarshal(r.Response, &ans)
 	if err != nil {
 		log.Println("[error]", err)
-		log.Println(string(r.Response))
+		//	log.Println(string(r.Response))
 		return
 	}
 
