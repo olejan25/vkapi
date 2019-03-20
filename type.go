@@ -604,6 +604,7 @@ type Attachments struct {
 	Note        *json.RawMessage `json:"note"`
 	Sticker     *json.RawMessage `json:"sticker"`
 	PrettyCards *json.RawMessage `json:"pretty_cards"`
+	Market      *json.RawMessage `json:"market"`
 }
 
 // AttachmentsLink - объект ссылки аатача
@@ -732,6 +733,17 @@ func (a *Attachments) GetPage() (t AttachmentsPage) {
 // GetPoll - Преобразуем данные видео в объект
 func (a *Attachments) GetPoll() (t PollItem) {
 	err := json.Unmarshal(*a.Poll, &t)
+	if err != nil {
+		log.Println("[error]", err)
+		return
+	}
+
+	return
+}
+
+// GetMarket - Преобразуем данные товара в объект
+func (a *Attachments) GetMarket() (t MarketGetByIDAns) {
+	err := json.Unmarshal(*a.Market, &t)
 	if err != nil {
 		log.Println("[error]", err)
 		return
