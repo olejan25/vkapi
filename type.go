@@ -168,6 +168,8 @@ type UsersGetAns struct {
 	Universities           []UserUniversities   `json:"universities"`
 	Verified               int                  `json:"verified"`
 	Role                   string               `json:"role"`
+	IsClosed               bool                 `json:"is_closed"`
+	CanAccessClosed        bool                 `json:"can_access_closed"`
 }
 
 // UsersRelationPartner - объект партнера
