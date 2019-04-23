@@ -657,12 +657,13 @@ func (vk *API) ScriptMultiWallGetComments(arr []map[string]interface{}) (ans Mul
 			var h   = arr.shift();
 			if(!h.limit) { h.limit = limit; }
 			var res = API.wall.getComments({ 
-				owner_id         : h.owner_id, 
-				post_id          : h.post_id,
-				start_comment_id : h.start_comment_id,
-				sort             : "desc",
-				need_likes       : 1,
-				count            : h.limit
+				owner_id           : h.owner_id, 
+				post_id            : h.post_id,
+				start_comment_id   : h.start_comment_id,
+				sort               : "desc",
+				need_likes         : 1,
+				count              : h.limit,
+				thread_items_count : 10,
 			}); 
 
 			if(res.count) {

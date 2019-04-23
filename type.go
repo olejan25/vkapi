@@ -781,25 +781,34 @@ type MultiWallGetCommentsAns struct {
 
 // WallGetCommentsItem - объект комментария
 type WallGetCommentsItem struct {
-	ID             int           `json:"id"`
-	FromID         int           `json:"from_id"`
-	Date           int64         `json:"date"`
-	Text           string        `json:"text"`
-	ReplyToUser    int           `json:"reply_to_user"`
-	ReplyToComment int           `json:"reply_to_comment"`
-	Attachments    []Attachments `json:"attachments"`
-	Likes          LikeData      `json:"likes"`
-	PhotoID        int           `json:"photo_id"`
-	PhotoOwnerID   int           `json:"photo_owner_id"`
-	VideoID        int           `json:"video_id"`
-	VideoOwnerID   int           `json:"video_owner_id"`
-	PostID         int           `json:"post_id"`
-	PostOwnerID    int           `json:"post_owner_id"`
-	MarketOwnerID  int           `json:"market_owner_id"`
-	ItemID         int           `json:"item_id"`
-	TopicID        int           `json:"topic_id"`
-	TopicOwnerID   int           `json:"topic_owner_id"`
-	PID            int           `json:"pid"`
+	ID             int                       `json:"id"`
+	FromID         int                       `json:"from_id"`
+	Date           int64                     `json:"date"`
+	Text           string                    `json:"text"`
+	ReplyToUser    int                       `json:"reply_to_user"`
+	ReplyToComment int                       `json:"reply_to_comment"`
+	Attachments    []Attachments             `json:"attachments"`
+	Likes          LikeData                  `json:"likes"`
+	PhotoID        int                       `json:"photo_id"`
+	PhotoOwnerID   int                       `json:"photo_owner_id"`
+	VideoID        int                       `json:"video_id"`
+	VideoOwnerID   int                       `json:"video_owner_id"`
+	PostID         int                       `json:"post_id"`
+	PostOwnerID    int                       `json:"post_owner_id"`
+	MarketOwnerID  int                       `json:"market_owner_id"`
+	ItemID         int                       `json:"item_id"`
+	TopicID        int                       `json:"topic_id"`
+	TopicOwnerID   int                       `json:"topic_owner_id"`
+	PID            int                       `json:"pid"`
+	Thread         WallGetCommentsItemThread `json:"thread"`
+}
+
+type WallGetCommentsItemThread struct {
+	Count           int                   `json:"count"`
+	Items           []WallGetCommentsItem `json:"items"`
+	CanPost         bool                  `json:"can_post"`
+	ShowReplyButton bool                  `json:"show_reply_button"`
+	GroupsCanPost   bool                  `json:"groups_can_post"`
 }
 
 // ScriptPostFullStatAns - объект с инфой о стате поста
