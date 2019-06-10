@@ -1361,10 +1361,10 @@ type AdsGetDemographicsAnsStatsValue struct {
 
 // AdsGetDemographicsAnsStatsCities - данные по городам
 type AdsGetDemographicsAnsStatsCities struct {
-	ImpressionsRate float64 `json:"impressions_rate"`
-	ClicksRate      float64 `json:"clicks_rate"`
-	Value           int     `json:"value"`
-	Name            string  `json:"name"`
+	ImpressionsRate float64     `json:"impressions_rate"`
+	ClicksRate      float64     `json:"clicks_rate"`
+	Value           interface{} `json:"value"`
+	Name            string      `json:"name"`
 }
 
 /*
