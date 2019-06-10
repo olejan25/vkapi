@@ -1447,6 +1447,25 @@ func (vk *API) AdsGetStatistics(params map[string]string) (ans []AdsGetStatistic
 	return
 }
 
+// AdsGetDemographics - Получаем статистику объявлений демографическую
+func (vk *API) AdsGetDemographics(params map[string]string) (ans []AdsGetDemographicsAns, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("ads.getDemographics", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 /*
 	Stats
 */

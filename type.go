@@ -1336,6 +1336,37 @@ type AdsGetTargetGroupsAns struct {
 	Domain          string      `json:"domain"`
 }
 
+// AdsGetDemographicsAns - объект статы демографии
+type AdsGetDemographicsAns struct {
+	ID    int                          `json:"id"`
+	Type  string                       `json:"type"`
+	Stats []AdsGetDemographicsAnsStats `json:"stats"`
+}
+
+// AdsGetDemographicsAnsStats - стата
+type AdsGetDemographicsAnsStats struct {
+	Day    string                             `json:"day"`
+	Sex    []AdsGetDemographicsAnsStatsValue  `json:"sex"`
+	Age    []AdsGetDemographicsAnsStatsValue  `json:"age"`
+	SexAge []AdsGetDemographicsAnsStatsValue  `json:"sex_age"`
+	Cities []AdsGetDemographicsAnsStatsCities `json:"cities"`
+}
+
+// AdsGetDemographicsAnsStatsValue - даныне
+type AdsGetDemographicsAnsStatsValue struct {
+	ImpressionsRate float64 `json:"impressions_rate"`
+	ClicksRate      float64 `json:"clicks_rate"`
+	Value           string  `json:"value"`
+}
+
+// AdsGetDemographicsAnsStatsCities - данные по городам
+type AdsGetDemographicsAnsStatsCities struct {
+	ImpressionsRate float64 `json:"impressions_rate"`
+	ClicksRate      float64 `json:"clicks_rate"`
+	Value           int     `json:"value"`
+	Name            string  `json:"name"`
+}
+
 /*
 	Other
 */
