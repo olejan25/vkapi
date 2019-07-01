@@ -801,6 +801,7 @@ type WallGetCommentsItem struct {
 	TopicOwnerID   int                       `json:"topic_owner_id"`
 	PID            int                       `json:"pid"`
 	Thread         WallGetCommentsItemThread `json:"thread"`
+	Deleted        bool                      `json:"deleted"`
 }
 
 type WallGetCommentsItemThread struct {
