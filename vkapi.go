@@ -538,6 +538,25 @@ func (vk *API) WallGetByID(params map[string]string) (ans []WallGetByIDAns, err 
 	return
 }
 
+// WallGetComment - Возвращает список комментариев к посту.
+func (vk *API) WallGetComment(params map[string]string) (ans WallGetCommentsAns, err error) {
+
+	// Отправляем запрос
+	r, err := vk.request("wall.getComment", params)
+	if err != nil {
+		return
+	}
+
+	// Парсим данные
+	err = json.Unmarshal(r.Response, &ans)
+	if err != nil {
+		log.Println("[error]", err, string(r.Response))
+		return
+	}
+
+	return
+}
+
 // WallGetComments - Возвращает список комментариев к посту.
 func (vk *API) WallGetComments(params map[string]string) (ans WallGetCommentsAns, err error) {
 
