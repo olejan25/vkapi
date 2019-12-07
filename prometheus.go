@@ -3,7 +3,8 @@ package vkapi
 import "github.com/prometheus/client_golang/prometheus"
 
 var (
-	promRq = prometheus.NewSummaryVec(
+	promInited bool
+	promRq     = prometheus.NewSummaryVec(
 		prometheus.SummaryOpts{
 			Namespace:  "vk",
 			Name:       "requests_dur",
@@ -26,4 +27,6 @@ var (
 func InitProm() {
 	prometheus.MustRegister(promRq)
 	prometheus.MustRegister(promRqCount)
+
+	promInited = true
 }
