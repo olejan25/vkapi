@@ -1560,6 +1560,13 @@ func (vk *API) Execute(code string) (r Response, err error) {
 
 // Обертка для запроса к ВК
 func (vk *API) request(method string, params map[string]string) (ans Response, err error) {
+	// прометей
+	promRqCount.WithLabelValues(method).Inc()
+	tn := time.Now()
+	defer func(tn time.Time) {
+		promRq.WithLabelValues(method).Observe(float64(time.Now().Sub(tn) / time.Millisecond))
+	}(tn)
+
 	if vk.AccessToken == "" {
 		err = errors.New("no access token")
 		log.Println("[error]", err)
