@@ -27,7 +27,7 @@ func init() {
 	GroupAccessTokenReg = regexp.MustCompile("^access_token_([0-9]+)$")
 	linkScreenNameReg = regexp.MustCompile("vk.com/(.+)")
 	LinkDomainReg = regexp.MustCompile("vk.com/([^? \n#]+)\\S*")
-	ObjLinkReg = regexp.MustCompile("(?:wall|page|topic|photo|album|video|product|market|note)(-)?([0-9]+)(?:_([0-9]+))?")
+	ObjLinkReg = regexp.MustCompile("(?:wall|page|topic|photo|album|video|product|market|note|audio|audio_playlist)(-)?([0-9]+)(?:_([0-9]+))?")
 	InternalLinkReg = regexp.MustCompile("\\[(id|club|public|group)([0-9]+)\\|[^\\]]+\\]")
 }
 
