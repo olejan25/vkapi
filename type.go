@@ -1282,7 +1282,7 @@ type AdsGetCampaignsAns struct {
 
 // AdsGetAdsAns - объект ответа при запросе объявления
 type AdsGetAdsAns struct {
-	ID         string `json:"id"`
+	ID         int `json:"id"`
 	CampaignID int    `json:"campaign_id"`
 	Name       string `json:"name"`
 }
