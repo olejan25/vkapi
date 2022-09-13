@@ -1359,7 +1359,7 @@ func (vk *API) AdsGetTargetingStats(params map[string]string) (ans AdsGetTargeti
 }
 
 // AdsGetCampaigns - Получаем список кампаний
-func (vk *API) AdsGetCampaigns(params map[string]int) (ans []AdsGetCampaignsAns, err error) {
+func (vk *API) AdsGetCampaigns(params map[string]string) (ans []AdsGetCampaignsAns, err error) {
 
 	// Отправляем запрос
 	r, err := vk.request("ads.getCampaigns", params)
